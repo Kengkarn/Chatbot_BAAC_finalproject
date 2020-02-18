@@ -1,0 +1,8 @@
+{
+    "lineMessagingApi" : "https://api.line.me/v2/bot/message",
+    "lineHeaders" : {
+        "Content-Type" : "application/json",
+        "Authorization" : "Bearer jWS8LPUWM/CRiU8PWKCg2HuR987LCBr4Eu+L2yjk2bO7pc7la6SFnEIiST+SbQncuHWSVuOtu+ftrdXsbrTRrAMSqIWoCR3vKotWguJlCvos/1eK+pK1AGqKmBZoJ3ZAMLVUTjuFlDBSIbfPuaJhCQdB04t89/1O/w1cDnyilFU="
+    },
+    "databaseURL" : "https://chatbot-baac-cdplft.firebaseio.com"
+}

@@ -111,10 +111,36 @@ exports.webhook = functions
         return agent.add(payloadMsg);
       };
 
+    const area_maize = async agent => {
+      return db.collection('Knowledge').doc('Maize corn').get().then(doc => {
+        agent.add(doc.data().area);
+      });
+    }
+    
+    const soil_preparation_maize = async => {
+      return db.collection('Knowledge').doc('Maize corn').get().then(doc => {
+        agent.add(doc.data().soil);
+      });
+    }
+
+    const irrigation_maize = async => {
+      return db.collection('Knowledge').doc('Maize corn').get().then(doc => {
+        agent.add(doc.data().irrigation);
+      });
+    }
+
     let intentMap = new Map();
     intentMap.set("Knowledge", knowledge);
-    agent.handleRequest(intentMap);
 
+    // การเลือกพื้นที่ข้าวโพดเลี้ยงสัตว์
+    intentMap.set('Area of corn-Maize', area_maize);
+
+    // การเตรียมดินข้าวโพดเลี้ยงสัตว์
+    intentMap.set('Soil preparation-Maize', soil_preparation_maize);
+
+    // การให้น้ำข้าวโพดเลี้ยงสัตว์
+    intentMap.set('Irrigation of corn-Maize', irrigation_maize);
+    agent.handleRequest(intentMap);
   });
 
 //function สำหรับ reply กลับไปหา LINE โดยต้องการ reply token และ messages (array)

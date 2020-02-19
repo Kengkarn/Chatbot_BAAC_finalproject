@@ -27,7 +27,7 @@ exports.webhook = functions
 
     // ทำ function knowledge เพื่อแสดงผลบางอย่างกลับไปที่หน้าจอของ bot
     const knowledge = async agent => {
-        // เพิ่ม flex message
+        // เพิ่ม flex message แสดงความรู้ทั่วไป
         const carouselMsg = {
             "type": "template",
             "altText": "this is a carousel template",
@@ -111,35 +111,61 @@ exports.webhook = functions
         return agent.add(payloadMsg);
       };
 
-    const area_maize = async agent => {
-      return db.collection('Knowledge').doc('Maize corn').get().then(doc => {
-        agent.add(doc.data().area);
-      });
+      // แสดงรายละเอียดแต่ละหัวข้อที่ผู้ใช้เลือก
+    const knowledge_select = async => {
+      let knowledge_s = req.body.queryResult.parameters.knowledge_select;
+      if (knowledge_s === "การเลือกพื้นที่ข้าวโพดเลี้ยงสัตว์") {
+        return db.collection('Knowledge').doc('Maize corn').get().then(doc => {
+          agent.add(doc.data().area);
+        });
+      }
+      else if (knowledge_s === "การเตรียมดินข้าวโพดเลี้ยงสัตว์") {
+        return db.collection('Knowledge').doc('Maize corn').get().then(doc => {
+          agent.add(doc.data().soil);
+        });
+      }
+      else if (knowledge_s === "การให้น้ำข้าวโพดเลี้ยงสัตว์") {
+        return db.collection('Knowledge').doc('Maize corn').get().then(doc => {
+          agent.add(doc.data().irrigation);
+        });
+      }
+      else if (knowledge_s === "การเลือกพื้นที่ข้าวโพดหวาน") {
+        return db.collection('Knowledge').doc('Sweet corn').get().then(doc => {
+          agent.add(doc.data().area);
+        });
+      }
+      else if (knowledge_s === "การเตรียมดินข้าวโพดหวาน") {
+        return db.collection('Knowledge').doc('Sweet corn').get().then(doc => {
+          agent.add(doc.data().soil);
+        });
+      }
+      else if (knowledge_s === "การให้น้ำข้าวโพดหวาน") {
+        return db.collection('Knowledge').doc('Sweet corn').get().then(doc => {
+          agent.add(doc.data().irrigation);
+        });
+      }
+      else if (knowledge_s === "การเลือกพื้นที่ข้าวโพดฝักอ่อน") {
+        return db.collection('Knowledge').doc('Baby corn').get().then(doc => {
+          agent.add(doc.data().area);
+        });
+      }
+      else if (knowledge_s === "การเตรียมดินข้าวโพดฝักอ่อน") {
+        return db.collection('Knowledge').doc('Baby corn').get().then(doc => {
+          agent.add(doc.data().soil);
+        });
+      }
+      else if (knowledge_s === "การให้น้ำข้าวโพดฝักอ่อน") {
+        return db.collection('Knowledge').doc('Baby corn').get().then(doc => {
+          agent.add(doc.data().irrigation);
+        });
+      }
     }
-    
-    const soil_preparation_maize = async => {
-      return db.collection('Knowledge').doc('Maize corn').get().then(doc => {
-        agent.add(doc.data().soil);
-      });
-    }
-
-    const irrigation_maize = async => {
-      return db.collection('Knowledge').doc('Maize corn').get().then(doc => {
-        agent.add(doc.data().irrigation);
-      });
-    }
-
     let intentMap = new Map();
+    // knowledge
     intentMap.set("Knowledge", knowledge);
 
-    // การเลือกพื้นที่ข้าวโพดเลี้ยงสัตว์
-    intentMap.set('Area of corn-Maize', area_maize);
-
-    // การเตรียมดินข้าวโพดเลี้ยงสัตว์
-    intentMap.set('Soil preparation-Maize', soil_preparation_maize);
-
-    // การให้น้ำข้าวโพดเลี้ยงสัตว์
-    intentMap.set('Irrigation of corn-Maize', irrigation_maize);
+    // Knowledge - Select
+    intentMap.set('Knowledge - Select', knowledge_select);
     agent.handleRequest(intentMap);
   });
 

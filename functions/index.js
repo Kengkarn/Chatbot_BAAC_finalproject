@@ -247,6 +247,55 @@ exports.webhook = functions
       return agent.add(payloadMsg);
     }
 
+    const disease_select = async => {
+      let disease_s = req.body.queryResult.parameters.disease_select;
+      if (disease_s === "สาเหตุของโรคราน้ำค้าง") {
+        return db.collection('Disease').doc('Downy Mildew').get().then(doc => {
+          agent.add(doc.data().cause);
+        });
+      }
+      else if (disease_s === "อาการ โรคราน้ำค้าง") {
+        return db.collection('Disease').doc('Downy Mildew').get().then(doc => {
+          agent.add(doc.data().symptom);
+        });
+      }
+      else if (disease_s === "การป้องกัน โรคราน้ำค้าง") {
+        return db.collection('Disease').doc('Downy Mildew').get().then(doc => {
+          agent.add(doc.data().protection);
+        });
+      }
+      else if (disease_s === "สาเหตุของโรคใบไหม้แผลเล็ก") {
+        return db.collection('Disease').doc('Southern Corn Leaf Blight').get().then(doc => {
+          agent.add(doc.data().cause);
+        });
+      }
+      else if (disease_s === "อาการ โรคใบไหม้แผลเล็ก") {
+        return db.collection('Disease').doc('Southern Corn Leaf Blight').get().then(doc => {
+          agent.add(doc.data().symptom);
+        });
+      }
+      else if (disease_s === "การป้องกัน โรคใบไหม้แผลเล็ก") {
+        return db.collection('Disease').doc('Southern Corn Leaf Blight').get().then(doc => {
+          agent.add(doc.data().protection);
+        });
+      }
+      else if (disease_s === "สาเหตุของโรคราสนิม") {
+        return db.collection('Disease').doc('Southern Corn Rust').get().then(doc => {
+          agent.add(doc.data().cause);
+        });
+      }
+      else if (disease_s === "อาการ โรคราสนิม") {
+        return db.collection('Disease').doc('Southern Corn Rust').get().then(doc => {
+          agent.add(doc.data().symptom);
+        });
+      }
+      else if (disease_s === "การป้องกัน โรคราสนิม") {
+        return db.collection('Disease').doc('Southern Corn Rust').get().then(doc => {
+          agent.add(doc.data().protection);
+        });
+      }
+    }
+
     let intentMap = new Map();
     // knowledge
     intentMap.set("Knowledge", knowledge);
@@ -255,7 +304,10 @@ exports.webhook = functions
     intentMap.set('Knowledge - Select', knowledge_select);
 
     // Disease
-    intentMap.set('Disease for carousel', disease_carousel);
+    intentMap.set('Disease Carousel', disease_carousel);
+
+    // Disease - Select
+    intentMap.set('Disease Carousel - Select', disease_select);
     agent.handleRequest(intentMap);
   });
 

@@ -247,6 +247,7 @@ exports.webhook = functions
       return agent.add(payloadMsg);
     }
 
+    // แสดงรายละเอียดของโรคแต่ละหัวข้อที่ผู้ใช้เลือก
     const disease_select = async => {
       let disease_s = req.body.queryResult.parameters.disease_select;
       if (disease_s === "สาเหตุของโรคราน้ำค้าง") {

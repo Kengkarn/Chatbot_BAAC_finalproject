@@ -160,12 +160,102 @@ exports.webhook = functions
         });
       }
     }
+
+    // ทำ function disease_carousel เพื่อแสดงผลบางอย่างกลับไปที่หน้าจอของ bot
+    const disease_carousel = async => {
+      // เพิ่ม flex message แสดงโรคข้าวโพด
+      const carouselMsg = {
+        "type": "template",
+        "altText": "this is a carousel template",
+        "template": {
+          "type": "carousel",
+          "actions": [],
+          "columns": [
+            {
+              "thumbnailImageUrl": "https://i.ibb.co/S5rzJjQ/Corn-Downy-Mildew.png",
+              "title": "โรคราน้ำค้าง หรือโรคใบลาย",
+              "text": "โรคราน้ำค้าง หรือโรคใบลาย (Corn Downy Mildew)",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "สาเหตุ",
+                  "text": "สาเหตุของโรคราน้ำค้าง"
+                },
+                {
+                  "type": "message",
+                  "label": "อาการ",
+                  "text": "อาการ โรคราน้ำค้าง"
+                },
+                {
+                  "type": "message",
+                  "label": "การป้องกัน",
+                  "text": "การป้องกัน โรคราน้ำค้าง"
+                }
+              ]
+            },
+            {
+              "thumbnailImageUrl": "https://i.ibb.co/qRW5gvr/Southern-or-Maydis-Leaf-Blight.png",
+              "title": "โรคใบไหม้แผลเล็ก",
+              "text": "โรคใบไหม้แผลเล็ก  (Southern or Maydis LeafBlight)",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "สาเหตุ",
+                  "text": "สาเหตุของโรคใบไหม้แผลเล็ก"
+                },
+                {
+                  "type": "message",
+                  "label": "อาการ",
+                  "text": "อาการ โรคใบไหม้แผลเล็ก"
+                },
+                {
+                  "type": "message",
+                  "label": "การป้องกัน",
+                  "text": "การป้องกัน โรคใบไหม้แผลเล็ก"
+                }
+              ]
+            },
+            {
+              "thumbnailImageUrl": "https://www.aggrogroups.com/images/contents/news/pest-problem/corn-southern-rust/549.jpg",
+              "title": "โรคราสนิม",
+              "text": "โรคราสนิม (Southern Corn Rust)",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "สาเหตุ",
+                  "text": "สาเหตุของโรคราสนิม"
+                },
+                {
+                  "type": "message",
+                  "label": "อาการ",
+                  "text": "อาการ โรคราสนิม"
+                },
+                {
+                  "type": "message",
+                  "label": "การป้องกัน",
+                  "text": "การป้องกัน โรคราสนิม"
+                }
+              ]
+            }
+          ]
+        }
+      };
+
+      const payloadMsg = new Payload("LINE", carouselMsg, {
+          sendAsMessage: true
+      });
+      return agent.add(payloadMsg);
+    }
+
     let intentMap = new Map();
     // knowledge
     intentMap.set("Knowledge", knowledge);
 
     // Knowledge - Select
     intentMap.set('Knowledge - Select', knowledge_select);
+
+    // Disease
+    intentMap.set('Disease for carousel', disease_carousel);
     agent.handleRequest(intentMap);
   });
 

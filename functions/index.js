@@ -30,7 +30,7 @@ exports.webhook = functions
         // เพิ่ม flex message แสดงความรู้ทั่วไป
         const carouselMsg = {
             "type": "template",
-            "altText": "this is a carousel template",
+            "altText": "เลือกประเภทข้าวโพด",
             "template": {
               "type": "carousel",
               "actions": [],
@@ -166,7 +166,7 @@ exports.webhook = functions
       // เพิ่ม flex message แสดงโรคข้าวโพด
       const carouselMsg = {
         "type": "template",
-        "altText": "this is a carousel template",
+        "altText": "เลือกโรคข้าวโพด",
         "template": {
           "type": "carousel",
           "actions": [],

@@ -184,12 +184,12 @@ exports.webhook = functions
                 {
                   "type": "message",
                   "label": "อาการ",
-                  "text": "อาการ โรคราน้ำค้าง"
+                  "text": "อาการโรคราน้ำค้าง"
                 },
                 {
                   "type": "message",
                   "label": "การป้องกัน",
-                  "text": "การป้องกัน โรคราน้ำค้าง"
+                  "text": "การป้องกันโรคราน้ำค้าง"
                 }
               ]
             },
@@ -206,12 +206,12 @@ exports.webhook = functions
                 {
                   "type": "message",
                   "label": "อาการ",
-                  "text": "อาการ โรคใบไหม้แผลเล็ก"
+                  "text": "อาการโรคใบไหม้แผลเล็ก"
                 },
                 {
                   "type": "message",
                   "label": "การป้องกัน",
-                  "text": "การป้องกัน โรคใบไหม้แผลเล็ก"
+                  "text": "การป้องกันโรคใบไหม้แผลเล็ก"
                 }
               ]
             },
@@ -228,12 +228,12 @@ exports.webhook = functions
                 {
                   "type": "message",
                   "label": "อาการ",
-                  "text": "อาการ โรคราสนิม"
+                  "text": "อาการโรคราสนิม"
                 },
                 {
                   "type": "message",
                   "label": "การป้องกัน",
-                  "text": "การป้องกัน โรคราสนิม"
+                  "text": "การป้องกันโรคราสนิม"
                 }
               ]
             }
@@ -255,12 +255,12 @@ exports.webhook = functions
           agent.add(doc.data().cause);
         });
       }
-      else if (disease_s === "อาการ โรคราน้ำค้าง") {
+      else if (disease_s === "อาการโรคราน้ำค้าง") {
         return db.collection('Disease').doc('Downy Mildew').get().then(doc => {
           agent.add(doc.data().symptom);
         });
       }
-      else if (disease_s === "การป้องกัน โรคราน้ำค้าง") {
+      else if (disease_s === "การป้องกันโรคราน้ำค้าง") {
         return db.collection('Disease').doc('Downy Mildew').get().then(doc => {
           agent.add(doc.data().protection);
         });
@@ -270,12 +270,12 @@ exports.webhook = functions
           agent.add(doc.data().cause);
         });
       }
-      else if (disease_s === "อาการ โรคใบไหม้แผลเล็ก") {
+      else if (disease_s === "อาการโรคใบไหม้แผลเล็ก") {
         return db.collection('Disease').doc('Southern Corn Leaf Blight').get().then(doc => {
           agent.add(doc.data().symptom);
         });
       }
-      else if (disease_s === "การป้องกัน โรคใบไหม้แผลเล็ก") {
+      else if (disease_s === "การป้องกันโรคใบไหม้แผลเล็ก") {
         return db.collection('Disease').doc('Southern Corn Leaf Blight').get().then(doc => {
           agent.add(doc.data().protection);
         });
@@ -285,12 +285,12 @@ exports.webhook = functions
           agent.add(doc.data().cause);
         });
       }
-      else if (disease_s === "อาการ โรคราสนิม") {
+      else if (disease_s === "อาการโรคราสนิม") {
         return db.collection('Disease').doc('Southern Corn Rust').get().then(doc => {
           agent.add(doc.data().symptom);
         });
       }
-      else if (disease_s === "การป้องกัน โรคราสนิม") {
+      else if (disease_s === "การป้องกันโรคราสนิม") {
         return db.collection('Disease').doc('Southern Corn Rust').get().then(doc => {
           agent.add(doc.data().protection);
         });

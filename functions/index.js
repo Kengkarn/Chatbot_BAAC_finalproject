@@ -192,8 +192,13 @@ exports.webhook = functions
           ],
           "text": "กรุณาเลือกวิธี"
         }
-      }
-    }
+      };
+
+      const payloadMsg = new Payload("LINE", carouselMsg, {
+        sendAsMessage: true
+      });
+      return agent.add(payloadMsg);
+    };
 
     // ทำ function disease_carousel เพื่อแสดงผลบางอย่างกลับไปที่หน้าจอของ bot
     const disease_carousel = async => {

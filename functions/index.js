@@ -27,7 +27,7 @@ exports.webhook = functions
 
 //-----------------------------------ส่วนของเมนู ความรู้ทั่วไป-----------------------------------------//
 
-    // ทำ function knowledge เพื่อแสดงผลบางอย่างกลับไปที่หน้าจอของ bot
+    // ทำ function knowledge เพื่อแสดงผลบางอย่างกลับไปที่หน้าจอของ bot ------ [1]
     const knowledge = async agent => {
         // เพิ่ม flex message แสดงความรู้ทั่วไป
         const carouselMsg = {
@@ -113,7 +113,7 @@ exports.webhook = functions
         return agent.add(payloadMsg);
       };
 
-      // แสดงรายละเอียดแต่ละหัวข้อที่ผู้ใช้เลือก
+      // แสดงรายละเอียดแต่ละหัวข้อที่ผู้ใช้เลือก [1.1]
     const knowledge_select = async => {
       let knowledge_s = req.body.queryResult.parameters.knowledge_select;
       if (knowledge_s === "การเลือกพื้นที่ข้าวโพดเลี้ยงสัตว์") {
@@ -166,9 +166,9 @@ exports.webhook = functions
 
 //-----------------------------------ส่วนของเมนู โรคพืช-----------------------------------------//
 
-    // กดเมนูโรคพืชแล้วแสดงปุ่มให้เลือกวิธีแสดงผล
+    // function disease action แรกของเมนู โรคพืช [2]
     const disease = async agent => {
-      const carouselMsg = {
+      const buttonMsg = {
         "type": "template",
         "altText": "this is a buttons template",
         "template": {
@@ -192,15 +192,15 @@ exports.webhook = functions
           ],
           "text": "กรุณาเลือกวิธี"
         }
-      };
+      }
 
-      const payloadMsg = new Payload("LINE", carouselMsg, {
+      const payloadMsg = new Payload("LINE", buttonMsg, {
         sendAsMessage: true
       });
       return agent.add(payloadMsg);
-    };
+    }
 
-    // ทำ function disease_carousel เพื่อแสดงผลบางอย่างกลับไปที่หน้าจอของ bot
+    // ส่วน function disease_carousel แสดงโรคทั้งหมดที่มีในระบบ ------ [2.1]
     const disease_carousel = async => {
       // เพิ่ม flex message แสดงโรคข้าวโพด
       const carouselMsg = {
@@ -334,6 +334,87 @@ exports.webhook = functions
           agent.add(doc.data().protection);
         });
       }
+    }
+
+    // ส่วน function disease_imagemap ให้ผู้ใช้กดเลือกอาการจากแผนภาพเพื่อหาโรคที่เข้าข่าย ------ [2.2]
+    const disease_imagemap = async => {
+      // เพิ่ม flex message แสดงโรคข้าวโพด
+      const imagemapMsg = {
+        "type": "imagemap",
+        "baseUrl": "PROVIDE_URL_FROM_YOUR_SERVER",
+        "altText": "This is an imagemap",
+        "baseSize": {
+          "width": 1040,
+          "height": 1040
+        },
+        "actions": [
+          {
+            "type": "message",
+            "area": {
+              "x": 0,
+              "y": 0,
+              "width": 518,
+              "height": 342
+            },
+            "text": "ฝัก"
+          },
+          {
+            "type": "message",
+            "area": {
+              "x": 523,
+              "y": 0,
+              "width": 517,
+              "height": 343
+            },
+            "text": "โคนต้น"
+          },
+          {
+            "type": "message",
+            "area": {
+              "x": 0,
+              "y": 343,
+              "width": 518,
+              "height": 349
+            },
+            "text": "กาบใบ"
+          },
+          {
+            "type": "message",
+            "area": {
+              "x": 523,
+              "y": 347,
+              "width": 517,
+              "height": 349
+            },
+            "text": "เปลือกฝัก"
+          },
+          {
+            "type": "message",
+            "area": {
+              "x": 0,
+              "y": 699,
+              "width": 516,
+              "height": 341
+            },
+            "text": "ลำต้น"
+          },
+          {
+            "type": "message",
+            "area": {
+              "x": 523,
+              "y": 699,
+              "width": 517,
+              "height": 341
+            },
+            "text": "ไหม"
+          }
+        ]
+      }
+
+      const payloadMsg = new Payload("LINE", imagemapMsg, {
+          sendAsMessage: true
+      });
+      return agent.add(payloadMsg);
     }
 
     let intentMap = new Map();

@@ -169,28 +169,52 @@ exports.webhook = functions
     // function disease action แรกของเมนู โรคพืช [2]
     const disease = async agent => {
       const buttonMsg = {
-        "type": "template",
-        "altText": "this is a buttons template",
-        "template": {
-          "type": "buttons",
-          "actions": [
-            {
-              "type": "message",
-              "label": "แสดงโรคทั้งหมด",
-              "text": "แสดงโรคทั้งหมด"
-            },
-            {
-              "type": "message",
-              "label": "เลือกอาการ",
-              "text": "เลือกอาการ"
-            },
-            {
-              "type": "message",
-              "label": "ระบุอาการ",
-              "text": "ระบุอาการ"
-            }
-          ],
-          "text": "กรุณาเลือกวิธี"
+        "type": "flex",
+        "altText": "Flex Message",
+        "contents": {
+          "type": "bubble",
+          "direction": "ltr",
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "md",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "message",
+                  "label": "แสดงโรคทั้งหมด",
+                  "text": "แสดงโรคทั้งหมด"
+                },
+                "color": "#86D66E",
+                "height": "sm",
+                "style": "primary"
+              },
+              {
+                "type": "button",
+                "action": {
+                  "type": "message",
+                  "label": "เลือกอาการ",
+                  "text": "เลือกอาการ"
+                },
+                "color": "#86D66E",
+                "height": "sm",
+                "style": "primary"
+              },
+              {
+                "type": "button",
+                "action": {
+                  "type": "message",
+                  "label": "ระบุอาการ",
+                  "text": "ระบุอาการ"
+                },
+                "color": "#86D66E",
+                "height": "sm",
+                "style": "primary",
+                "gravity": "center"
+              }
+            ]
+          }
         }
       };
 

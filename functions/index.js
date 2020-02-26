@@ -409,7 +409,7 @@ exports.webhook = functions
             "text": "ไหม"
           }
         ]
-      }
+      };
 
       const payloadMsg = new Payload("LINE", imagemapMsg, {
           sendAsMessage: true
@@ -430,8 +430,11 @@ exports.webhook = functions
     // Disease Carousel
     intentMap.set('Disease Carousel', disease_carousel);
 
-    // Disease - Select
+    // Disease Carousel - Select
     intentMap.set('Disease Carousel - Select', disease_select);
+
+    // Disease Imagemap
+    intentMap.set('Disease Imagemap', disease_imagemap);
     agent.handleRequest(intentMap);
   });
 

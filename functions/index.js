@@ -339,7 +339,7 @@ exports.webhook = functions
     // ส่วน function disease_imagemap ให้ผู้ใช้กดเลือกอาการจากแผนภาพเพื่อหาโรคที่เข้าข่าย ------ [2.2]
     const disease_imagemap = async => {
       // แสดงส่วนที่เกิดโรค
-      const imagemapMsg = {
+      const carouselMsg = {
         "line": {
         "type": "imagemap",
         "baseUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/104.png?alt=media&token=332ec3fb-c09b-47e5-bf58-bf5c34e9e562#?width=auto",
@@ -412,10 +412,10 @@ exports.webhook = functions
         ]}
       };
 
-      const payloadMsg = new Payload("LINE", imagemapMsg, {
-          sendAsMessage: true
-      });
-      return agent.add(payloadMsg);
+      const payloadMsg = new Payload("LINE", carouselMsg, {
+        sendAsMessage: true
+    });
+    return agent.add(payloadMsg);
     }
 
     let intentMap = new Map();

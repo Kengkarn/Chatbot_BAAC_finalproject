@@ -174,44 +174,66 @@ exports.webhook = functions
         "contents": {
           "type": "bubble",
           "direction": "ltr",
-          "body": {
+          "header": {
+            "type": "box",
+            "layout": "baseline",
+            "contents": [
+              {
+                "type": "text",
+                "text": "กรุณาเลือกการแสดงผล",
+                "size": "lg",
+                "align": "center",
+                "gravity": "center",
+                "color": "#000000"
+              }
+            ]
+          },
+          "footer": {
             "type": "box",
             "layout": "vertical",
             "spacing": "md",
             "contents": [
               {
-                "type": "button",
-                "action": {
-                  "type": "message",
-                  "label": "แสดงโรคทั้งหมด",
-                  "text": "แสดงโรคทั้งหมด"
-                },
-                "color": "#86D66E",
-                "height": "sm",
-                "style": "primary"
-              },
-              {
-                "type": "button",
-                "action": {
-                  "type": "message",
-                  "label": "เลือกอาการ",
-                  "text": "เลือกอาการ"
-                },
-                "color": "#86D66E",
-                "height": "sm",
-                "style": "primary"
-              },
-              {
-                "type": "button",
-                "action": {
-                  "type": "message",
-                  "label": "ระบุอาการ",
-                  "text": "ระบุอาการ"
-                },
-                "color": "#86D66E",
-                "height": "sm",
-                "style": "primary",
-                "gravity": "center"
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "แสดงโรคทั้งหมด",
+                      "text": "แสดงโรคทั้งหมด"
+                    },
+                    "height": "sm",
+                    "gravity": "center"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "เลือกอาการ",
+                      "text": "เลือกอาการ"
+                    },
+                    "height": "sm",
+                    "gravity": "center"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ระบุอาการ",
+                      "text": "ระบุอาการ"
+                    },
+                    "height": "sm",
+                    "gravity": "center"
+                  }
+                ]
               }
             ]
           }
@@ -363,12 +385,7 @@ exports.webhook = functions
     // ส่วน function disease_imagemap ให้ผู้ใช้กดเลือกอาการจากแผนภาพเพื่อหาโรคที่เข้าข่าย ------ [2.2]
     const disease_imagemap = async => {
       // แสดงส่วนที่เกิดโรค
-      const imagemapMsg = [
-        {
-          "type": "text",
-          "text": "กรุณาเลือกส่วนที่เกิดโรคค่ะ"
-        },
-        {
+      const imagemapMsg = {
         "type": "imagemap",
         "baseUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/104.png?alt=media&token=332ec3fb-c09b-47e5-bf58-bf5c34e9e562#?width=auto",
         "altText": "This is an imagemap",
@@ -438,7 +455,7 @@ exports.webhook = functions
             "text": "ไหม"
           }
         ]
-      }]
+      }
 
       const payloadMsg = new Payload("LINE", imagemapMsg, {
         sendAsMessage: true

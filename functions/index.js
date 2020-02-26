@@ -340,9 +340,8 @@ exports.webhook = functions
     const disease_imagemap = async => {
       // แสดงส่วนที่เกิดโรค
       const imagemapMsg = {
-        "line": {
         "type": "imagemap",
-        "baseUrl": "https://c1.staticflickr.com/5/4682/38602688145_eb29f0f180_o.png",
+        "baseUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/104.png?alt=media&token=332ec3fb-c09b-47e5-bf58-bf5c34e9e562#?width=auto",
         "altText": "This is an imagemap",
         "baseSize": {
           "width": 1040,
@@ -409,8 +408,8 @@ exports.webhook = functions
             },
             "text": "ไหม"
           }
-        ]}
-      };
+        ]
+      }
 
       const payloadMsg = new Payload("LINE", imagemapMsg, {
         sendAsMessage: true

@@ -341,7 +341,7 @@ exports.webhook = functions
       // เพิ่ม flex message แสดงโรคข้าวโพด
       const imagemapMsg = {
         "type": "imagemap",
-        "baseUrl": "PROVIDE_URL_FROM_YOUR_SERVER",
+        "baseUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/104.png?alt=media&token=332ec3fb-c09b-47e5-bf58-bf5c34e9e562#?_ignored=",
         "altText": "This is an imagemap",
         "baseSize": {
           "width": 1040,

@@ -464,7 +464,7 @@ exports.webhook = functions
       const payloadMsg = new Payload("LINE", imagemapMsg, {
         sendAsMessage: true
     });
-    return agent.add(textMsg, payloadMsg);
+    return agent.add(textMsg), agent.add(payloadMsg);
     }
 
     let intentMap = new Map();

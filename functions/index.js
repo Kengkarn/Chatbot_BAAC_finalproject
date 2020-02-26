@@ -25,6 +25,8 @@ exports.webhook = functions
 
     const agent = new WebhookClient({ request: req, response: res });
 
+//-----------------------------------ส่วนของเมนู ความรู้ทั่วไป-----------------------------------------//
+
     // ทำ function knowledge เพื่อแสดงผลบางอย่างกลับไปที่หน้าจอของ bot
     const knowledge = async agent => {
         // เพิ่ม flex message แสดงความรู้ทั่วไป
@@ -158,6 +160,38 @@ exports.webhook = functions
         return db.collection('Knowledge').doc('Baby corn').get().then(doc => {
           agent.add(doc.data().irrigation);
         });
+      }
+    }
+
+
+//-----------------------------------ส่วนของเมนู โรคพืช-----------------------------------------//
+
+    // กดเมนูโรคพืชแล้วแสดงปุ่มให้เลือกวิธีแสดงผล
+    const disease = async agent => {
+      const carouselMsg = {
+        "type": "template",
+        "altText": "this is a buttons template",
+        "template": {
+          "type": "buttons",
+          "actions": [
+            {
+              "type": "message",
+              "label": "แสดงโรคทั้งหมด",
+              "text": "แสดงโรคทั้งหมด"
+            },
+            {
+              "type": "message",
+              "label": "เลือกอาการ",
+              "text": "เลือกอาการ"
+            },
+            {
+              "type": "message",
+              "label": "ระบุอาการ",
+              "text": "ระบุอาการ"
+            }
+          ],
+          "text": "กรุณาเลือกวิธี"
+        }
       }
     }
 
@@ -305,6 +339,9 @@ exports.webhook = functions
     intentMap.set('Knowledge - Select', knowledge_select);
 
     // Disease
+    intentMap.set('Disease', disease);
+
+    // Disease Carousel
     intentMap.set('Disease Carousel', disease_carousel);
 
     // Disease - Select

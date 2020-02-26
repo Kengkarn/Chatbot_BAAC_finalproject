@@ -339,7 +339,12 @@ exports.webhook = functions
     // ส่วน function disease_imagemap ให้ผู้ใช้กดเลือกอาการจากแผนภาพเพื่อหาโรคที่เข้าข่าย ------ [2.2]
     const disease_imagemap = async => {
       // แสดงส่วนที่เกิดโรค
-      const imagemapMsg = {
+      const imagemapMsg = [
+        {
+          "type": "text",
+          "text": "กรุณาเลือกส่วนที่เกิดโรคค่ะ"
+        },
+        {
         "type": "imagemap",
         "baseUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/104.png?alt=media&token=332ec3fb-c09b-47e5-bf58-bf5c34e9e562#?width=auto",
         "altText": "This is an imagemap",
@@ -409,7 +414,7 @@ exports.webhook = functions
             "text": "ไหม"
           }
         ]
-      }
+      }]
 
       const payloadMsg = new Payload("LINE", imagemapMsg, {
         sendAsMessage: true

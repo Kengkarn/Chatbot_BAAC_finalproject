@@ -456,16 +456,504 @@ exports.webhook = functions
               "width": 517,
               "height": 341
             },
-            "text": "ไหม"
+            "text": "ใบ"
           }
         ]
       }
 
       const payloadMsg = new Payload("LINE", imagemapMsg, {
         sendAsMessage: true
-    });
-    return agent.add(payloadMsg);
+      });
+      return agent.add(payloadMsg);
     }
+
+    //แสดงอาการให้ผู้ใช้เลือก
+    const disease_imagemap_part = async => {
+      let disease_part = req.body.queryResult.parameters.part;
+      if (disease_part == "ฝัก"){
+        const buttonMsg = {
+          "type": "flex",
+          "altText": "Flex Message",
+          "contents": {
+            "type": "bubble",
+            "direction": "ltr",
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีจุด",
+                        "text": "มีจุด"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "แผล",
+                        "text": "แผล"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "ซีดเหลือง",
+                        "text": "ซีดเหลือง"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีราขาว",
+                        "text": "มีราขาว"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "ฝักเน่า",
+                        "text": "ฝักเน่า"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "เมล็ดสีดำ",
+                        "text": "เมล็ดสีดำ"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีเส้นใย",
+                        "text": "มีเส้นใย"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีปม",
+                        "text": "มีปม"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "ไม่มีเมล็ด/เมล็ดน้อย",
+                    "text": "ไม่มีเมล็ด/เมล็ดน้อย"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+      else if (disease_part == "โคนต้น"){
+        const buttonMsg = {
+          "type": "flex",
+          "altText": "Flex Message",
+          "contents": {
+            "type": "bubble",
+            "direction": "ltr",
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "แผลช้ำ",
+                        "text": "แผลช้ำ"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "โคนต้นแตก",
+                        "text": "โคนต้นแตก"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีน้ำเมือก",
+                        "text": "มีน้ำเมือก"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "โคนหักล้ม",
+                        "text": "โคนหักล้ม"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีกลิ่นเหม็น",
+                        "text": "มีกลิ่นเหม็น"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "ซีดเหลือง",
+                        "text": "ซีดเหลือง"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+      else if (disease_part == "กาบใบ"){
+        const buttonMsg = {
+          "type": "flex",
+          "altText": "Flex Message",
+          "contents": {
+            "type": "bubble",
+            "direction": "ltr",
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีจุด",
+                        "text": "มีจุด"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีแผล",
+                        "text": "มีแผล"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "vertical",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "ซีดเหลือง",
+                        "text": "ซีดเหลือง"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+      /*else if (disease_part == "เปลือกฝัก"){
+        const buttonMsg = 
+      }*/
+      else if (disease_part == "ลำต้น"){
+        const buttonMsg = {
+          "type": "flex",
+          "altText": "Flex Message",
+          "contents": {
+            "type": "bubble",
+            "direction": "ltr",
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีจุด",
+                        "text": "มีจุด"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "ต้นเน่า",
+                        "text": "ต้นเน่า"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "เหี่ยวแห้ง",
+                        "text": "เหี่ยวแห้ง"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีแผล",
+                        "text": "มีแผล"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "vertical",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "กลวงเป็นโพรง",
+                        "text": "กลวงเป็นโพรง"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+      else if (disease_part == "ใบ"){
+        const buttonMsg = {
+          "type": "flex",
+          "altText": "Flex Message",
+          "contents": {
+            "type": "bubble",
+            "direction": "ltr",
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "ใบไหม้",
+                        "text": "ใบไหม้"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "แผล",
+                        "text": "แผล"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "ซีดเหลือง",
+                        "text": "ซีดเหลือง"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "ใบแห้ง",
+                        "text": "ใบแห้ง"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีจุด",
+                        "text": "มีจุด"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีปม",
+                        "text": "มีปม"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+
+      const payloadMsg = new Payload("LINE", buttonMsg, {
+        sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+    }
+      
 
     let intentMap = new Map();
     // knowledge
@@ -485,6 +973,10 @@ exports.webhook = functions
 
     // Disease Imagemap
     intentMap.set('Disease Imagemap', disease_imagemap);
+
+    // Disease Imagemap - Part
+    intentMap.set('Disease Imagemap - Part', disease_imagemap_part);
+
     agent.handleRequest(intentMap);
   });
 

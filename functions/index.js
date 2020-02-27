@@ -605,6 +605,10 @@ exports.webhook = functions
             }
           }
         }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
       }
       else if (disease_part == "โคนต้น"){
         const buttonMsg = {
@@ -702,6 +706,10 @@ exports.webhook = functions
             }
           }
         }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
       }
       else if (disease_part == "กาบใบ"){
         const buttonMsg = {
@@ -760,6 +768,10 @@ exports.webhook = functions
             }
           }
         }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
       }
       /*else if (disease_part == "เปลือกฝัก"){
         const buttonMsg = 
@@ -849,6 +861,10 @@ exports.webhook = functions
             }
           }
         }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
       }
       else if (disease_part == "ใบ"){
         const buttonMsg = {
@@ -946,12 +962,11 @@ exports.webhook = functions
             }
           }
         }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
       }
-
-      const payloadMsg = new Payload("LINE", buttonMsg, {
-        sendAsMessage: true
-        });
-        return agent.add(payloadMsg);
     }
       
 

@@ -471,13 +471,9 @@ exports.webhook = functions
     const disease_imagemap_part = async => {
       let disease_part = req.body.queryResult.parameters.part;
       if (disease_part == "ฝัก"){
-        const buttonMsg = db.collection('Disease_new').doc('Ear').get().then(doc => {
+        return db.collection('Disease_new').doc('Ear').get().then(doc => {
           agent.add(doc.data().template);
         });
-        const payloadMsg = new Payload("LINE", buttonMsg, {
-          sendAsMessage: true
-        });
-        return agent.add(payloadMsg);
       }
       else if (disease_part == "โคนต้น"){
         const buttonMsg = {

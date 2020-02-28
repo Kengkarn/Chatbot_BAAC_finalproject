@@ -471,9 +471,144 @@ exports.webhook = functions
     const disease_imagemap_part = async => {
       let disease_part = req.body.queryResult.parameters.part;
       if (disease_part == "ฝัก"){
-        return db.collection('Disease_new').doc('Ear').get().then(doc => {
-          agent.add(doc.data().template);
-        });
+        const buttonMsg = {
+          "type": "flex",
+          "altText": "Flex Message",
+          "contents": {
+            "type": "bubble",
+            "direction": "ltr",
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีจุด",
+                        "text": "มีจุด"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "แผล",
+                        "text": "แผล"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "ซีดเหลือง",
+                        "text": "ซีดเหลือง"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีราขาว",
+                        "text": "มีราขาว"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "ฝักเน่า",
+                        "text": "ฝักเน่า"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "เมล็ดสีดำ",
+                        "text": "เมล็ดสีดำ"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีเส้นใย",
+                        "text": "มีเส้นใย"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีปม",
+                        "text": "มีปม"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "ไม่มีเมล็ด/เมล็ดน้อย",
+                    "text": "ไม่มีเมล็ด/เมล็ดน้อย"
+                  }
+                }
+              ]
+            }
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
       }
       else if (disease_part == "โคนต้น"){
         const buttonMsg = {
@@ -638,9 +773,45 @@ exports.webhook = functions
           });
           return agent.add(payloadMsg);
       }
-      /*else if (disease_part == "เปลือกฝัก"){
-        const buttonMsg = 
-      }*/
+      else if (disease_part == "เปลือกฝัก"){
+        const buttonMsg = {
+          "type": "template",
+          "altText": "this is a image carousel template",
+          "template": {
+              "type": "image_carousel",
+              "columns": [
+                  {
+                    "imageUrl": "https://example.com/bot/images/item1.jpg",
+                    "action": {
+                      "type": "postback",
+                      "label": "Buy",
+                      "data": "action=buy&itemid=111"
+                    }
+                  },
+                  {
+                    "imageUrl": "https://example.com/bot/images/item2.jpg",
+                    "action": {
+                      "type": "message",
+                      "label": "Yes",
+                      "text": "yes"
+                    }
+                  },
+                  {
+                    "imageUrl": "https://example.com/bot/images/item3.jpg",
+                    "action": {
+                      "type": "uri",
+                      "label": "View detail",
+                      "uri": "http://example.com/page/222"
+                    }
+                  }
+              ]
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
+      }
       else if (disease_part == "ลำต้น"){
         const buttonMsg = {
           "type": "flex",

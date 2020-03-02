@@ -490,7 +490,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "มีจุด",
-                        "text": "มีจุด"
+                        "text": "ฝักมีจุด"
                       }
                     },
                     {
@@ -501,7 +501,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "แผล",
-                        "text": "แผล"
+                        "text": "ฝักมีแผล"
                       }
                     }
                   ]
@@ -518,7 +518,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "ซีดเหลือง",
-                        "text": "ซีดเหลือง"
+                        "text": "ฝักซีดเหลือง"
                       }
                     },
                     {
@@ -529,7 +529,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "มีราขาว",
-                        "text": "มีราขาว"
+                        "text": "ฝักมีราขาว"
                       }
                     }
                   ]
@@ -574,7 +574,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "มีเส้นใย",
-                        "text": "มีเส้นใย"
+                        "text": "ฝักมีเส้นใย"
                       }
                     },
                     {
@@ -585,7 +585,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "มีปม",
-                        "text": "มีปม"
+                        "text": "ฝักมีปม"
                       }
                     }
                   ]
@@ -630,7 +630,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "แผลช้ำ",
-                        "text": "แผลช้ำ"
+                        "text": "โคนต้นมีแผลช้ำ"
                       }
                     },
                     {
@@ -658,7 +658,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "มีน้ำเมือก",
-                        "text": "มีน้ำเมือก"
+                        "text": "โคนต้นมีน้ำเมือก"
                       }
                     },
                     {
@@ -686,7 +686,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "มีกลิ่นเหม็น",
-                        "text": "มีกลิ่นเหม็น"
+                        "text": "โคนต้นมีกลิ่นเหม็น"
                       }
                     },
                     {
@@ -697,7 +697,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "ซีดเหลือง",
-                        "text": "ซีดเหลือง"
+                        "text": "โคนต้นซีดเหลือง"
                       }
                     }
                   ]
@@ -731,7 +731,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "มีจุด",
-                        "text": "มีจุด"
+                        "text": "กาบใบมีจุด"
                       }
                     },
                     {
@@ -742,7 +742,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "มีแผล",
-                        "text": "มีแผล"
+                        "text": "กาบใบมีแผล"
                       }
                     }
                   ]
@@ -759,7 +759,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "ซีดเหลือง",
-                        "text": "ซีดเหลือง"
+                        "text": "กาบใบซีดเหลือง"
                       }
                     }
                   ]
@@ -832,7 +832,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "มีจุด",
-                        "text": "มีจุด"
+                        "text": "ลำต้นมีจุด"
                       }
                     },
                     {
@@ -843,7 +843,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "ต้นเน่า",
-                        "text": "ต้นเน่า"
+                        "text": "ลำต้นเน่า"
                       }
                     }
                   ]
@@ -860,7 +860,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "เหี่ยวแห้ง",
-                        "text": "เหี่ยวแห้ง"
+                        "text": "ลำต้นเหี่ยวแห้ง"
                       }
                     },
                     {
@@ -871,7 +871,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "มีแผล",
-                        "text": "มีแผล"
+                        "text": "ลำต้นมีแผล"
                       }
                     }
                   ]
@@ -933,7 +933,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "แผล",
-                        "text": "แผล"
+                        "text": "ใบมีแผล"
                       }
                     }
                   ]
@@ -950,7 +950,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "ซีดเหลือง",
-                        "text": "ซีดเหลือง"
+                        "text": "ใบซีดเหลือง"
                       }
                     },
                     {
@@ -978,7 +978,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "มีจุด",
-                        "text": "มีจุด"
+                        "text": "ใบมีจุด"
                       }
                     },
                     {
@@ -989,7 +989,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "มีปม",
-                        "text": "มีปม"
+                        "text": "ใบมีปม"
                       }
                     }
                   ]
@@ -1004,7 +1004,73 @@ exports.webhook = functions
           return agent.add(payloadMsg);
       }
     }
-      
+    
+    const leaf_select = async => {
+      let leaf_symptom = req.body.queryResult.parameters.Leaf_symptom;
+      if (leaf_symptom == "ใบไหม้") {
+
+      }
+      else if (leaf_symptom == "ใบมีแผล") {
+
+      }
+      else if (leaf_symptom == "ใบซีดเหลือง") {
+        name_of_disease = db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(doc => {
+          agent.add(doc.data().diseaseName);
+        });
+      }
+      else if (leaf_symptom == "ใบแห้ง") {
+
+      }
+      else if (leaf_symptom == "ใบมีจุด") {
+
+      }
+      else if (leaf_symptom == "ใบมีปม") {
+        const buttonMsg = {
+          "type": "flex",
+          "altText": "Flex Message",
+          "contents": {
+            "type": "bubble",
+            "direction": "ltr",
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "box",
+                  "layout": "vertical",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "ปมสีขาว",
+                        "text": "ปมสีขาว"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "ปมสีดำคล้ำ",
+                        "text": "ปมสีดำคล้ำ"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
+      }
+    }
+
 
     let intentMap = new Map();
     // knowledge
@@ -1026,7 +1092,10 @@ exports.webhook = functions
     intentMap.set('Disease Imagemap', disease_imagemap);
 
     // Disease Imagemap - Part
-    intentMap.set('Disease Imagemap - Part', disease_imagemap_part);
+    intentMap.set('Disease Imagemap - Select Part', disease_imagemap_part);
+
+    // Disease Leaf - Select Symptom
+    intentMap.set('Leaf - Select Symptom', leaf_select);
 
     agent.handleRequest(intentMap);
   });

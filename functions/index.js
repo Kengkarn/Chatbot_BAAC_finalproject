@@ -1014,9 +1014,9 @@ exports.webhook = functions
         return "hi"
       }
       else if (leaf_symptom == "ใบซีดเหลือง") {
-        name_of_disease = db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(doc => {
+        return db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(doc => {
           agent.add(doc.data().diseaseName);
-        });
+        });/*
         image_url = db.collection('Disease').doc(name_of_disease).get().then(doc => {
           agent.add(doc.data().url);
         });
@@ -1056,7 +1056,7 @@ exports.webhook = functions
         const payloadMsg = new Payload("LINE", imageMsg, {
           sendAsMessage: true
           });
-        return agent.add(payloadMsg);
+        return agent.add(payloadMsg);*/
       }
       else if (leaf_symptom == "ใบแห้ง") {
         return "hi"

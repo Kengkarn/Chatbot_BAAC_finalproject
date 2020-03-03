@@ -1033,7 +1033,7 @@ exports.webhook = functions
                       "label": leaf_symptom,
                       "data": "action=buy&itemid=111"
                     }
-                  },
+                  }
               ]
           }
         }

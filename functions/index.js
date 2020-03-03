@@ -1037,7 +1037,10 @@ exports.webhook = functions
               ]
           }
         }
-
+        const payloadMsg = new Payload("LINE", imageMsg, {
+          sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
       }
       else if (leaf_symptom == "ใบแห้ง") {
         return "hi"

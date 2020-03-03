@@ -1017,7 +1017,7 @@ exports.webhook = functions
         name_of_disease = db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(doc => {
           agent.add(doc.data().diseaseName);
         });
-        image_url = db.collection('Disease_new').doc('Leaf').get().then(doc => {
+        image_url = db.collection('Disease').doc(name_of_disease).get().then(doc => {
           agent.add(doc.data().url);
         });
         imageMsg ={

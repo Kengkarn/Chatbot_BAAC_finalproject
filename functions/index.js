@@ -1008,7 +1008,7 @@ exports.webhook = functions
     const leaf_select = async => {
       let leaf_symptom = req.body.queryResult.parameters.Leaf_symptom;
       if (leaf_symptom == "ใบไหม้") {
-
+        return "hi"
       }
       else if (leaf_symptom == "ใบมีแผล") {
 
@@ -1017,12 +1017,33 @@ exports.webhook = functions
         name_of_disease = db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(doc => {
           agent.add(doc.data().diseaseName);
         });
+        image_url = db.collection('Disease_new').doc('Leaf').get().then(doc => {
+          agent.add(doc.data().url);
+        });
+        imageMsg ={
+          "type": "template",
+          "altText": "this is a image carousel template",
+          "template": {
+              "type": "image_carousel",
+              "columns": [
+                  {
+                    "imageUrl": image_url,
+                    "action": {
+                      "type": "postback",
+                      "label": leaf_symptom,
+                      "data": "action=buy&itemid=111"
+                    }
+                  },
+              ]
+          }
+        }
+
       }
       else if (leaf_symptom == "ใบแห้ง") {
-
+        return "hi"
       }
       else if (leaf_symptom == "ใบมีจุด") {
-
+        return "hi"
       }
       else if (leaf_symptom == "ใบมีปม") {
         const buttonMsg = {

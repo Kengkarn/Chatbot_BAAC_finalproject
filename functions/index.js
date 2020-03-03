@@ -1011,7 +1011,7 @@ exports.webhook = functions
         return "hi"
       }
       else if (leaf_symptom == "ใบมีแผล") {
-
+        return "hi"
       }
       else if (leaf_symptom == "ใบซีดเหลือง") {
         name_of_disease = db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(doc => {
@@ -1020,12 +1020,28 @@ exports.webhook = functions
         image_url = db.collection('Disease').doc(name_of_disease).get().then(doc => {
           agent.add(doc.data().url);
         });
-        imageMsg ={
+        imageMsg = {
           "type": "template",
           "altText": "this is a image carousel template",
           "template": {
               "type": "image_carousel",
               "columns": [
+                  {
+                    "imageUrl": image_url,
+                    "action": {
+                      "type": "postback",
+                      "label": leaf_symptom,
+                      "data": "action=buy&itemid=111"
+                    }
+                  },
+                  {
+                    "imageUrl": image_url,
+                    "action": {
+                      "type": "postback",
+                      "label": leaf_symptom,
+                      "data": "action=buy&itemid=111"
+                    }
+                  },
                   {
                     "imageUrl": image_url,
                     "action": {
@@ -1040,7 +1056,7 @@ exports.webhook = functions
         const payloadMsg = new Payload("LINE", imageMsg, {
           sendAsMessage: true
           });
-          return agent.add(payloadMsg);
+        return agent.add(payloadMsg);
       }
       else if (leaf_symptom == "ใบแห้ง") {
         return "hi"

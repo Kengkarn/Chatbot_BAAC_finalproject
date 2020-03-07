@@ -1014,13 +1014,13 @@ exports.webhook = functions
         return "hi"
       }
       else if (leaf_symptom == "ใบซีดเหลือง") {
-        name_of_disease = db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(doc => {
+        const name_of_disease = db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(doc => {
           agent.add(doc.data().diseaseName);
         });
-        image_url = db.collection('Disease').doc(name_of_disease).get().then(doc => {
+        const image_url = db.collection('Disease').doc(name_of_disease).get().then(doc => {
           agent.add(doc.data().url);
         });
-        imageMsg = {
+        const carouselMsg = {
           "type": "template",
           "altText": "this is a image carousel template",
           "template": {
@@ -1030,22 +1030,22 @@ exports.webhook = functions
                     "imageUrl": "https://vignette.wikia.nocookie.net/line/images/b/bb/2015-brown.png",
                     "action": {
                       "type": "message",
-                      "label": "leaf_symptom",
-                      "text": "name_of_disease"
+                      "label": leaf_symptom,
+                      "text": name_of_disease
                     }
                   },
                   {
                     "imageUrl": "https://vignette.wikia.nocookie.net/line/images/b/bb/2015-brown.png",
                     "action": {
                       "type": "message",
-                      "label": "leaf_symptom",
-                      "text": "name_of_disease"
+                      "label": leaf_symptom,
+                      "text": name_of_disease
                     }
                   }
               ]
           }
         }
-        const payloadMsg = new Payload("LINE", imageMsg, {
+        const payloadMsg = new Payload("LINE", carouselMsg, {
           sendAsMessage: true
           });
         return agent.add(payloadMsg);
@@ -1145,32 +1145,3 @@ const lineReply = (replyToken, messages) => {
     body: JSON.stringify(body)
   });
 };
-
-
-messages: [
-  {
-    type: "template",
-    altText: "This is an image carousel template",
-    template: {
-      type: "image_carousel",
-      columns: [
-        {
-          imageUrl: "https://vignette.wikia.nocookie.net/line/images/b/bb/2015-brown.png",
-          action: {
-            type: "message",
-            label: "Brown",
-            text: "Brown was selected"
-          }
-        },
-        {
-          imageUrl: "https://vignette.wikia.nocookie.net/line/images/1/10/2015-cony.png",
-          action: {
-            type: "uri",
-            label: "Cony",
-            uri: "https://developers.line.biz"
-          }
-        }
-      ]
-    }
-  }
-]

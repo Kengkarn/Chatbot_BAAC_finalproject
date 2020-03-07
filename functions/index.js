@@ -1020,14 +1020,14 @@ exports.webhook = functions
         const image_url = db.collection('Disease').doc(name_of_disease).get().then(doc => {
           agent.add(doc.data().url);
         });
-        const carouselMsg = {
+        /*const carouselMsg = {
           "type": "template",
           "altText": "this is a image carousel template",
           "template": {
               "type": "image_carousel",
               "columns": [
                   {
-                    "imageUrl": "https://vignette.wikia.nocookie.net/line/images/b/bb/2015-brown.png",
+                    "imageUrl": image_url,
                     "action": {
                       "type": "message",
                       "label": leaf_symptom,
@@ -1035,7 +1035,7 @@ exports.webhook = functions
                     }
                   },
                   {
-                    "imageUrl": "https://vignette.wikia.nocookie.net/line/images/b/bb/2015-brown.png",
+                    "imageUrl": image_url,
                     "action": {
                       "type": "message",
                       "label": leaf_symptom,
@@ -1044,8 +1044,8 @@ exports.webhook = functions
                   }
               ]
           }
-        }
-        const payloadMsg = new Payload("LINE", carouselMsg, {
+        }*/
+        const payloadMsg = new Payload("LINE", image_url, {
           sendAsMessage: true
           });
         return agent.add(payloadMsg);

@@ -1030,16 +1030,16 @@ exports.webhook = functions
                     "imageUrl": "https://vignette.wikia.nocookie.net/line/images/b/bb/2015-brown.png",
                     "action": {
                       "type": "message",
-                      "label": leaf_symptom,
-                      "text": name_of_disease
+                      "label": "leaf_symptom",
+                      "text": "name_of_disease"
                     }
                   },
                   {
                     "imageUrl": "https://vignette.wikia.nocookie.net/line/images/b/bb/2015-brown.png",
                     "action": {
                       "type": "message",
-                      "label": leaf_symptom,
-                      "text": name_of_disease
+                      "label": "leaf_symptom",
+                      "text": "name_of_disease"
                     }
                   }
               ]

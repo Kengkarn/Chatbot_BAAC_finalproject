@@ -1020,7 +1020,7 @@ exports.webhook = functions
         const image_url = db.collection('Disease').doc(name_of_disease).get().then(doc => {
           agent.add(doc.data().url);
         });
-        /*const carouselMsg = {
+        const carouselMsg = {
           "type": "template",
           "altText": "this is a image carousel template",
           "template": {
@@ -1044,8 +1044,8 @@ exports.webhook = functions
                   }
               ]
           }
-        }*/
-        const payloadMsg = new Payload("LINE", image_url, {
+        }
+        const payloadMsg = new Payload("LINE", carouselMsg, {
           sendAsMessage: true
           });
         return agent.add(payloadMsg);

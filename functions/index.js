@@ -1017,9 +1017,9 @@ exports.webhook = functions
         const name_of_disease = db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(doc => {
           agent.add(doc.data().diseaseName);
         });
-        const image_url = db.collection('Disease').doc(name_of_disease).get().then(doc => {
+        /*const image_url = db.collection('Disease').doc(name_of_disease).get().then(doc => {
           agent.add(doc.data().url);
-        });
+        });*/
         const carouselMsg = {
           "type": "template",
           "altText": "this is a image carousel template",
@@ -1027,7 +1027,7 @@ exports.webhook = functions
               "type": "image_carousel",
               "columns": [
                   {
-                    "imageUrl": image_url,
+                    "imageUrl": "https://vignette.wikia.nocookie.net/line/images/b/bb/2015-brown.png",
                     "action": {
                       "type": "message",
                       "label": leaf_symptom,
@@ -1035,7 +1035,7 @@ exports.webhook = functions
                     }
                   },
                   {
-                    "imageUrl": image_url,
+                    "imageUrl": "https://vignette.wikia.nocookie.net/line/images/b/bb/2015-brown.png",
                     "action": {
                       "type": "message",
                       "label": leaf_symptom,

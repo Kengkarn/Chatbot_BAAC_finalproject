@@ -1017,9 +1017,9 @@ exports.webhook = functions
         const name_of_disease = db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(doc => {
           agent.add(doc.data().diseaseName);
         });
-        /*const image_url = db.collection('Disease').doc(name_of_disease).get().then(doc => {
+        const image_url = db.collection('Disease').doc(name_of_disease).get().then(doc => {
           agent.add(doc.data().url);
-        });*/
+        });
         const carouselMsg = {
           "type": "template",
           "altText": "this is a image carousel template",
@@ -1027,19 +1027,27 @@ exports.webhook = functions
               "type": "image_carousel",
               "columns": [
                   {
-                    "imageUrl": "https://vignette.wikia.nocookie.net/line/images/b/bb/2015-brown.png",
+                    "imageUrl": "https://example.com/bot/images/item1.jpg",
                     "action": {
-                      "type": "message",
-                      "label": leaf_symptom,
-                      "text": name_of_disease
+                      "type": "postback",
+                      "label": "Buy",
+                      "data": "action=buy&itemid=111"
                     }
                   },
                   {
-                    "imageUrl": "https://vignette.wikia.nocookie.net/line/images/b/bb/2015-brown.png",
+                    "imageUrl": "https://example.com/bot/images/item2.jpg",
                     "action": {
                       "type": "message",
-                      "label": leaf_symptom,
-                      "text": name_of_disease
+                      "label": "Yes",
+                      "text": "yes"
+                    }
+                  },
+                  {
+                    "imageUrl": "https://example.com/bot/images/item3.jpg",
+                    "action": {
+                      "type": "uri",
+                      "label": "View detail",
+                      "uri": "http://example.com/page/222"
                     }
                   }
               ]

@@ -1027,7 +1027,7 @@ exports.webhook = functions
               "type": "image_carousel",
               "columns": [
                   {
-                    "imageUrl": image_url,
+                    "imageUrl": "https://vignette.wikia.nocookie.net/line/images/b/bb/2015-brown.png",
                     "action": {
                       "type": "message",
                       "label": leaf_symptom,
@@ -1035,15 +1035,7 @@ exports.webhook = functions
                     }
                   },
                   {
-                    "imageUrl": image_url,
-                    "action": {
-                      "type": "message",
-                      "label": leaf_symptom,
-                      "text": name_of_disease
-                    }
-                  },
-                  {
-                    "imageUrl": image_url,
+                    "imageUrl": "https://vignette.wikia.nocookie.net/line/images/b/bb/2015-brown.png",
                     "action": {
                       "type": "message",
                       "label": leaf_symptom,
@@ -1153,3 +1145,32 @@ const lineReply = (replyToken, messages) => {
     body: JSON.stringify(body)
   });
 };
+
+
+messages: [
+  {
+    type: "template",
+    altText: "This is an image carousel template",
+    template: {
+      type: "image_carousel",
+      columns: [
+        {
+          imageUrl: "https://vignette.wikia.nocookie.net/line/images/b/bb/2015-brown.png",
+          action: {
+            type: "message",
+            label: "Brown",
+            text: "Brown was selected"
+          }
+        },
+        {
+          imageUrl: "https://vignette.wikia.nocookie.net/line/images/1/10/2015-cony.png",
+          action: {
+            type: "uri",
+            label: "Cony",
+            uri: "https://developers.line.biz"
+          }
+        }
+      ]
+    }
+  }
+]

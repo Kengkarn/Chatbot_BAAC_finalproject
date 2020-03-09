@@ -1017,9 +1017,38 @@ exports.webhook = functions
         const disease_name = db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(doc => {
           agent.add(doc.data().diseaseName);
         });
-        return db.collection('Disease').doc(disease_name).get().then(doc => {
+        /*return db.collection('Disease').doc(disease_name).get().then(doc => {
           agent.add(doc.data().url);
-        });
+        });*/
+        const buttonMsg = {
+          "type": "template",
+          "altText": "this is a image carousel template",
+          "template": {
+              "type": "image_carousel",
+              "columns": [
+                  {
+                    "imageUrl": "https://example.com/bot/images/item1.jpg",
+                    "action": {
+                      "type": "postback",
+                      "label": disease_name,
+                      "data": "action=buy&itemid=111"
+                    }
+                  },
+                  {
+                    "imageUrl": "https://example.com/bot/images/item2.jpg",
+                    "action": {
+                      "type": "message",
+                      "label": disease_name,
+                      "text": disease_name
+                    }
+                  }
+              ]
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
       }
       else if (leaf_symptom == "ใบแห้ง") {
         return agent.add(leaf_symptom);

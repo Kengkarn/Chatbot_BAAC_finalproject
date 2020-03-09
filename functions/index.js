@@ -1008,19 +1008,19 @@ exports.webhook = functions
     const leaf_select = async => {
       let leaf_symptom = req.body.queryResult.parameters.Leaf_symptom;
       if (leaf_symptom == "ใบไหม้") {
-        return "hi";
+        return agent.add(leaf_symptom);
       }
       else if (leaf_symptom == "ใบมีแผล") {
-        return "hi";
+        return agent.add(leaf_symptom);
       }
       else if (leaf_symptom == "ใบซีดเหลือง") {
-        
+        return agent.add(leaf_symptom);
       }
       else if (leaf_symptom == "ใบแห้ง") {
-        return "hi";
+        return agent.add(leaf_symptom);
       }
       else if (leaf_symptom == "ใบมีจุด") {
-        return "hi";
+        return agent.add(leaf_symptom);
       }
       else if (leaf_symptom == "ใบมีปม") {
         const buttonMsg = {

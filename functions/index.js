@@ -1014,7 +1014,9 @@ exports.webhook = functions
         return agent.add(leaf_symptom);
       }
       else if (leaf_symptom == "ใบซีดเหลือง") {
-        return agent.add(leaf_symptom);
+        return db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(doc => {
+          agent.add(doc.data().diseaseName);
+        });
       }
       else if (leaf_symptom == "ใบแห้ง") {
         return agent.add(leaf_symptom);

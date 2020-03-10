@@ -1014,7 +1014,7 @@ exports.webhook = functions
         return agent.add(leaf_symptom);
       }
       else if (leaf_symptom == "ใบซีดเหลือง") {
-        let disease_name = db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(doc => {
+        var disease_name = db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(doc => {
           agent.add(doc.data().diseaseName);
         });
         /*return db.collection('Disease').doc(disease_name).get().then(doc => {

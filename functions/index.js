@@ -1003,7 +1003,7 @@ exports.webhook = functions
           });
           return agent.add(payloadMsg);
       }
-    }
+    };
     
     const leaf_select = async => {
       let leaf_symptom = req.body.queryResult.parameters.Leaf_symptom;
@@ -1014,42 +1014,45 @@ exports.webhook = functions
         return agent.add(leaf_symptom);
       }
       else if (leaf_symptom == "ใบซีดเหลือง") {
-        return db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(function(docs){
-          console.log(docs.data().diseaseName)
-        });
+        return db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get()
+          .then(snapshot => {
+            let buttonMsg = {
+              "type": "template",
+              "altText": "this is a image carousel template",
+              "template": {
+                  "type": "image_carousel",
+                  "columns": [
+                      {
+                        "imageUrl": "https://example.com/bot/images/item1.jpg",
+                        "action": {
+                          "type": "postback",
+                          "label": `${snapshot.data().diseaseName}`,
+                          "data": "action=buy&itemid=111"
+                        }
+                      },
+                      {
+                        "imageUrl": "https://example.com/bot/images/item2.jpg",
+                        "action": {
+                          "type": "message",
+                          "label": `${snapshot.data().diseaseName}`,
+                          "text": `${snapshot.data().diseaseName}`
+                        }
+                      }
+                  ]
+              }
+            }
+            const payloadMsg = new Payload("LINE", buttonMsg, {
+              sendAsMessage: true
+              });
+              return agent.add(payloadMsg);
+          });
+        // return db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(function(docs){
+        //   console.log(docs.data().diseaseName)
+        // });
         //return agent.add(disease_name);
         /*return db.collection('Disease').doc(disease_name).get().then(doc => {
           agent.add(doc.data().url);
-        });*/
-        /*const buttonMsg = {
-          "type": "template",
-          "altText": "this is a image carousel template",
-          "template": {
-              "type": "image_carousel",
-              "columns": [
-                  {
-                    "imageUrl": "https://example.com/bot/images/item1.jpg",
-                    "action": {
-                      "type": "postback",
-                      "label": disease_name,
-                      "data": "action=buy&itemid=111"
-                    }
-                  },
-                  {
-                    "imageUrl": "https://example.com/bot/images/item2.jpg",
-                    "action": {
-                      "type": "message",
-                      "label": disease_name,
-                      "text": disease_name
-                    }
-                  }
-              ]
-          }
-        }
-        const payloadMsg = new Payload("LINE", buttonMsg, {
-          sendAsMessage: true
-          });
-          return agent.add(payloadMsg);*/
+        });*/  
       }
       else if (leaf_symptom == "ใบแห้ง") {
         return agent.add(leaf_symptom);
@@ -1102,7 +1105,7 @@ exports.webhook = functions
           });
           return agent.add(payloadMsg);
       }
-    }
+    };
 
 
     let intentMap = new Map();

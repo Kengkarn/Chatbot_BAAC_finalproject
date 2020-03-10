@@ -1030,7 +1030,7 @@ exports.webhook = functions
                     "imageUrl": "https://example.com/bot/images/item1.jpg",
                     "action": {
                       "type": "postback",
-                      "label": disease_name,
+                      "label": "disease_name",
                       "data": "action=buy&itemid=111"
                     }
                   },
@@ -1038,8 +1038,8 @@ exports.webhook = functions
                     "imageUrl": "https://example.com/bot/images/item2.jpg",
                     "action": {
                       "type": "message",
-                      "label": disease_name,
-                      "text": disease_name
+                      "label": "disease_name",
+                      "text": "disease_name"
                     }
                   }
               ]

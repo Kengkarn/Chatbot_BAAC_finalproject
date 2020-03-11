@@ -1016,7 +1016,7 @@ exports.webhook = functions
       else if (leaf_symptom == "ใบซีดเหลือง") {
         return db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get()
           .then(snapshot => {
-            let buttonMsg = {
+              let buttonMsg = {
               "type": "template",
               "altText": "this is a image carousel template",
               "template": {
@@ -1058,7 +1058,114 @@ exports.webhook = functions
         return agent.add(leaf_symptom);
       }
       else if (leaf_symptom == "ใบมีจุด") {
-        return agent.add(leaf_symptom);
+        return db.collection('Disease_new').doc('Leaf').collection('symptom').doc('spot').collection('colour').get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+              agent.add(doc.size);
+          }); 
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+          });
+        // const buttonMsg = {
+        //   "type": "flex",
+        //   "altText": "Flex Message",
+        //   "contents": {
+        //     "type": "bubble",
+        //     "direction": "ltr",
+        //     "body": {
+        //       "type": "box",
+        //       "layout": "vertical",
+        //       "contents": [
+        //         {
+        //           "type": "box",
+        //           "layout": "horizontal",
+        //           "contents": [
+        //             {
+        //               "type": "button",
+        //               "action": {
+        //                 "type": "message",
+        //                 "label": "สีน้ำตาล",
+        //                 "text": "สีน้ำตาล"
+        //               }
+        //             },
+        //             {
+        //               "type": "separator"
+        //             },
+        //             {
+        //               "type": "button",
+        //               "action": {
+        //                 "type": "message",
+        //                 "label": "สีขาว",
+        //                 "text": "สีขาว"
+        //               }
+        //             }
+        //           ]
+        //         },
+        //         {
+        //           "type": "separator"
+        //         },
+        //         {
+        //           "type": "box",
+        //           "layout": "horizontal",
+        //           "contents": [
+        //             {
+        //               "type": "button",
+        //               "action": {
+        //                 "type": "message",
+        //                 "label": "สีเหลือง",
+        //                 "text": "สีเหลือง"
+        //               }
+        //             },
+        //             {
+        //               "type": "separator"
+        //             },
+        //             {
+        //               "type": "button",
+        //               "action": {
+        //                 "type": "message",
+        //                 "label": "สีเทา",
+        //                 "text": "สีเทา"
+        //               }
+        //             }
+        //           ]
+        //         },
+        //         {
+        //           "type": "separator"
+        //         },
+        //         {
+        //           "type": "box",
+        //           "layout": "horizontal",
+        //           "contents": [
+        //             {
+        //               "type": "button",
+        //               "action": {
+        //                 "type": "message",
+        //                 "label": "สีเขียว",
+        //                 "text": "สีเขียว"
+        //               }
+        //             },
+        //             {
+        //               "type": "separator"
+        //             },
+        //             {
+        //               "type": "button",
+        //               "action": {
+        //                 "type": "message",
+        //                 "label": "จุดนูน",
+        //                 "text": "จุดนูน"
+        //               }
+        //             }
+        //           ]
+        //         }
+        //       ]
+        //     }
+        //   }
+        // }
+        // const payloadMsg = new Payload("LINE", buttonMsg, {
+        //   sendAsMessage: true
+        //   });
+        //   return agent.add(payloadMsg);
       }
       else if (leaf_symptom == "ใบมีปม") {
         const buttonMsg = {

@@ -1061,7 +1061,7 @@ exports.webhook = functions
         return db.collection('Disease_new').doc('Leaf').collection('symptom').doc('spot').collection('colour').get()
         .then(snapshot => {
           snapshot.forEach(doc => {
-              agent.add(doc.size);
+              agent.add(JSON.stringify(doc.data()));
           }); 
         })
         .catch(err => {

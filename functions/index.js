@@ -902,7 +902,7 @@ exports.webhook = functions
           });
           return agent.add(payloadMsg);
       }
-      else if (disease_part == "ใบ"){
+      else if (disease_part === "ใบ"){
         const buttonMsg = {
           "type": "flex",
           "altText": "Flex Message",
@@ -1092,7 +1092,7 @@ exports.webhook = functions
     const leaf_select = async => {
       let leaf_symptom = req.body.queryResult.parameters.Leaf_symptom;
       if (leaf_symptom == "ใบไหม้") {
-        return agent.add(leaf_symptom);
+        return agent.add("Leaf Select symptom intent");
       }
       else if (leaf_symptom == "ใบมีแผล") {
         return agent.add(leaf_symptom);
@@ -1110,7 +1110,7 @@ exports.webhook = functions
                         "imageUrl": "https://example.com/bot/images/item1.jpg",
                         "action": {
                           "type": "postback",
-                          "label": `${snapshot.data().diseaseName}`,
+                          "label": `${snapshot.data().diseaseNameTH}`,
                           "data": "action=buy&itemid=111"
                         }
                       },
@@ -1118,8 +1118,8 @@ exports.webhook = functions
                         "imageUrl": "https://example.com/bot/images/item2.jpg",
                         "action": {
                           "type": "message",
-                          "label": `${snapshot.data().diseaseName}`,
-                          "text": `${snapshot.data().diseaseName}`
+                          "label": `${snapshot.data().diseaseNameTH}`,
+                          "text": `${snapshot.data().diseaseNameTH}`
                         }
                       }
                   ]
@@ -1161,7 +1161,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "สีน้ำตาล",
-                        "text": "สีน้ำตาล"
+                        "text": "ใบมีจุดสีน้ำตาล"
                       }
                     },
                     {
@@ -1172,7 +1172,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "สีขาว",
-                         "text": "สีขาว"
+                         "text": "ใบมีจุดสีขาว"
                       }
                      }
                      ]
@@ -1189,7 +1189,7 @@ exports.webhook = functions
                          "action": {
                            "type": "message",
                            "label": "สีเหลือง",
-                           "text": "สีเหลือง"
+                           "text": "ใบมีจุดสีเหลือง"
                          }
                        },
                        {
@@ -1200,7 +1200,7 @@ exports.webhook = functions
                          "action": {
                            "type": "message",
                            "label": "สีเทา",
-                           "text": "สีเทา"
+                           "text": "ใบมีจุดสีเทา"
                          }
                        }
                      ]
@@ -1217,7 +1217,7 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "สีเขียว",
-                       "text": "สีเขียว"
+                       "text": "ใบมีจุดสีเขียว"
                       }
                      },
                        {
@@ -1228,7 +1228,7 @@ exports.webhook = functions
                         "action": {
                         "type": "message",
                           "label": "จุดนูน",
-                          "text": "จุดนูน"
+                          "text": "ใบมีจุดนูน"
                         }
                        }
                      ]
@@ -1291,16 +1291,71 @@ exports.webhook = functions
     };
 
     const leaf_spot = async => {
-      let leaf_spot_colour = req.body.queryResult.parameters.Leaf-spot;
-      return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').collection('colour-shape').get()
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            agent.add(JSON.stringify(doc.data().colour).toString());
-          });
-        })
-        .catch(err => {
-            console.log('Error getting documents', err);
-          });
+      let leaf_spot_colour = req.body.queryResult.parameters.Leaf_spot;
+      if (leaf_spot_colour == "ใบมีจุดสีน้ำตาล") {
+        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').collection('colour-shape').doc('brown').get()
+        .then(doc => {
+          agent.add(doc.data().diseaseNameTH);
+        });
+      }
+      else if (leaf_spot_colour == "ใบมีจุดสีขาว") {
+        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').collection('colour-shape').doc('white').get()
+        .then(doc => {
+          agent.add(doc.data().diseaseNameTH);
+        });
+      }
+      else if (leaf_spot_colour == "ใบมีจุดสีเหลือง") {
+        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').collection('colour-shape').doc('yellow').get()
+        .then(doc => {
+          agent.add(doc.data().diseaseNameTH);
+        });
+      }
+      else if (leaf_spot_colour == "ใบมีจุดสีเทา") {
+        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').collection('colour-shape').doc('gray').get()
+        .then(doc => {
+          agent.add(doc.data().diseaseNameTH);
+        });
+      }
+      else if (leaf_spot_colour == "ใบมีจุดสีเขียว") {
+        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').collection('colour-shape').doc('green').get()
+        .then(doc => {
+          let buttonMsg = {
+            "type": "template",
+            "altText": "this is a image carousel template",
+            "template": {
+                "type": "image_carousel",
+                "columns": [
+                    {
+                      "imageUrl": "https://example.com/bot/images/item1.jpg",
+                      "action": {
+                        "type": "message",
+                        "label": `${doc.data().diseaseNameTH[0]}`,
+                        "text": `${doc.data().diseaseNameTH[0]}`
+                      }
+                    },
+                    {
+                      "imageUrl": "https://example.com/bot/images/item2.jpg",
+                      "action": {
+                        "type": "message",
+                        "label": `${doc.data().diseaseNameTH[1]}`,
+                        "text": `${doc.data().diseaseNameTH[1]}`
+                      }
+                    }
+                ]
+            }
+          }
+          const payloadMsg = new Payload("LINE", buttonMsg, {
+            sendAsMessage: true
+            });
+            return agent.add(payloadMsg);
+        });
+      }
+      else if (leaf_spot_colour == "ใบมีจุดนูน") {
+        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').collection('colour-shape').doc('swell').get()
+        .then(doc => {
+          agent.add(doc.data().diseaseNameTH);
+        });
+      }
     }
 
 

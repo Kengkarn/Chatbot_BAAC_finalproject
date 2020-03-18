@@ -1004,7 +1004,91 @@ exports.webhook = functions
           return agent.add(payloadMsg);
       }
     };
-    
+    const ear_select = async => {
+      let ear_symptom = req.body.queryResult.parameters.Ear_symptom;
+      if (ear_symptom == "ฝักมีจุด") {
+        return agent.add(leaf_symptom);
+      }
+      else if (ear_symptom == "ฝักมีแผล") {
+        return agent.add(leaf_symptom);
+      }
+      else if (ear_symptom == "ฝักซีดเหลือง") {
+        return agent.add(leaf_symptom);
+      }
+      else if (ear_symptom == "ฝักมีราขาว") {
+        return agent.add(leaf_symptom);
+      }
+      else if (ear_symptom == "ฝักเน่า") {
+        return agent.add(leaf_symptom);
+      }
+      else if (ear_symptom == "เมล็ดสีดำ") {
+        return agent.add(leaf_symptom);
+      }
+      else if (ear_symptom == "ฝีกมีเส้นใย") {
+        return agent.add(leaf_symptom);
+      }
+      else if (ear_symptom == "ฝักมีปม") {
+        return agent.add(leaf_symptom);
+      }
+      else if (ear_symptom == "ไม่มีเมล็ด/เมล็ดน้อย") {
+        return agent.add(leaf_symptom);
+      }
+    }
+
+    const base_select = async => {
+      let base_symptom = req.body.queryResult.parameters.Base_symptom;
+      if (base_symptom == "โคนต้นมีแผลช้ำ") {
+        return agent.add(leaf_symptom);
+      }
+      else if (base_symptom == "โคนต้นแตก") {
+        return agent.add(leaf_symptom);
+      }
+      else if (base_symptom == "โคนต้นมีน้ำเมือก") {
+        return agent.add(leaf_symptom);
+      }
+      else if (base_symptom == "โคนหักล้ม") {
+        return agent.add(leaf_symptom);
+      }
+      else if (base_symptom == "โคนต้นมีกลิ่นเหม็น") {
+        return agent.add(leaf_symptom);
+      }
+      else if (base_symptom == "โคนต้นซีดเหลือง") {
+        return agent.add(leaf_symptom);
+      }
+    }
+
+    const leaf_sheath_select = async => {
+      let leaf_sheath_symptom = req.body.queryResult.parameters.Leaf-sheath_symptom;
+      if (leaf_sheath_symptom == "กาบใบมีจุด") {
+        return agent.add(leaf_symptom);
+      }
+      else if (leaf_sheath_symptom == "กาบใบมีแผล") {
+        return agent.add(leaf_symptom);
+      }
+      else if (leaf_sheath_symptom == "กาบใบซีดเหลือง") {
+        return agent.add(leaf_symptom);
+      }
+    }
+
+    const stalk_select = async => {
+      let stalk_symptom = req.body.queryResult.parameters.Stalk_symptom;
+      if (stalk_sheath_symptom == "ลำต้นมีจุด") {
+        return agent.add(leaf_symptom);
+      }
+      else if (stalk_sheath_symptom == "ลำต้นเน่า") {
+        return agent.add(leaf_symptom);
+      }
+      else if (stalk_sheath_symptom == "ลำต้นเหี่ยวแห้ง") {
+        return agent.add(leaf_symptom);
+      }
+      else if (stalk_sheath_symptom == "ลำต้นมีแผล") {
+        return agent.add(leaf_symptom);
+      }
+      else if (stalk_sheath_symptom == "กลวงเป็นโพรง") {
+        return agent.add(leaf_symptom);
+      }
+    }
+
     const leaf_select = async => {
       let leaf_symptom = req.body.queryResult.parameters.Leaf_symptom;
       if (leaf_symptom == "ใบไหม้") {
@@ -1058,115 +1142,107 @@ exports.webhook = functions
         return agent.add(leaf_symptom);
       }
       else if (leaf_symptom == "ใบมีจุด") {
-        return db.collection('Disease_new').doc('Leaf').collection('symptom').doc('spot').collection('colour').get()
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-              agent.add(JSON.stringify(doc.data()));
-          }); 
-        })
-        .catch(err => {
-            console.log('Error getting documents', err);
+        const buttonMsg = {
+          "type": "flex",
+          "altText": "Flex Message",
+          "contents": {
+            "type": "bubble",
+            "direction": "ltr",
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                 "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "สีน้ำตาล",
+                        "text": "สีน้ำตาล"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                     },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "สีขาว",
+                         "text": "สีขาว"
+                      }
+                     }
+                     ]
+                   },
+                   {
+                     "type": "separator"
+                   },
+                   {
+                     "type": "box",
+                     "layout": "horizontal",
+                     "contents": [
+                       {
+                         "type": "button",
+                         "action": {
+                           "type": "message",
+                           "label": "สีเหลือง",
+                           "text": "สีเหลือง"
+                         }
+                       },
+                       {
+                         "type": "separator"
+                       },
+                       {
+                         "type": "button",
+                         "action": {
+                           "type": "message",
+                           "label": "สีเทา",
+                           "text": "สีเทา"
+                         }
+                       }
+                     ]
+                  },
+                 {
+                   "type": "separator"
+                 },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "สีเขียว",
+                       "text": "สีเขียว"
+                      }
+                     },
+                       {
+                        "type": "separator"
+                    },
+                    {
+                         "type": "button",
+                        "action": {
+                        "type": "message",
+                          "label": "จุดนูน",
+                          "text": "จุดนูน"
+                        }
+                       }
+                     ]
+                   }
+                 ]
+               }
+             }
+           }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
           });
-        // const buttonMsg = {
-        //   "type": "flex",
-        //   "altText": "Flex Message",
-        //   "contents": {
-        //     "type": "bubble",
-        //     "direction": "ltr",
-        //     "body": {
-        //       "type": "box",
-        //       "layout": "vertical",
-        //       "contents": [
-        //         {
-        //           "type": "box",
-        //           "layout": "horizontal",
-        //           "contents": [
-        //             {
-        //               "type": "button",
-        //               "action": {
-        //                 "type": "message",
-        //                 "label": "สีน้ำตาล",
-        //                 "text": "สีน้ำตาล"
-        //               }
-        //             },
-        //             {
-        //               "type": "separator"
-        //             },
-        //             {
-        //               "type": "button",
-        //               "action": {
-        //                 "type": "message",
-        //                 "label": "สีขาว",
-        //                 "text": "สีขาว"
-        //               }
-        //             }
-        //           ]
-        //         },
-        //         {
-        //           "type": "separator"
-        //         },
-        //         {
-        //           "type": "box",
-        //           "layout": "horizontal",
-        //           "contents": [
-        //             {
-        //               "type": "button",
-        //               "action": {
-        //                 "type": "message",
-        //                 "label": "สีเหลือง",
-        //                 "text": "สีเหลือง"
-        //               }
-        //             },
-        //             {
-        //               "type": "separator"
-        //             },
-        //             {
-        //               "type": "button",
-        //               "action": {
-        //                 "type": "message",
-        //                 "label": "สีเทา",
-        //                 "text": "สีเทา"
-        //               }
-        //             }
-        //           ]
-        //         },
-        //         {
-        //           "type": "separator"
-        //         },
-        //         {
-        //           "type": "box",
-        //           "layout": "horizontal",
-        //           "contents": [
-        //             {
-        //               "type": "button",
-        //               "action": {
-        //                 "type": "message",
-        //                 "label": "สีเขียว",
-        //                 "text": "สีเขียว"
-        //               }
-        //             },
-        //             {
-        //               "type": "separator"
-        //             },
-        //             {
-        //               "type": "button",
-        //               "action": {
-        //                 "type": "message",
-        //                 "label": "จุดนูน",
-        //                 "text": "จุดนูน"
-        //               }
-        //             }
-        //           ]
-        //         }
-        //       ]
-        //     }
-        //   }
-        // }
-        // const payloadMsg = new Payload("LINE", buttonMsg, {
-        //   sendAsMessage: true
-        //   });
-        //   return agent.add(payloadMsg);
+          return agent.add(payloadMsg);
       }
+
       else if (leaf_symptom == "ใบมีปม") {
         const buttonMsg = {
           "type": "flex",
@@ -1214,6 +1290,19 @@ exports.webhook = functions
       }
     };
 
+    const leaf_spot = async => {
+      let leaf_symptom = req.body.queryResult.parameters.Leaf-spot;
+      return db.collection('Disease_new').doc('Leaf').collection('symptom').doc('spot').collection('colour').get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            agent.add(JSON.stringify(doc.data().colour).toString());
+          });
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+          });
+    }
+
 
     let intentMap = new Map();
     // knowledge
@@ -1237,8 +1326,23 @@ exports.webhook = functions
     // Disease Imagemap - Part
     intentMap.set('Disease Imagemap - Select Part', disease_imagemap_part);
 
+    // Disease Ear - Select Symptom
+    intentMap.set('Ear - Select Symptom', ear_select);
+
+    // Disease Base - Select Symptom
+    intentMap.set('Base - Select Symptom', base_select);
+
+    // Disease Leaf-Sheath - Select Symptom
+    intentMap.set('Leaf-Sheath - Select Symptom', leaf_sheath_select);
+
+    // Disease Stalk - Select Symptom
+    intentMap.set('Stalk - Select Symptom', stalk_select);
+
     // Disease Leaf - Select Symptom
     intentMap.set('Leaf - Select Symptom', leaf_select);
+
+    // Disease Leaf-Spot
+    intentMap.set('Leaf - Spot', leaf_spot);
 
     agent.handleRequest(intentMap);
   });

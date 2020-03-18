@@ -336,47 +336,47 @@ exports.webhook = functions
     const disease_select = async => {
       let disease_s = req.body.queryResult.parameters.disease_select;
       if (disease_s === "สาเหตุของโรคราน้ำค้าง") {
-        return db.collection('Disease').doc('Downy Mildew').get().then(doc => {
+        return db.collection('Disease').doc('DownyMildew').get().then(doc => {
           agent.add(doc.data().cause);
         });
       }
       else if (disease_s === "อาการโรคราน้ำค้าง") {
-        return db.collection('Disease').doc('Downy Mildew').get().then(doc => {
+        return db.collection('Disease').doc('DownyMildew').get().then(doc => {
           agent.add(doc.data().symptom);
         });
       }
       else if (disease_s === "การป้องกันโรคราน้ำค้าง") {
-        return db.collection('Disease').doc('Downy Mildew').get().then(doc => {
+        return db.collection('Disease').doc('DownyMildew').get().then(doc => {
           agent.add(doc.data().protection);
         });
       }
       else if (disease_s === "สาเหตุของโรคใบไหม้แผลเล็ก") {
-        return db.collection('Disease').doc('Southern Corn Leaf Blight').get().then(doc => {
+        return db.collection('Disease').doc('SouthernCornLeafBlight').get().then(doc => {
           agent.add(doc.data().cause);
         });
       }
       else if (disease_s === "อาการโรคใบไหม้แผลเล็ก") {
-        return db.collection('Disease').doc('Southern Corn Leaf Blight').get().then(doc => {
+        return db.collection('Disease').doc('SouthernCornLeafBlight').get().then(doc => {
           agent.add(doc.data().symptom);
         });
       }
       else if (disease_s === "การป้องกันโรคใบไหม้แผลเล็ก") {
-        return db.collection('Disease').doc('Southern Corn Leaf Blight').get().then(doc => {
+        return db.collection('Disease').doc('SouthernCornLeafBlight').get().then(doc => {
           agent.add(doc.data().protection);
         });
       }
       else if (disease_s === "สาเหตุของโรคราสนิม") {
-        return db.collection('Disease').doc('Southern Corn Rust').get().then(doc => {
+        return db.collection('Disease').doc('SouthernCornRust').get().then(doc => {
           agent.add(doc.data().cause);
         });
       }
       else if (disease_s === "อาการโรคราสนิม") {
-        return db.collection('Disease').doc('Southern Corn Rust').get().then(doc => {
+        return db.collection('Disease').doc('SouthernCornRust').get().then(doc => {
           agent.add(doc.data().symptom);
         });
       }
       else if (disease_s === "การป้องกันโรคราสนิม") {
-        return db.collection('Disease').doc('Southern Corn Rust').get().then(doc => {
+        return db.collection('Disease').doc('SouthernCornRust').get().then(doc => {
           agent.add(doc.data().protection);
         });
       }
@@ -1098,7 +1098,7 @@ exports.webhook = functions
         return agent.add(leaf_symptom);
       }
       else if (leaf_symptom == "ใบซีดเหลือง") {
-        return db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get()
+        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('yellow').get()
           .then(snapshot => {
               let buttonMsg = {
               "type": "template",
@@ -1292,7 +1292,7 @@ exports.webhook = functions
 
     const leaf_spot = async => {
       let leaf_spot_colour = req.body.queryResult.parameters.Leaf-spot;
-      return db.collection('Disease_new').doc('Leaf').collection('symptom').doc('spot').collection('colour').get()
+      return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').collection('colour-shape').get()
         .then(snapshot => {
           snapshot.forEach(doc => {
             agent.add(JSON.stringify(doc.data().colour).toString());

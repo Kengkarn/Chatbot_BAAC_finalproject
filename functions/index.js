@@ -1291,7 +1291,7 @@ exports.webhook = functions
     };
 
     const leaf_spot = async => {
-      let leaf_symptom = req.body.queryResult.parameters.Leaf-spot;
+      let leaf_spot_colour = req.body.queryResult.parameters.Leaf-spot;
       return db.collection('Disease_new').doc('Leaf').collection('symptom').doc('spot').collection('colour').get()
         .then(snapshot => {
           snapshot.forEach(doc => {

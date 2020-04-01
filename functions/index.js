@@ -25,95 +25,95 @@ exports.webhook = functions
 
     const agent = new WebhookClient({ request: req, response: res });
 
-//-----------------------------------ส่วนของเมนู ความรู้ทั่วไป-----------------------------------------//
+    //-----------------------------------ส่วนของเมนู ความรู้ทั่วไป-----------------------------------------//
 
     // ทำ function knowledge เพื่อแสดงผลบางอย่างกลับไปที่หน้าจอของ bot ------ [1]
     const knowledge = async agent => {
-        // เพิ่ม flex message แสดงความรู้ทั่วไป
-        const carouselMsg = {
-            "type": "template",
-            "altText": "เลือกประเภทข้าวโพด",
-            "template": {
-              "type": "carousel",
-              "actions": [],
-              "columns": [
+      // เพิ่ม flex message แสดงความรู้ทั่วไป
+      const carouselMsg = {
+        "type": "template",
+        "altText": "เลือกประเภทข้าวโพด",
+        "template": {
+          "type": "carousel",
+          "actions": [],
+          "columns": [
+            {
+              "thumbnailImageUrl": "https://i.ibb.co/MMCGQW0/image.jpg",
+              "title": "ข้าวโพดเลี้ยงสัตว์",
+              "text": "ความรู้ทั่วไป",
+              "actions": [
                 {
-                  "thumbnailImageUrl": "https://i.ibb.co/MMCGQW0/image.jpg",
-                  "title": "ข้าวโพดเลี้ยงสัตว์",
-                  "text": "ความรู้ทั่วไป",
-                  "actions": [
-                    {
-                      "type": "message",
-                      "label": "การเลือกพื้นที่",
-                      "text": "การเลือกพื้นที่ข้าวโพดเลี้ยงสัตว์"
-                    },
-                    {
-                      "type": "message",
-                      "label": "การเตรียมดิน",
-                      "text": "การเตรียมดินข้าวโพดเลี้ยงสัตว์"
-                    },
-                    {
-                      "type": "message",
-                      "label": "การให้น้ำ",
-                      "text": "การให้น้ำข้าวโพดเลี้ยงสัตว์"
-                    }
-                  ]
+                  "type": "message",
+                  "label": "การเลือกพื้นที่",
+                  "text": "การเลือกพื้นที่ข้าวโพดเลี้ยงสัตว์"
                 },
                 {
-                  "thumbnailImageUrl": "https://i.ibb.co/GP4kDjW/sweet-corn.jpg",
-                  "title": "ข้าวโพดหวาน",
-                  "text": "ความรู้ทั่วไป",
-                  "actions": [
-                    {
-                      "type": "message",
-                      "label": "การเลือกพื้นที่",
-                      "text": "การเลือกพื้นที่ข้าวโพดหวาน"
-                    },
-                    {
-                      "type": "message",
-                      "label": "การเตรียมดิน",
-                      "text": "การเตรียมดินข้าวโพดหวาน"
-                    },
-                    {
-                      "type": "message",
-                      "label": "การให้น้ำ",
-                      "text": "การให้น้ำข้าวโพดหวาน"
-                    }
-                  ]
+                  "type": "message",
+                  "label": "การเตรียมดิน",
+                  "text": "การเตรียมดินข้าวโพดเลี้ยงสัตว์"
                 },
                 {
-                  "thumbnailImageUrl": "https://i.ibb.co/kBhwmHW/image.jpg",
-                  "title": "ข้าวโพดฝักอ่อน",
-                  "text": "ความรู้ทั่วไป",
-                  "actions": [
-                    {
-                      "type": "message",
-                      "label": "การเลือกพื้นที่",
-                      "text": "การเลือกพื้นที่ข้าวโพดฝักอ่อน"
-                    },
-                    {
-                      "type": "message",
-                      "label": "การเตรียมดิน",
-                      "text": "การเตรียมดินข้าวโพดฝักอ่อน"
-                    },
-                    {
-                      "type": "message",
-                      "label": "การให้น้ำ",
-                      "text": "การให้น้ำข้าวโพดฝักอ่อน"
-                    }
-                  ]
+                  "type": "message",
+                  "label": "การให้น้ำ",
+                  "text": "การให้น้ำข้าวโพดเลี้ยงสัตว์"
+                }
+              ]
+            },
+            {
+              "thumbnailImageUrl": "https://i.ibb.co/GP4kDjW/sweet-corn.jpg",
+              "title": "ข้าวโพดหวาน",
+              "text": "ความรู้ทั่วไป",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "การเลือกพื้นที่",
+                  "text": "การเลือกพื้นที่ข้าวโพดหวาน"
+                },
+                {
+                  "type": "message",
+                  "label": "การเตรียมดิน",
+                  "text": "การเตรียมดินข้าวโพดหวาน"
+                },
+                {
+                  "type": "message",
+                  "label": "การให้น้ำ",
+                  "text": "การให้น้ำข้าวโพดหวาน"
+                }
+              ]
+            },
+            {
+              "thumbnailImageUrl": "https://i.ibb.co/kBhwmHW/image.jpg",
+              "title": "ข้าวโพดฝักอ่อน",
+              "text": "ความรู้ทั่วไป",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "การเลือกพื้นที่",
+                  "text": "การเลือกพื้นที่ข้าวโพดฝักอ่อน"
+                },
+                {
+                  "type": "message",
+                  "label": "การเตรียมดิน",
+                  "text": "การเตรียมดินข้าวโพดฝักอ่อน"
+                },
+                {
+                  "type": "message",
+                  "label": "การให้น้ำ",
+                  "text": "การให้น้ำข้าวโพดฝักอ่อน"
                 }
               ]
             }
-          };
-
-        const payloadMsg = new Payload("LINE", carouselMsg, {
-            sendAsMessage: true
-        });
-        return agent.add(payloadMsg);
+          ]
+        }
       };
 
-      // แสดงรายละเอียดแต่ละหัวข้อที่ผู้ใช้เลือก [1.1]
+      const payloadMsg = new Payload("LINE", carouselMsg, {
+        sendAsMessage: true
+      });
+      return agent.add(payloadMsg);
+    };
+
+    // แสดงรายละเอียดแต่ละหัวข้อที่ผู้ใช้เลือก [1.1]
     const knowledge_select = async => {
       let knowledge_s = req.body.queryResult.parameters.knowledge_select;
       if (knowledge_s === "การเลือกพื้นที่ข้าวโพดเลี้ยงสัตว์") {
@@ -164,7 +164,7 @@ exports.webhook = functions
     }
 
 
-//-----------------------------------ส่วนของเมนู โรคพืช-----------------------------------------//
+    //-----------------------------------ส่วนของเมนู โรคพืช-----------------------------------------//
 
     // function disease action แรกของเมนู โรคพืช [2]
     const disease = async agent => {
@@ -279,6 +279,28 @@ exports.webhook = functions
               ]
             },
             {
+              "thumbnailImageUrl": "https://i.ibb.co/S5rzJjQ/Corn-Downy-Mildew.png",
+              "title": "โรคสมัท หรือ",
+              "text": "โรคราน้ำค้าง หรือโรคใบลาย (Corn Downy Mildew)",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "สาเหตุ",
+                  "text": "สาเหตุของโรคราน้ำค้าง"
+                },
+                {
+                  "type": "message",
+                  "label": "อาการ",
+                  "text": "อาการโรคราน้ำค้าง"
+                },
+                {
+                  "type": "message",
+                  "label": "การป้องกัน",
+                  "text": "การป้องกันโรคราน้ำค้าง"
+                }
+              ]
+            },
+            {
               "thumbnailImageUrl": "https://i.ibb.co/qRW5gvr/Southern-or-Maydis-Leaf-Blight.png",
               "title": "โรคใบไหม้แผลเล็ก",
               "text": "โรคใบไหม้แผลเล็ก  (Southern or Maydis LeafBlight)",
@@ -327,7 +349,7 @@ exports.webhook = functions
       };
 
       const payloadMsg = new Payload("LINE", carouselMsg, {
-          sendAsMessage: true
+        sendAsMessage: true
       });
       return agent.add(payloadMsg);
     }
@@ -470,7 +492,7 @@ exports.webhook = functions
     //แสดงอาการให้ผู้ใช้เลือก
     const disease_imagemap_part = async => {
       let disease_part = req.body.queryResult.parameters.part;
-      if (disease_part == "ฝัก"){
+      if (disease_part == "ฝัก") {
         const buttonMsg = {
           "type": "flex",
           "altText": "Flex Message",
@@ -607,10 +629,10 @@ exports.webhook = functions
         }
         const payloadMsg = new Payload("LINE", buttonMsg, {
           sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
+        });
+        return agent.add(payloadMsg);
       }
-      else if (disease_part == "โคนต้น"){
+      else if (disease_part == "โคนต้น") {
         const buttonMsg = {
           "type": "flex",
           "altText": "Flex Message",
@@ -708,10 +730,10 @@ exports.webhook = functions
         }
         const payloadMsg = new Payload("LINE", buttonMsg, {
           sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
+        });
+        return agent.add(payloadMsg);
       }
-      else if (disease_part == "กาบใบ"){
+      else if (disease_part == "กาบใบ") {
         const buttonMsg = {
           "type": "flex",
           "altText": "Flex Message",
@@ -770,49 +792,49 @@ exports.webhook = functions
         }
         const payloadMsg = new Payload("LINE", buttonMsg, {
           sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
+        });
+        return agent.add(payloadMsg);
       }
-      else if (disease_part == "เปลือกฝัก"){
+      else if (disease_part == "เปลือกฝัก") {
         const buttonMsg = {
           "type": "template",
           "altText": "this is a image carousel template",
           "template": {
-              "type": "image_carousel",
-              "columns": [
-                  {
-                    "imageUrl": "https://example.com/bot/images/item1.jpg",
-                    "action": {
-                      "type": "postback",
-                      "label": "Buy",
-                      "data": "action=buy&itemid=111"
-                    }
-                  },
-                  {
-                    "imageUrl": "https://example.com/bot/images/item2.jpg",
-                    "action": {
-                      "type": "message",
-                      "label": "Yes",
-                      "text": "yes"
-                    }
-                  },
-                  {
-                    "imageUrl": "https://example.com/bot/images/item3.jpg",
-                    "action": {
-                      "type": "uri",
-                      "label": "View detail",
-                      "uri": "http://example.com/page/222"
-                    }
-                  }
-              ]
+            "type": "image_carousel",
+            "columns": [
+              {
+                "imageUrl": "https://example.com/bot/images/item1.jpg",
+                "action": {
+                  "type": "postback",
+                  "label": "Buy",
+                  "data": "action=buy&itemid=111"
+                }
+              },
+              {
+                "imageUrl": "https://example.com/bot/images/item2.jpg",
+                "action": {
+                  "type": "message",
+                  "label": "Yes",
+                  "text": "yes"
+                }
+              },
+              {
+                "imageUrl": "https://example.com/bot/images/item3.jpg",
+                "action": {
+                  "type": "uri",
+                  "label": "View detail",
+                  "uri": "http://example.com/page/222"
+                }
+              }
+            ]
           }
         }
         const payloadMsg = new Payload("LINE", buttonMsg, {
           sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
+        });
+        return agent.add(payloadMsg);
       }
-      else if (disease_part == "ลำต้น"){
+      else if (disease_part == "ลำต้น") {
         const buttonMsg = {
           "type": "flex",
           "altText": "Flex Message",
@@ -899,10 +921,11 @@ exports.webhook = functions
         }
         const payloadMsg = new Payload("LINE", buttonMsg, {
           sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
+        });
+        return agent.add(payloadMsg);
       }
-      else if (disease_part === "ใบ"){
+
+      else if (disease_part === "ใบ") {
         const buttonMsg = {
           "type": "flex",
           "altText": "Flex Message",
@@ -1000,325 +1023,29 @@ exports.webhook = functions
         }
         const payloadMsg = new Payload("LINE", buttonMsg, {
           sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
+        });
+        return agent.add(payloadMsg);
       }
     };
     const ear_select = async => {
       let ear_symptom = req.body.queryResult.parameters.Ear_symptom;
-      if (ear_symptom == "ฝักมีจุด") {
-        return agent.add(leaf_symptom);
+      if (ear_symptom === "ฝักมีจุด") {
+        return agent.add(ear_symptom);
       }
-      else if (ear_symptom == "ฝักมีแผล") {
-        return agent.add(leaf_symptom);
+      else if (ear_symptom === "ฝักมีแผล") {
+        return agent.add(ear_symptom);
       }
-      else if (ear_symptom == "ฝักซีดเหลือง") {
-        return agent.add(leaf_symptom);
+      else if (ear_symptom === "ฝักซีดเหลือง") {
+        return agent.add(ear_symptom);
       }
-      else if (ear_symptom == "ฝักมีราขาว") {
-        return agent.add(leaf_symptom);
+      else if (ear_symptom === "ฝักมีราขาว") {
+        return agent.add(ear_symptom);
       }
-      else if (ear_symptom == "ฝักเน่า") {
-        return agent.add(leaf_symptom);
+      else if (ear_symptom === "ฝักเน่า") {
+        return agent.add(ear_symptom);
       }
-      else if (ear_symptom == "เมล็ดสีดำ") {
-        return agent.add(leaf_symptom);
-      }
-      else if (ear_symptom == "ฝีกมีเส้นใย") {
-        return agent.add(leaf_symptom);
-      }
-      else if (ear_symptom == "ฝักมีปม") {
-        return agent.add(leaf_symptom);
-      }
-      else if (ear_symptom == "ไม่มีเมล็ด/เมล็ดน้อย") {
-        return agent.add(leaf_symptom);
-      }
-    }
-
-    const base_select = async => {
-      let base_symptom = req.body.queryResult.parameters.Base_symptom;
-      if (base_symptom == "โคนต้นมีแผลช้ำ") {
-        return agent.add(leaf_symptom);
-      }
-      else if (base_symptom == "โคนต้นแตก") {
-        return agent.add(leaf_symptom);
-      }
-      else if (base_symptom == "โคนต้นมีน้ำเมือก") {
-        return agent.add(leaf_symptom);
-      }
-      else if (base_symptom == "โคนหักล้ม") {
-        return agent.add(leaf_symptom);
-      }
-      else if (base_symptom == "โคนต้นมีกลิ่นเหม็น") {
-        return agent.add(leaf_symptom);
-      }
-      else if (base_symptom == "โคนต้นซีดเหลือง") {
-        return agent.add(leaf_symptom);
-      }
-    }
-
-    const leaf_sheath_select = async => {
-      let leaf_sheath_symptom = req.body.queryResult.parameters.Leaf-sheath_symptom;
-      if (leaf_sheath_symptom == "กาบใบมีจุด") {
-        return agent.add(leaf_symptom);
-      }
-      else if (leaf_sheath_symptom == "กาบใบมีแผล") {
-        return agent.add(leaf_symptom);
-      }
-      else if (leaf_sheath_symptom == "กาบใบซีดเหลือง") {
-        return agent.add(leaf_symptom);
-      }
-    }
-
-    const stalk_select = async => {
-      let stalk_symptom = req.body.queryResult.parameters.Stalk_symptom;
-      if (stalk_sheath_symptom == "ลำต้นมีจุด") {
-        return agent.add(leaf_symptom);
-      }
-      else if (stalk_sheath_symptom == "ลำต้นเน่า") {
-        return agent.add(leaf_symptom);
-      }
-      else if (stalk_sheath_symptom == "ลำต้นเหี่ยวแห้ง") {
-        return agent.add(leaf_symptom);
-      }
-      else if (stalk_sheath_symptom == "ลำต้นมีแผล") {
-        return agent.add(leaf_symptom);
-      }
-      else if (stalk_sheath_symptom == "กลวงเป็นโพรง") {
-        return agent.add(leaf_symptom);
-      }
-    }
-
-    const leaf_select = async => {
-      let leaf_symptom = req.body.queryResult.parameters.Leaf_symptom;
-      if (leaf_symptom == "ใบไหม้") {
-        return agent.add("Leaf Select symptom intent");
-      }
-      else if (leaf_symptom == "ใบมีแผล") {
-        return agent.add(leaf_symptom);
-      }
-      else if (leaf_symptom == "ใบซีดเหลือง") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('yellow').get()
-          .then(snapshot => {
-              let buttonMsg = {
-              "type": "template",
-              "altText": "this is a image carousel template",
-              "template": {
-                  "type": "image_carousel",
-                  "columns": [
-                      {
-                        "imageUrl": "https://example.com/bot/images/item1.jpg",
-                        "action": {
-                          "type": "postback",
-                          "label": `${snapshot.data().diseaseNameTH}`,
-                          "data": "action=buy&itemid=111"
-                        }
-                      },
-                      {
-                        "imageUrl": "https://example.com/bot/images/item2.jpg",
-                        "action": {
-                          "type": "message",
-                          "label": `${snapshot.data().diseaseNameTH}`,
-                          "text": `${snapshot.data().diseaseNameTH}`
-                        }
-                      }
-                  ]
-              }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-              });
-              return agent.add(payloadMsg);
-          });
-        // return db.collection('Disease_new').doc('Leaf').collection('symptom').doc('yellow').get().then(function(docs){
-        //   console.log(docs.data().diseaseName)
-        // });
-        //return agent.add(disease_name);
-        /*return db.collection('Disease').doc(disease_name).get().then(doc => {
-          agent.add(doc.data().url);
-        });*/  
-      }
-      else if (leaf_symptom == "ใบแห้ง") {
-        return agent.add(leaf_symptom);
-      }
-      else if (leaf_symptom == "ใบมีจุด") {
-        const buttonMsg = {
-          "type": "flex",
-          "altText": "Flex Message",
-          "contents": {
-            "type": "bubble",
-            "direction": "ltr",
-            "body": {
-              "type": "box",
-              "layout": "vertical",
-              "contents": [
-                {
-                 "type": "box",
-                  "layout": "horizontal",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "สีน้ำตาล",
-                        "text": "ใบมีจุดสีน้ำตาล"
-                      }
-                    },
-                    {
-                      "type": "separator"
-                     },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "สีขาว",
-                         "text": "ใบมีจุดสีขาว"
-                      }
-                     }
-                     ]
-                   },
-                   {
-                     "type": "separator"
-                   },
-                   {
-                     "type": "box",
-                     "layout": "horizontal",
-                     "contents": [
-                       {
-                         "type": "button",
-                         "action": {
-                           "type": "message",
-                           "label": "สีเหลือง",
-                           "text": "ใบมีจุดสีเหลือง"
-                         }
-                       },
-                       {
-                         "type": "separator"
-                       },
-                       {
-                         "type": "button",
-                         "action": {
-                           "type": "message",
-                           "label": "สีเทา",
-                           "text": "ใบมีจุดสีเทา"
-                         }
-                       }
-                     ]
-                  },
-                 {
-                   "type": "separator"
-                 },
-                {
-                  "type": "box",
-                  "layout": "horizontal",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "สีเขียว",
-                       "text": "ใบมีจุดสีเขียว"
-                      }
-                     },
-                       {
-                        "type": "separator"
-                    },
-                    {
-                         "type": "button",
-                        "action": {
-                        "type": "message",
-                          "label": "จุดนูน",
-                          "text": "ใบมีจุดนูน"
-                        }
-                       }
-                     ]
-                   }
-                 ]
-               }
-             }
-           }
-        const payloadMsg = new Payload("LINE", buttonMsg, {
-          sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
-      }
-
-      else if (leaf_symptom == "ใบมีปม") {
-        const buttonMsg = {
-          "type": "flex",
-          "altText": "Flex Message",
-          "contents": {
-            "type": "bubble",
-            "direction": "ltr",
-            "body": {
-              "type": "box",
-              "layout": "vertical",
-              "contents": [
-                {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ปมสีขาว",
-                        "text": "ปมสีขาว"
-                      }
-                    },
-                    {
-                      "type": "separator"
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ปมสีดำคล้ำ",
-                        "text": "ปมสีดำคล้ำ"
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        }
-        const payloadMsg = new Payload("LINE", buttonMsg, {
-          sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
-      }
-    };
-
-    const leaf_spot = async => {
-      let leaf_spot_colour = req.body.queryResult.parameters.Leaf_spot;
-      if (leaf_spot_colour == "ใบมีจุดสีน้ำตาล") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').collection('colour-shape').doc('brown').get()
-        .then(doc => {
-          agent.add(doc.data().diseaseNameTH);
-        });
-      }
-      else if (leaf_spot_colour == "ใบมีจุดสีขาว") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').collection('colour-shape').doc('white').get()
-        .then(doc => {
-          agent.add(doc.data().diseaseNameTH);
-        });
-      }
-      else if (leaf_spot_colour == "ใบมีจุดสีเหลือง") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').collection('colour-shape').doc('yellow').get()
-        .then(doc => {
-          agent.add(doc.data().diseaseNameTH);
-        });
-      }
-      else if (leaf_spot_colour == "ใบมีจุดสีเทา") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').collection('colour-shape').doc('gray').get()
-        .then(doc => {
-          agent.add(doc.data().diseaseNameTH);
-        });
-      }
-      else if (leaf_spot_colour == "ใบมีจุดสีเขียว") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').collection('colour-shape').doc('green').get()
-        .then(doc => {
+      else if (ear_symptom === "เมล็ดสีดำ") {
+        return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('black-kernel').get().then(doc => {
           let buttonMsg = {
             "type": "template",
             "altText": "this is a image carousel template",
@@ -1350,13 +1077,134 @@ exports.webhook = functions
             return agent.add(payloadMsg);
         });
       }
-      else if (leaf_spot_colour == "ใบมีจุดนูน") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').collection('colour-shape').doc('swell').get()
-        .then(doc => {
-          agent.add(doc.data().diseaseNameTH);
-        });
+      else if (ear_symptom === "ฝักมีเส้นใย") {
+        return agent.add(ear_symptom);
+      }
+      else if (ear_symptom === "ฝักมีปม") {
+        return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('gall').get()
+          .then(doc => {
+            let buttonMsg = {
+              "type": "flex",
+              "altText": "Flex Message",
+              "contents": {
+                "type": "bubble",
+                "direction": "ltr",
+                "header": {
+                  "type": "box",
+                  "layout": "vertical",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": ear_symptom,
+                      "align": "center"
+                    },
+                    {
+                      "type": "image",
+                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
+                    }
+                  ]
+                },
+                "body": {
+                  "type": "box",
+                  "layout": "vertical",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": "Body",
+                      "align": "center"
+                    }
+                  ]
+                },
+                "footer": {
+                  "type": "box",
+                  "layout": "vertical",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH}`
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "ดูรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH}`
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+            const payloadMsg = new Payload("LINE", buttonMsg, {
+              sendAsMessage: true
+            });
+            return agent.add(payloadMsg);
+          });
+      }
+      else if (ear_symptom === "ไม่มีเมล็ด/เมล็ดน้อย") {
+        return agent.add(ear_symptom);
       }
     }
+
+    const base_select = async => {
+      let base_symptom = req.body.queryResult.parameters.Base_symptom;
+      if (base_symptom === "โคนต้นมีแผลช้ำ") {
+        return agent.add(leaf_symptom);
+      }
+      else if (base_symptom === "โคนต้นแตก") {
+        return agent.add(base_symptom);
+      }
+      else if (base_symptom === "โคนต้นมีน้ำเมือก") {
+        return agent.add(base_symptom);
+      }
+      else if (base_symptom === "โคนหักล้ม") {
+        return agent.add(base_symptom);
+      }
+      else if (base_symptom === "โคนต้นมีกลิ่นเหม็น") {
+        return agent.add(base_symptom);
+      }
+      else if (base_symptom === "โคนต้นซีดเหลือง") {
+        return agent.add(base_symptom);
+      }
+    }
+
+    const leaf_sheath_select = async => {
+      let leaf_sheath_symptom = req.body.queryResult.parameters.Leaf_sheath_symptom;
+      if (leaf_sheath_symptom === "กาบใบมีจุด") {
+        return agent.add(leaf_sheath_symptom);
+      }
+      else if (leaf_sheath_symptom === "กาบใบมีแผล") {
+        return agent.add(leaf_sheath_symptom);
+      }
+      else if (leaf_sheath_symptom === "กาบใบซีดเหลือง") {
+        return agent.add(leaf_sheath_symptom);
+      }
+    }
+
+    const stalk_select = async => {
+      let stalk_symptom = req.body.queryResult.parameters.Stalk_symptom;
+      if (stalk_sheath_symptom === "ลำต้นมีจุด") {
+        return agent.add(stalk_symptom);
+      }
+      else if (stalk_sheath_symptom === "ลำต้นเน่า") {
+        return agent.add(stalk_symptom);
+      }
+      else if (stalk_sheath_symptom === "ลำต้นเหี่ยวแห้ง") {
+        return agent.add(stalk_symptom);
+      }
+      else if (stalk_sheath_symptom === "ลำต้นมีแผล") {
+        return agent.add(stalk_symptom);
+      }
+      else if (stalk_sheath_symptom === "กลวงเป็นโพรง") {
+        return agent.add(stalk_symptom);
+      }
+    }
+
+    
 
 
     let intentMap = new Map();
@@ -1394,10 +1242,10 @@ exports.webhook = functions
     intentMap.set('Stalk - Select Symptom', stalk_select);
 
     // Disease Leaf - Select Symptom
-    intentMap.set('Leaf - Select Symptom', leaf_select);
+    //intentMap.set('Leaf - Select Symptom', leaf_select);
 
     // Disease Leaf-Spot
-    intentMap.set('Leaf - Spot', leaf_spot);
+    //intentMap.set('Leaf - Spot', leaf_spot);
 
     agent.handleRequest(intentMap);
   });

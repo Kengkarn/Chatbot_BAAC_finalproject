@@ -1206,131 +1206,162 @@ exports.webhook = functions
 
     const disease_card = async => {
       const d_name = req.body.queryResult.parameters.disease;
-      return queryDisease = db.collection('Disease').where('diseaseNameTH', '==', d_name).get().then(function(querySnapshot){
+      return queryDisease = db.collection('Disease').where('diseaseNameTH', '==', d_name).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-          var dataa = doc.data()
-          agent.add(dataa.symptom)
-      });
-    });
-      /*  let buttonMsg = {
-          "type": "flex",
-          "altText": "Flex Message",
-          "contents": {
-            "type": "bubble",
-            "direction": "ltr",
-            "header": {
-              "type": "box",
-              "layout": "vertical",
-              "contents": [
-                {
-                  "type": "text",
-                  "text": `${doc.data().diseaseNameTH}`,
-                  "align": "center"
-                }
-              ]
-            },
-            "body": {
-              "type": "box",
-              "layout": "vertical",
-              "contents": [
-                {
-                  "type": "image",
-                  "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                }
-              ]
-            },
-            "footer": {
-              "type": "box",
-              "layout": "vertical",
-              "contents": [
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "สาเหตุ",
-                    "text": `${doc.data().casue}`
+          var data = doc.data()
+          //agent.add(dataa.symptom)
+          let buttonMsg = {
+            "type": "flex",
+            "altText": "Flex Message",
+            "contents": {
+              "type": "bubble",
+              "direction": "ltr",
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": `${data.diseaseNameTH}`,
+                    "align": "center"
                   }
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "อาการ",
-                    "text": `${doc.data().symptom}`
+                ]
+              },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "image",
+                    "url": `${data.url}`,
+                    "size": "full"
                   }
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "วิธีรักษา",
-                    "text": `${doc.data().treatment}`
+                ]
+              },
+              "footer": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "สาเหตุ",
+                      "text": `${data.forTemplate[0]}`
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "อาการ",
+                      "text": `${data.forTemplate[1]}`
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "วิธีรักษา",
+                      "text": `${data.forTemplate[2]}`
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "การป้องกัน",
+                      "text": `${data.forTemplate[3]}`
+                    }
                   }
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "การป้องกัน",
-                    "text": `${doc.data().protection}`
-                  }
-                }
-              ]
+                ]
+              }
             }
           }
-        }
-        const payloadMsg = new Payload("LINE", buttonMsg, {
-          sendAsMessage: true
+          const payloadMsg = new Payload("LINE", buttonMsg, {
+            sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
         });
-        return agent.add(payloadMsg);
-      });*/
+      });
     }
 
-let intentMap = new Map();
-// knowledge
-intentMap.set("Knowledge", knowledge);
+    const disease_cause = async => {
+      const d_name = req.body.queryResult.parameters.disease;
+      //const d_cause = req.body.queryResult.parameters.disease_cause;
+      return queryCause = db.collection('Disease').where('diseaseNameTH', '==', d_name).get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          agent.add(doc.data().cause)
+        });
+      });
+    }
 
-// Knowledge - Select
-intentMap.set('Knowledge - Select', knowledge_select);
+    const disease_symptom = async => {
+      const d_name = req.body.queryResult.parameters.disease;
+      //const d_symptom = req.body.queryResult.parameters.disease_cause;
+      return querySymptom = db.collection('Disease').where('diseaseNameTH', '==', d_name).get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          agent.add(doc.data().symptom)
+        });
+      });
+    }
 
-// Disease
-intentMap.set('Disease', disease);
+    const disease_treatment = async => {
+      const d_name = req.body.queryResult.parameters.disease;
+      //const d_treatment = req.body.queryResult.parameters.disease_cause;
+      return queryTreatment = db.collection('Disease').where('diseaseNameTH', '==', d_name).get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          agent.add(doc.data().treatment)
+        });
+      });
+    }
 
-// Disease Carousel
-intentMap.set('Disease Carousel', disease_carousel);
-
-// Disease Carousel - Select
-intentMap.set('Disease Carousel - Select', disease_select);
-
-// Disease Imagemap
-intentMap.set('Disease Imagemap', disease_imagemap);
-
-// Disease Imagemap - Part
-intentMap.set('Disease Imagemap - Select Part', disease_imagemap_part);
-
-// Disease Ear - Select Symptom
-intentMap.set('Ear - Select Symptom', ear_select);
-
-// Disease Base - Select Symptom
-intentMap.set('Base - Select Symptom', base_select);
-
-// Disease Leaf-Sheath - Select Symptom
-intentMap.set('Leaf-Sheath - Select Symptom', leaf_sheath_select);
-
-// Disease Stalk - Select Symptom
-intentMap.set('Stalk - Select Symptom', stalk_select);
-
-// Disease Leaf - Select Symptom
-//intentMap.set('Leaf - Select Symptom', leaf_select);
-
-// Disease Leaf-Spot
-//intentMap.set('Leaf - Spot', leaf_spot);
-
-intentMap.set('Disease card', disease_card);
-
+    const disease_protection = async => {
+      const d_name = req.body.queryResult.parameters.disease;
+      //const d_protection = req.body.queryResult.parameters.disease_cause;
+      return queryProtection = db.collection('Disease').where('diseaseNameTH', '==', d_name).get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          agent.add(doc.data().protection)
+        });
+      });
+    }
+    
 
 
-agent.handleRequest(intentMap);
+    let intentMap = new Map();
+    // knowledge
+    intentMap.set("Knowledge", knowledge);
+    intentMap.set('Knowledge - Select', knowledge_select);
+
+    // Disease
+    intentMap.set('Disease', disease);
+
+    // Disease Carousel
+    intentMap.set('Disease Carousel', disease_carousel);
+    intentMap.set('Disease Carousel - Select', disease_select);
+
+    // Disease Imagemap
+    intentMap.set('Disease Imagemap', disease_imagemap);
+    intentMap.set('Disease Imagemap - Select Part', disease_imagemap_part);
+    intentMap.set('Ear - Select Symptom', ear_select);
+    intentMap.set('Base - Select Symptom', base_select);
+    intentMap.set('Leaf-Sheath - Select Symptom', leaf_sheath_select);
+    intentMap.set('Stalk - Select Symptom', stalk_select);
+    //intentMap.set('Leaf - Select Symptom', leaf_select);
+
+    // Disease Leaf-Spot
+    //intentMap.set('Leaf - Spot', leaf_spot);
+
+    //Disease Card
+    intentMap.set('Disease card', disease_card);
+    intentMap.set('Disease card - cause', disease_cause);
+    intentMap.set('Disease card - symptom', disease_symptom);
+    intentMap.set('Disease card - treatment', disease_treatment);
+    intentMap.set('Disease card - protection', disease_protection);
+    
+
+
+    agent.handleRequest(intentMap);
   });
 
 //function สำหรับ reply กลับไปหา LINE โดยต้องการ reply token และ messages (array)

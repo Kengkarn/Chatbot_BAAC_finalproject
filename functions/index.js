@@ -1077,172 +1077,46 @@ exports.webhook = functions
       if (ear_symptom === "ฝักมีจุด") {
         return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('spot').get()
           .then(doc => {
-              /*agent.add(doc.data().diseaseNameTH['brown'])
-            });*/
-            
-            /*doc => {
-            doc.forEach(doc => agent.add(doc.data()))*/
             let carouselMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
+              "type": "template",
+              "altText": "เลือกประเภทข้าวโพด",
+              "template": {
                 "type": "carousel",
-                "contents": [
+                "actions": [],
+                "columns": [
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": ear_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['brown']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['brown']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['brown']}`,
+                    "title": `${doc.data().diseaseNameTH['brown']}`,
+                    "text": ear_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['brown']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['brown']}`
+                      }
+                    ]
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": ear_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['swell']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['swell']}`
-                          }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": ear_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['gray']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['gray']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['swell']}`,
+                    "title": `${doc.data().diseaseNameTH['swell']}`,
+                    "text": ear_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['swell']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['swell']}`
+                      }
+                    ]
                   }
                 ]
               }
@@ -1256,63 +1130,29 @@ exports.webhook = functions
       else if (ear_symptom === "ฝักมีแผล") {
         return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('lesion').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": ear_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": ear_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": ear_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -1320,120 +1160,29 @@ exports.webhook = functions
       }
       else if (ear_symptom === "ฝักซีดเหลือง") {
         return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('yellow').get().then(doc => {
-          let carouselMsg = {
-            "type": "flex",
-            "altText": "Flex Message",
-            "contents": {
-              "type": "carousel",
-              "contents": [
+          let buttonMsg = {
+            "type": "template",
+            "altText": ear_symptom,
+            "template": {
+              "type": "buttons",
+              "actions": [
                 {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": ear_symptom,
-                        "align": "center"
-                      },
-                      {
-                        "type": "image",
-                        "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                      }
-                    ]
-                  },
-                  "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "Body",
-                        "align": "center"
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรูปเพิ่มเติม",
-                          "text": `${doc.data().diseaseNameTH[0]}`,
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรายละเอียด",
-                          "text": `${doc.data().diseaseNameTH[0]}`,
-                        }
-                      }
-                    ]
-                  }
+                  "type": "message",
+                  "label": "ดูรูปเพิ่มเติม",
+                  "text": `${doc.data().diseaseNameTH[0]}`
                 },
                 {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": ear_symptom,
-                        "align": "center"
-                      },
-                      {
-                        "type": "image",
-                        "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                      }
-                    ]
-                  },
-                  "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "description",
-                        "align": "center"
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรูปเพิ่มเติม",
-                          "text": `${doc.data().diseaseNameTH[1]}`,
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรายละเอียด",
-                          "text": `${doc.data().diseaseNameTH[1]}`,
-                        }
-                      }
-                    ]
-                  }
+                  "type": "message",
+                  "label": "อ่านรายละเอียด",
+                  "text": `${doc.data().diseaseNameTH[0]}`
                 }
-              ]
+              ],
+              "thumbnailImageUrl": `${doc.data().url}`,
+              "title": `${doc.data().diseaseNameTH[0]}`,
+              "text": ear_symptom
             }
           }
-          const payloadMsg = new Payload("LINE", carouselMsg, {
+          const payloadMsg = new Payload("LINE", buttonMsg, {
             sendAsMessage: true
           });
           return agent.add(payloadMsg);
@@ -1442,63 +1191,29 @@ exports.webhook = functions
       else if (ear_symptom === "ฝักมีราขาว") {
         return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('fungus').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": ear_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": ear_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": ear_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -1507,63 +1222,29 @@ exports.webhook = functions
       else if (ear_symptom === "ฝักเน่า") {
         return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('rot').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": ear_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": ear_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": ear_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -1572,114 +1253,45 @@ exports.webhook = functions
       else if (ear_symptom === "เมล็ดสีดำ") {
         return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('black-kernel').get().then(doc => {
           let carouselMsg = {
-            "type": "flex",
-            "altText": "Flex Message",
-            "contents": {
+            "type": "template",
+            "altText": "เลือกประเภทข้าวโพด",
+            "template": {
               "type": "carousel",
-              "contents": [
+              "actions": [],
+              "columns": [
                 {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": ear_symptom,
-                        "align": "center"
-                      },
-                      {
-                        "type": "image",
-                        "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                      }
-                    ]
-                  },
-                  "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "Body",
-                        "align": "center"
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรูปเพิ่มเติม",
-                          "text": `${doc.data().diseaseNameTH[0]}`,
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรายละเอียด",
-                          "text": `${doc.data().diseaseNameTH[0]}`,
-                        }
-                      }
-                    ]
-                  }
+                  "thumbnailImageUrl": `${doc.data().url[0]}`,
+                  "title": `${doc.data().diseaseNameTH[0]}`,
+                  "text": ear_symptom,
+                  "actions": [
+                    {
+                      "type": "message",
+                      "label": "ดูรูปเพิ่มเติม",
+                      "text": `${doc.data().diseaseNameTH[0]}`
+                    },
+                    {
+                      "type": "message",
+                      "label": "อ่านรายละเอียด",
+                      "text": `${doc.data().diseaseNameTH[0]}`
+                    }
+                  ]
                 },
                 {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": ear_symptom,
-                        "align": "center"
-                      },
-                      {
-                        "type": "image",
-                        "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                      }
-                    ]
-                  },
-                  "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "description",
-                        "align": "center"
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรูปเพิ่มเติม",
-                          "text": `${doc.data().diseaseNameTH[1]}`,
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรายละเอียด",
-                          "text": `${doc.data().diseaseNameTH[1]}`,
-                        }
-                      }
-                    ]
-                  }
+                  "thumbnailImageUrl": `${doc.data().url[1]}`,
+                  "title": `${doc.data().diseaseNameTH[1]}`,
+                  "text": ear_symptom,
+                  "actions": [
+                    {
+                      "type": "message",
+                      "label": "ดูรูปเพิ่มเติม",
+                      "text": `${doc.data().diseaseNameTH[1]}`
+                    },
+                    {
+                      "type": "message",
+                      "label": "อ่านรายละเอียด",
+                      "text": `${doc.data().diseaseNameTH[1]}`
+                    }
+                  ]
                 }
               ]
             }
@@ -1693,63 +1305,29 @@ exports.webhook = functions
       else if (ear_symptom === "ฝักมีปม") {
         return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('gall').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": ear_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": ear_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": ear_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -1757,172 +1335,29 @@ exports.webhook = functions
       }
       else if (ear_symptom === "ไม่มีเมล็ด" || ear_symptom === "เมล็ดน้อย") {
         return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('stunt').get().then(doc => {
-          let carouselMsg = {
-            "type": "flex",
-            "altText": "Flex Message",
-            "contents": {
-              "type": "carousel",
-              "contents": [
+          let buttonMsg = {
+            "type": "template",
+            "altText": ear_symptom,
+            "template": {
+              "type": "buttons",
+              "actions": [
                 {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": ear_symptom,
-                        "align": "center"
-                      },
-                      {
-                        "type": "image",
-                        "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                      }
-                    ]
-                  },
-                  "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "description",
-                        "align": "center"
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรูปเพิ่มเติม",
-                          "text": `${doc.data().diseaseNameTH[0]}`
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรายละเอียด",
-                          "text": `${doc.data().diseaseNameTH[0]}`
-                        }
-                      }
-                    ]
-                  }
+                  "type": "message",
+                  "label": "ดูรูปเพิ่มเติม",
+                  "text": `${doc.data().diseaseNameTH[2]}`
                 },
                 {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": ear_symptom,
-                        "align": "center"
-                      },
-                      {
-                        "type": "image",
-                        "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                      }
-                    ]
-                  },
-                  "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "description",
-                        "align": "center"
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรูปเพิ่มเติม",
-                          "text": `${doc.data().diseaseNameTH[1]}`
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรายละเอียด",
-                          "text": `${doc.data().diseaseNameTH[1]}`
-                        }
-                      }
-                    ]
-                  }
-                },
-                {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": ear_symptom,
-                        "align": "center"
-                      },
-                      {
-                        "type": "image",
-                        "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                      }
-                    ]
-                  },
-                  "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "description",
-                        "align": "center"
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรูปเพิ่มเติม",
-                          "text": `${doc.data().diseaseNameTH[2]}`
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรายละเอียด",
-                          "text": `${doc.data().diseaseNameTH[2]}`
-                        }
-                      }
-                    ]
-                  }
+                  "type": "message",
+                  "label": "อ่านรายละเอียด",
+                  "text": `${doc.data().diseaseNameTH[2]}`
                 }
-              ]
+              ],
+              "thumbnailImageUrl": `${doc.data().url}`,
+              "title": `${doc.data().diseaseNameTH[2]}`,
+              "text": ear_symptom
             }
           }
-          const payloadMsg = new Payload("LINE", carouselMsg, {
+          const payloadMsg = new Payload("LINE", buttonMsg, {
             sendAsMessage: true
           });
           return agent.add(payloadMsg);
@@ -1936,63 +1371,29 @@ exports.webhook = functions
       if (basal_symptom === "โคนต้นแตก") {
         return db.collection('Symptom_disease').doc('Basal').collection('symptom').doc('split').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": basal_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": basal_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": basal_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -2002,166 +1403,62 @@ exports.webhook = functions
         return db.collection('Symptom_disease').doc('Basal').collection('symptom').doc('water-soaked').get()
           .then(doc => {
             let carouselMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
+              "type": "template",
+              "altText": basal_symptom,
+              "template": {
                 "type": "carousel",
-                "contents": [
+                "actions": [],
+                "columns": [
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": basal_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['dark brown']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['dark brown']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['dark brown']}`,
+                    "title": `${doc.data().diseaseNameTH['dark brown']}`,
+                    "text": basal_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['dark brown']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['dark brown']}`
+                      }
+                    ]
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": basal_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['reddish brown']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['reddish brown']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['grayish green']}`,
+                    "title": `${doc.data().diseaseNameTH['grayish green']}`,
+                    "text": basal_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['grayish green']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['grayish green']}`
+                      }
+                    ]
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": basal_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['grayish green']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['grayish green']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['reddish brown']}`,
+                    "title": `${doc.data().diseaseNameTH['reddish brown']}`,
+                    "text": basal_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['reddish brown']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['reddish brown']}`
+                      }
+                    ]
                   }
                 ]
               }
@@ -2171,115 +1468,33 @@ exports.webhook = functions
             });
             return agent.add(payloadMsg);
           });
-        /*const buttonMsg = {
-          "type": "flex",
-          "altText": "Flex Message",
-          "contents": {
-            "type": "bubble",
-            "direction": "ltr",
-            "body": {
-              "type": "box",
-              "layout": "vertical",
-              "contents": [
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "สีน้ำตาลเข้ม",
-                    "text": "โคนต้นมีแผลช้ำสีน้ำตาลเข้ม"
-                  }
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "สีน้ำตาลแดง",
-                    "text": "โคนต้นมีแผลช้ำสีน้ำตาลแดง"
-                  }
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "สีเขียวอมเทา",
-                    "text": "โคนต้นมีแผลช้ำสีเขียวอมเทา"
-                  }
-                }
-              ]
-            }
-          }
-        }
-        const payloadMsg = new Payload("LINE", buttonMsg, {
-          sendAsMessage: true
-        });
-        return agent.add("แผลช้ำที่โคนมีสีอะไรคะ"), agent.add(payloadMsg);*/
       }
       else if (basal_symptom === "โคนต้นมีน้ำเมือก") {
         return db.collection('Symptom_disease').doc('Basal').collection('symptom').doc('slime').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": basal_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": basal_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": basal_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -2289,59 +1504,25 @@ exports.webhook = functions
         return db.collection('Symptom_disease').doc('Basal').collection('symptom').doc('fall-over').get()
           .then(doc => {
             let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": basal_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+              "type": "template",
+              "altText": "this is a buttons template",
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": basal_symptom
               }
             }
             const payloadMsg = new Payload("LINE", flexMsg, {
@@ -2353,63 +1534,29 @@ exports.webhook = functions
       else if (basal_symptom === "โคนต้นมีกลิ่นเหม็น") {
         return db.collection('Symptom_disease').doc('Basal').collection('symptom').doc('smell').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": basal_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": basal_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": basal_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -2418,267 +1565,35 @@ exports.webhook = functions
       else if (basal_symptom === "โคนต้นซีดเหลือง") {
         return db.collection('Symptom_disease').doc('Basal').collection('symptom').doc('yellow').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": basal_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": basal_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": basal_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
           });
       }
     }
-    /*const basal_ws = async => {
-      let basal_ws_colour = req.body.queryResult.parameters.Basal_symptom_ws;
-      if (basal_ws_colour === "โคนต้นมีแผลช้ำสีน้ำตาลแดง") {
-        return db.doc('Symptom_disease/Basal/symptom/water-soaked/colour/reddish brown').get()
-          .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": basal_ws_colour,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-            const payloadMsg = new Payload("LINE", flexMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (basal_ws_colour === "โคนต้นมีแผลช้ำสีน้ำตาลเข้ม") {
-        return db.doc('Symptom_disease/Basal/symptom/water-soaked/colour/dark brown').get()
-          .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": basal_ws_colour,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-            const payloadMsg = new Payload("LINE", flexMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (basal_ws_colour === "โคนต้นมีแผลช้ำสีเขียวอมเทา") {
-        return db.doc('Symptom_disease/Basal/symptom/water-soaked/colour/grayish green').get()
-          .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": basal_ws_colour,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-            const payloadMsg = new Payload("LINE", flexMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-    }*/
 
 
     const leaf_sheath_select = async => {
@@ -2686,172 +1601,29 @@ exports.webhook = functions
       if (leaf_sheath_symptom === "กาบใบมีจุด") {
         return db.collection('Symptom_disease').doc('LeafSheath').collection('symptom').doc('spot').get()
           .then(doc => {
-            let carouselMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "carousel",
-                "contents": [
+            let buttonMsg = {
+              "type": "template",
+              "altText": leaf_sheath_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_sheath_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['straw']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['straw']}`
-                          }
-                        }
-                      ]
-                    }
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH['swell']}`
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_sheath_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['swell']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['swell']}`
-                          }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_sheath_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['water-soaked']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['water-soaked']}`
-                          }
-                        }
-                      ]
-                    }
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH['swell']}`
                   }
-                ]
+                ],
+                "thumbnailImageUrl": `${doc.data().url['swell']}`,
+                "title": `${doc.data().diseaseNameTH['swell']}`,
+                "text": leaf_sheath_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", carouselMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -2860,120 +1632,29 @@ exports.webhook = functions
       else if (leaf_sheath_symptom === "กาบใบมีแผล") {
         return db.collection('Symptom_disease').doc('LeafSheath').collection('symptom').doc('lesion').get()
           .then(doc => {
-            let carouselMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "carousel",
-                "contents": [
+            let buttonMsg = {
+              "type": "template",
+              "altText": leaf_sheath_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_sheath_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['straw']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['straw']}`
-                          }
-                        }
-                      ]
-                    }
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH['straw']}`
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_sheath_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['gray']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['gray']}`
-                          }
-                        }
-                      ]
-                    }
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH['straw']}`
                   }
-                ]
+                ],
+                "thumbnailImageUrl": `${doc.data().url['straw']}`,
+                "title": `${doc.data().diseaseNameTH['straw']}`,
+                "text": leaf_sheath_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", carouselMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -2982,63 +1663,29 @@ exports.webhook = functions
       else if (leaf_sheath_symptom === "กาบใบซีดเหลือง") {
         return db.collection('Symptom_disease').doc('LeafSheath').collection('symptom').doc('yellow').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": leaf_sheath_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": leaf_sheath_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": leaf_sheath_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -3047,63 +1694,29 @@ exports.webhook = functions
       else if (leaf_sheath_symptom === "กาบใบแห้ง") {
         return db.collection('Symptom_disease').doc('LeafSheath').collection('symptom').doc('blight').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": leaf_sheath_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": leaf_sheath_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": leaf_sheath_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -3116,172 +1729,29 @@ exports.webhook = functions
       if (stalk_symptom === "ลำต้นมีจุด") {
         return db.collection('Symptom_disease').doc('Stalk').collection('symptom').doc('spot').get()
           .then(doc => {
-            let carouselMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "carousel",
-                "contents": [
+            let buttonMsg = {
+              "type": "template",
+              "altText": stalk_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": stalk_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['blcak']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['black']}`
-                          }
-                        }
-                      ]
-                    }
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": stalk_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['dark brown']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['dark brown']}`
-                          }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": stalk_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['swell']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['swell']}`
-                          }
-                        }
-                      ]
-                    }
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
                   }
-                ]
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": stalk_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", carouselMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -3291,166 +1761,62 @@ exports.webhook = functions
         return db.collection('Symptom_disease').doc('Stalk').collection('symptom').doc('rot').get()
           .then(doc => {
             let carouselMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
+              "type": "template",
+              "altText": stalk_symptom,
+              "template": {
                 "type": "carousel",
-                "contents": [
+                "actions": [],
+                "columns": [
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": stalk_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH[0]}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH[0]}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url[0]}`,
+                    "title": `${doc.data().diseaseNameTH[0]}`,
+                    "text": stalk_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH[0]}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH[0]}`
+                      }
+                    ]
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": stalk_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH[1]}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH[1]}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url[1]}`,
+                    "title": `${doc.data().diseaseNameTH[1]}`,
+                    "text": stalk_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH[1]}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH[1]}`
+                      }
+                    ]
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": stalk_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH[2]}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH[2]}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url[2]}`,
+                    "title": `${doc.data().diseaseNameTH[2]}`,
+                    "text": stalk_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH[2]}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH[2]}`
+                      }
+                    ]
                   }
                 ]
               }
@@ -3464,63 +1830,29 @@ exports.webhook = functions
       else if (stalk_symptom === "ลำต้นเหี่ยวแห้ง") {
         return db.collection('Symptom_disease').doc('Stalk').collection('symptom').doc('blight').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": stalk_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": stalk_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": stalk_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -3529,63 +1861,29 @@ exports.webhook = functions
       else if (stalk_symptom === "ลำต้นมีแผล") {
         return db.collection('Symptom_disease').doc('Stalk').collection('symptom').doc('lesion').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": stalk_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": stalk_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": stalk_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -3594,63 +1892,29 @@ exports.webhook = functions
       else if (stalk_symptom === "กลวงเป็นโพรง") {
         return db.collection('Symptom_disease').doc('Stalk').collection('symptom').doc('hollow').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": stalk_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": stalk_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": stalk_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -3663,166 +1927,62 @@ exports.webhook = functions
       if (leaf_symptom === "ใบไหม้") {
         return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('burn').get().then(doc => {
           let carouselMsg = {
-            "type": "flex",
-            "altText": "Flex Message",
-            "contents": {
+            "type": "template",
+            "altText": leaf_symptom,
+            "template": {
               "type": "carousel",
-              "contents": [
+              "actions": [],
+              "columns": [
                 {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": leaf_symptom,
-                        "align": "center"
-                      },
-                      {
-                        "type": "image",
-                        "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                      }
-                    ]
-                  },
-                  "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "description",
-                        "align": "center"
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรูปเพิ่มเติม",
-                          "text": `${doc.data().diseaseNameTH[0]}`
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรายละเอียด",
-                          "text": `${doc.data().diseaseNameTH[0]}`
-                        }
-                      }
-                    ]
-                  }
+                  "thumbnailImageUrl": `${doc.data().url[0]}`,
+                  "title": `${doc.data().diseaseNameTH[0]}`,
+                  "text": leaf_symptom,
+                  "actions": [
+                    {
+                      "type": "message",
+                      "label": "ดูรูปเพิ่มเติม",
+                      "text": `${doc.data().diseaseNameTH[0]}`
+                    },
+                    {
+                      "type": "message",
+                      "label": "อ่านรายละเอียด",
+                      "text": `${doc.data().diseaseNameTH[0]}`
+                    }
+                  ]
                 },
                 {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": leaf_symptom,
-                        "align": "center"
-                      },
-                      {
-                        "type": "image",
-                        "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                      }
-                    ]
-                  },
-                  "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "description",
-                        "align": "center"
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรูปเพิ่มเติม",
-                          "text": `${doc.data().diseaseNameTH[1]}`
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรายละเอียด",
-                          "text": `${doc.data().diseaseNameTH[1]}`
-                        }
-                      }
-                    ]
-                  }
+                  "thumbnailImageUrl": `${doc.data().url[1]}`,
+                  "title": `${doc.data().diseaseNameTH[1]}`,
+                  "text": leaf_symptom,
+                  "actions": [
+                    {
+                      "type": "message",
+                      "label": "ดูรูปเพิ่มเติม",
+                      "text": `${doc.data().diseaseNameTH[1]}`
+                    },
+                    {
+                      "type": "message",
+                      "label": "อ่านรายละเอียด",
+                      "text": `${doc.data().diseaseNameTH[1]}`
+                    }
+                  ]
                 },
                 {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": leaf_symptom,
-                        "align": "center"
-                      },
-                      {
-                        "type": "image",
-                        "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                      }
-                    ]
-                  },
-                  "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "description",
-                        "align": "center"
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรูปเพิ่มเติม",
-                          "text": `${doc.data().diseaseNameTH[2]}`
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรายละเอียด",
-                          "text": `${doc.data().diseaseNameTH[2]}`
-                        }
-                      }
-                    ]
-                  }
+                  "thumbnailImageUrl": `${doc.data().url[2]}`,
+                  "title": `${doc.data().diseaseNameTH[2]}`,
+                  "text": leaf_symptom,
+                  "actions": [
+                    {
+                      "type": "message",
+                      "label": "ดูรูปเพิ่มเติม",
+                      "text": `${doc.data().diseaseNameTH[2]}`
+                    },
+                    {
+                      "type": "message",
+                      "label": "อ่านรายละเอียด",
+                      "text": `${doc.data().diseaseNameTH[2]}`
+                    }
+                  ]
                 }
               ]
             }
@@ -3836,63 +1996,29 @@ exports.webhook = functions
       else if (leaf_symptom === "ใบมีฝุ่นขาว") {
         return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('powder').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": leaf_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": leaf_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": leaf_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -3901,63 +2027,29 @@ exports.webhook = functions
       else if (leaf_symptom === "ใบมีปม") {
         return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('gall').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": leaf_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": leaf_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": leaf_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -3966,63 +2058,29 @@ exports.webhook = functions
       else if (leaf_symptom === "ใบซีดเหลือง") {
         return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('yellow').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": leaf_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": leaf_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": leaf_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -4031,270 +2089,79 @@ exports.webhook = functions
       else if (leaf_symptom === "ใบแห้ง") {
         return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('blight').get().then(doc => {
           let carouselMsg = {
-            "type": "flex",
-            "altText": "Flex Message",
-            "contents": {
+            "type": "template",
+            "altText": leaf_symptom,
+            "template": {
               "type": "carousel",
-              "contents": [
+              "actions": [],
+              "columns": [
                 {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": leaf_symptom,
-                        "align": "center"
-                      },
-                      {
-                        "type": "image",
-                        "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                      }
-                    ]
-                  },
-                  "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "description",
-                        "align": "center"
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรูปเพิ่มเติม",
-                          "text": `${doc.data().diseaseNameTH[0]}`
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรายละเอียด",
-                          "text": `${doc.data().diseaseNameTH[0]}`
-                        }
-                      }
-                    ]
-                  }
+                  "thumbnailImageUrl": `${doc.data().url[0]}`,
+                  "title": `${doc.data().diseaseNameTH[0]}`,
+                  "text": leaf_symptom,
+                  "actions": [
+                    {
+                      "type": "message",
+                      "label": "ดูรูปเพิ่มเติม",
+                      "text": `${doc.data().diseaseNameTH[0]}`
+                    },
+                    {
+                      "type": "message",
+                      "label": "อ่านรายละเอียด",
+                      "text": `${doc.data().diseaseNameTH[0]}`
+                    }
+                  ]
                 },
                 {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": leaf_symptom,
-                        "align": "center"
-                      },
-                      {
-                        "type": "image",
-                        "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                      }
-                    ]
-                  },
-                  "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "description",
-                        "align": "center"
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรูปเพิ่มเติม",
-                          "text": `${doc.data().diseaseNameTH[1]}`
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรายละเอียด",
-                          "text": `${doc.data().diseaseNameTH[1]}`
-                        }
-                      }
-                    ]
-                  }
+                  "thumbnailImageUrl": `${doc.data().url[1]}`,
+                  "title": `${doc.data().diseaseNameTH[1]}`,
+                  "text": leaf_symptom,
+                  "actions": [
+                    {
+                      "type": "message",
+                      "label": "ดูรูปเพิ่มเติม",
+                      "text": `${doc.data().diseaseNameTH[1]}`
+                    },
+                    {
+                      "type": "message",
+                      "label": "อ่านรายละเอียด",
+                      "text": `${doc.data().diseaseNameTH[1]}`
+                    }
+                  ]
                 },
                 {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": leaf_symptom,
-                        "align": "center"
-                      },
-                      {
-                        "type": "image",
-                        "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                      }
-                    ]
-                  },
-                  "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "description",
-                        "align": "center"
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรูปเพิ่มเติม",
-                          "text": `${doc.data().diseaseNameTH[2]}`
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรายละเอียด",
-                          "text": `${doc.data().diseaseNameTH[2]}`
-                        }
-                      }
-                    ]
-                  }
+                  "thumbnailImageUrl": `${doc.data().url[2]}`,
+                  "title": `${doc.data().diseaseNameTH[2]}`,
+                  "text": leaf_symptom,
+                  "actions": [
+                    {
+                      "type": "message",
+                      "label": "ดูรูปเพิ่มเติม",
+                      "text": `${doc.data().diseaseNameTH[2]}`
+                    },
+                    {
+                      "type": "message",
+                      "label": "อ่านรายละเอียด",
+                      "text": `${doc.data().diseaseNameTH[2]}`
+                    }
+                  ]
                 },
                 {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": leaf_symptom,
-                        "align": "center"
-                      },
-                      {
-                        "type": "image",
-                        "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                      }
-                    ]
-                  },
-                  "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "description",
-                        "align": "center"
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรูปเพิ่มเติม",
-                          "text": `${doc.data().diseaseNameTH[3]}`
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรายละเอียด",
-                          "text": `${doc.data().diseaseNameTH[3]}`
-                        }
-                      }
-                    ]
-                  }
-                },
-                {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": leaf_symptom,
-                        "align": "center"
-                      },
-                      {
-                        "type": "image",
-                        "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                      }
-                    ]
-                  },
-                  "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "description",
-                        "align": "center"
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรูปเพิ่มเติม",
-                          "text": `${doc.data().diseaseNameTH[4]}`
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "ดูรายละเอียด",
-                          "text": `${doc.data().diseaseNameTH[4]}`
-                        }
-                      }
-                    ]
-                  }
+                  "thumbnailImageUrl": `${doc.data().url[4]}`,
+                  "title": `${doc.data().diseaseNameTH[4]}`,
+                  "text": leaf_symptom,
+                  "actions": [
+                    {
+                      "type": "message",
+                      "label": "ดูรูปเพิ่มเติม",
+                      "text": `${doc.data().diseaseNameTH[4]}`
+                    },
+                    {
+                      "type": "message",
+                      "label": "อ่านรายละเอียด",
+                      "text": `${doc.data().diseaseNameTH[4]}`
+                    }
+                  ]
                 }
               ]
             }
@@ -4309,322 +2176,114 @@ exports.webhook = functions
         return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').get()
           .then(doc => {
             let carouselMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
+              "type": "template",
+              "altText": leaf_symptom,
+              "template": {
                 "type": "carousel",
-                "contents": [
+                "actions": [],
+                "columns": [
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['brown']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['brown']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['brown']}`,
+                    "title": `${doc.data().diseaseNameTH['brown']}`,
+                    "text": leaf_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['brown']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['brown']}`
+                      }
+                    ]
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['gray']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['gray']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['gray']}`,
+                    "title": `${doc.data().diseaseNameTH['gray']}`,
+                    "text": leaf_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['gray']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['gray']}`
+                      }
+                    ]
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['pale']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['pale']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['pale']}`,
+                    "title": `${doc.data().diseaseNameTH['pale']}`,
+                    "text": leaf_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['pale']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['pale']}`
+                      }
+                    ]
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['swell']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['swell']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['white']}`,
+                    "title": `${doc.data().diseaseNameTH['white']}`,
+                    "text": leaf_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['white']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['white']}`
+                      }
+                    ]
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['white']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['white']}`
-                          }
-                        }
-                      ]
-                    }
-                  },
+                    "thumbnailImageUrl": `${doc.data().url['yellow']}`,
+                    "title": `${doc.data().diseaseNameTH['yellow']}`,
+                    "text": leaf_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['yellow']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['yellow']}`
+                      }
+                    ]
+                  }
+                  ,
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['yellow']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['yellow']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['swell']}`,
+                    "title": `${doc.data().diseaseNameTH['swell']}`,
+                    "text": leaf_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['swell']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['swell']}`
+                      }
+                    ]
                   }
                 ]
               }
@@ -4639,374 +2298,147 @@ exports.webhook = functions
         return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').get()
           .then(doc => {
             let carouselMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
+              "type": "template",
+              "altText": leaf_symptom,
+              "template": {
                 "type": "carousel",
-                "contents": [
+                "actions": [],
+                "columns": [
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['brown']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['brown']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['brown']}`,
+                    "title": `${doc.data().diseaseNameTH['brown']}`,
+                    "text": leaf_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['brown']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['brown']}`
+                      }
+                    ]
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['gray']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['gray']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['gray']}`,
+                    "title": `${doc.data().diseaseNameTH['gray']}`,
+                    "text": leaf_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['gray']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['gray']}`
+                      }
+                    ]
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['light green']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['light green']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['gray2']}`,
+                    "title": `${doc.data().diseaseNameTH['gray2']}`,
+                    "text": leaf_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['gray2']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['gray2']}`
+                      }
+                    ]
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['straw']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['straw']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['gray3']}`,
+                    "title": `${doc.data().diseaseNameTH['gray3']}`,
+                    "text": leaf_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['gray3']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['gray3']}`
+                      }
+                    ]
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['white']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['white']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['layer']}`,
+                    "title": `${doc.data().diseaseNameTH['layer']}`,
+                    "text": leaf_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['layer']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['layer']}`
+                      }
+                    ]
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['yellow']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['yellow']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['yellow']}`,
+                    "title": `${doc.data().diseaseNameTH['yellow']}`,
+                    "text": leaf_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['yellow']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['yellow']}`
+                      }
+                    ]
                   },
                   {
-                    "type": "bubble",
-                    "direction": "ltr",
-                    "header": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": leaf_symptom,
-                          "align": "center"
-                        },
-                        {
-                          "type": "image",
-                          "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                        }
-                      ]
-                    },
-                    "body": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "text",
-                          "text": "description",
-                          "align": "center"
-                        }
-                      ]
-                    },
-                    "footer": {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรูปเพิ่มเติม",
-                            "text": `${doc.data().diseaseNameTH['layer']}`
-                          }
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "ดูรายละเอียด",
-                            "text": `${doc.data().diseaseNameTH['layer']}`
-                          }
-                        }
-                      ]
-                    }
+                    "thumbnailImageUrl": `${doc.data().url['light green']}`,
+                    "title": `${doc.data().diseaseNameTH['light green']}`,
+                    "text": leaf_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['light green']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['light green']}`
+                      }
+                    ]
+                  },
+                  {
+                    "thumbnailImageUrl": `${doc.data().url['straw']}`,
+                    "title": `${doc.data().diseaseNameTH['straw']}`,
+                    "text": leaf_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": `${doc.data().diseaseNameTH['straw']}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH['straw']}`
+                      }
+                    ]
                   }
                 ]
               }
@@ -5020,63 +2452,29 @@ exports.webhook = functions
       else if (leaf_symptom === "ใบมีแผลฉ่ำน้ำ") {
         return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('water-soaked').get()
           .then(doc => {
-            let flexMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "header": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": leaf_symptom,
-                      "align": "center"
-                    },
-                    {
-                      "type": "image",
-                      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png"
-                    }
-                  ]
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "Body",
-                      "align": "center"
-                    }
-                  ]
-                },
-                "footer": {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "ดูรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    }
-                  ]
-                }
+            let buttonMsg = {
+              "type": "template",
+              "altText": leaf_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": leaf_symptom
               }
             }
-            const payloadMsg = new Payload("LINE", flexMsg, {
+            const payloadMsg = new Payload("LINE", buttonMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);

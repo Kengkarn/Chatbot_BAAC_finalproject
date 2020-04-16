@@ -243,7 +243,7 @@ exports.webhook = functions
       const payloadMsg = new Payload("LINE", buttonMsg, {
         sendAsMessage: true
       });
-      return agent.add(payloadMsg);
+      return agent.add("ต้องการทราบข้อมูลโรคข้าวโพดด้วยวิธีไหนคะ?"), agent.add(payloadMsg);
     }
 
     // ส่วน function disease_carousel แสดงโรคทั้งหมดที่มีในระบบ ------ [2.1]
@@ -257,7 +257,7 @@ exports.webhook = functions
           "actions": [],
           "columns": [
             {
-              "thumbnailImageUrl": "https://i.ibb.co/S5rzJjQ/Corn-Downy-Mildew.png",
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%A3%E0%B8%B2%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%84%E0%B9%89%E0%B8%B2%E0%B8%87%2F%E0%B8%A3%E0%B8%B2%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%84%E0%B9%89%E0%B8%B2%E0%B8%87.jpg?alt=media&token=aeaf06d2-a701-494a-ad5f-bcb17ec2dc18#?width=auto%22",
               "title": "โรคราน้ำค้าง หรือโรคใบลาย",
               "text": "โรคราน้ำค้าง หรือโรคใบลาย (Corn Downy Mildew)",
               "actions": [
@@ -279,29 +279,29 @@ exports.webhook = functions
               ]
             },
             {
-              "thumbnailImageUrl": "https://i.ibb.co/S5rzJjQ/Corn-Downy-Mildew.png",
-              "title": "โรคสมัท หรือ",
-              "text": "โรคราน้ำค้าง หรือโรคใบลาย (Corn Downy Mildew)",
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%AA%E0%B8%A1%E0%B8%B1%E0%B8%97%2FcommonSmut.jpg?alt=media&token=c2e53e57-234b-4805-b653-ba560ab62f82#?width=auto%22",
+              "title": "โรคสมัท หรือ ราเขม่าสีดำ",
+              "text": "โรคสมัท หรือ ราเขม่าสีดำ (Common Smut)",
               "actions": [
                 {
                   "type": "message",
                   "label": "สาเหตุ",
-                  "text": "สาเหตุของโรคราน้ำค้าง"
+                  "text": "สาเหตุของโรคสมัท"
                 },
                 {
                   "type": "message",
                   "label": "อาการ",
-                  "text": "อาการโรคราน้ำค้าง"
+                  "text": "อาการโรคสมัท"
                 },
                 {
                   "type": "message",
                   "label": "การป้องกัน",
-                  "text": "การป้องกันโรคราน้ำค้าง"
+                  "text": "การป้องกันโรคสมัท"
                 }
               ]
             },
             {
-              "thumbnailImageUrl": "https://i.ibb.co/qRW5gvr/Southern-or-Maydis-Leaf-Blight.png",
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B9%83%E0%B8%9A%E0%B9%84%E0%B8%AB%E0%B8%A1%E0%B9%89%E0%B9%81%E0%B8%9C%E0%B8%A5%E0%B9%80%E0%B8%A5%E0%B9%87%E0%B8%81%2Flek3.jpg?alt=media&token=0f1f6621-7ba1-462a-b69f-81bd23f650f6",
               "title": "โรคใบไหม้แผลเล็ก",
               "text": "โรคใบไหม้แผลเล็ก  (Southern or Maydis LeafBlight)",
               "actions": [
@@ -323,7 +323,7 @@ exports.webhook = functions
               ]
             },
             {
-              "thumbnailImageUrl": "https://www.aggrogroups.com/images/contents/news/pest-problem/corn-southern-rust/549.jpg",
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%A3%E0%B8%B2%E0%B8%AA%E0%B8%99%E0%B8%B4%E0%B8%A1%2F%E0%B8%A3%E0%B8%B2%E0%B8%AA%E0%B8%99%E0%B8%B4%E0%B8%A1.jpg?alt=media&token=26f8e007-0e9e-4953-bd54-f2a322824fb0#?width=auto%22",
               "title": "โรคราสนิม",
               "text": "โรคราสนิม (Southern Corn Rust)",
               "actions": [
@@ -343,10 +343,98 @@ exports.webhook = functions
                   "text": "การป้องกันโรคราสนิม"
                 }
               ]
+            },
+            {
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B9%83%E0%B8%9A%E0%B9%84%E0%B8%AB%E0%B8%A1%E0%B9%89%E0%B9%81%E0%B8%9C%E0%B8%A5%E0%B9%83%E0%B8%AB%E0%B8%8D%E0%B9%88%2Fyai1.jpg?alt=media&token=6bb92208-6251-4f5e-9f94-116b08f7feab",
+              "title": "โรคใบไหม้แผลใหญ่",
+              "text": "โรคใบไหม้แผลใหญ่ (Northen Corn Leaf Blight)",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "สาเหตุ",
+                  "text": "สาเหตุของโรคใบไหม้แผลใหญ่"
+                },
+                {
+                  "type": "message",
+                  "label": "อาการ",
+                  "text": "อาการโรคใบไหม้แผลใหญ่"
+                },
+                {
+                  "type": "message",
+                  "label": "การป้องกัน",
+                  "text": "การป้องกันโรคใบไหม้แผลใหญ่"
+                }
+              ]
+            },
+            {
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%95%E0%B9%89%E0%B8%99%E0%B9%80%E0%B8%99%E0%B9%88%E0%B8%B2%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B9%81%E0%B8%9A%E0%B8%84%E0%B8%97%E0%B8%B5%E0%B9%80%E0%B8%A3%E0%B8%B5%E0%B8%A2%2F%E0%B9%81%E0%B8%9A%E0%B8%84%E0%B8%97%E0%B8%B5%E0%B9%80%E0%B8%A3%E0%B8%B5%E0%B8%A2.jpg?alt=media&token=e0cc0bce-9c09-408a-b85c-147eb7c9959a#?width=auto%22",
+              "title": "โรคต้นเน่าจากเชื้อแบคทีเรีย",
+              "text": "โรคต้นเน่าจากเชื้อแบคทีเรีย (Bacterial Stalk Rot",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "สาเหตุ",
+                  "text": "สาเหตุของโรคต้นเน่าจากเชื้อแบคทีเรีย"
+                },
+                {
+                  "type": "message",
+                  "label": "อาการ",
+                  "text": "อาการโรคต้นเน่าจากเชื้อแบคทีเรีย"
+                },
+                {
+                  "type": "message",
+                  "label": "การป้องกัน",
+                  "text": "การป้องกันโรคต้นเน่าจากเชื้อแบคทีเรีย"
+                }
+              ]
+            },
+            {
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%81%E0%B8%B2%E0%B8%9A%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B9%83%E0%B8%9A%E0%B9%84%E0%B8%AB%E0%B8%A1%E0%B9%89%2F%E0%B8%81%E0%B8%B2%E0%B8%9A%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B9%83%E0%B8%9A%E0%B9%84%E0%B8%AB%E0%B8%A1%E0%B9%893.jpg?alt=media&token=955b6331-38b9-4605-9ea8-c8cea455fa70#?width=auto%22",
+              "title": "โรคกาบและใบไหม้",
+              "text": "โรคกาบและใบไหม้ (Banded Leaf and Sheath Blight)",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "สาเหตุ",
+                  "text": "สาเหตุของโรคกาบและใบไหม้"
+                },
+                {
+                  "type": "message",
+                  "label": "อาการ",
+                  "text": "อาการโรคกาบและใบไหม้"
+                },
+                {
+                  "type": "message",
+                  "label": "การป้องกัน",
+                  "text": "การป้องกันโรคกาบและใบไหม้"
+                }
+              ]
+            },
+            {
+              "thumbnailImageUrl": "https://i.ibb.co/S5rzJjQ/Corn-Downy-Mildew.png",
+              "title": "  ",
+              "text": "  ",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "ดูโรคเพิ่มเติม",
+                  "text": "ดูโรคเพิ่มเติม"
+                },
+                {
+                  "type": "message",
+                  "label": "ดูโรคเพิ่มเติม",
+                  "text": "ดูโรคเพิ่มเติม"
+                },
+                {
+                  "type": "message",
+                  "label": "ดูโรคเพิ่มเติม",
+                  "text": "ดูโรคเพิ่มเติม"
+                }
+              ]
             }
           ]
         }
-      };
+      }
 
       const payloadMsg = new Payload("LINE", carouselMsg, {
         sendAsMessage: true
@@ -355,31 +443,38 @@ exports.webhook = functions
     }
 
     // แสดงรายละเอียดของโรคแต่ละหัวข้อที่ผู้ใช้เลือก
-    const disease_select = async => {
+    const carousel_cause = async => {
+      let c_cause = req.body.queryResult.parameters.carouselCause;
+      //return agent.add(d_cause);
+      return queryCause = db.collection('Disease').where('forTemplate', 'array-contains', c_cause).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          agent.add(doc.data().cause)
+        });
+      });
+    }
+    const carousel_symptom = async => {
+      let c_symptom = req.body.queryResult.parameters.carouselSymptom;
+      //return agent.add(d_cause);
+      return queryCause = db.collection('Disease').where('forTemplate', 'array-contains', c_symptom).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          agent.add(doc.data().symptom)
+        });
+      });
+    }
+    const carousel_protection = async => {
+      let c_protection = req.body.queryResult.parameters.carouselProtection;
+      //return agent.add(d_cause);
+      return queryCause = db.collection('Disease').where('forTemplate', 'array-contains', c_protection).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          agent.add(doc.data().protection)
+        });
+      });
+    }
+    /*const disease_select = async => {
       let disease_s = req.body.queryResult.parameters.disease_select;
-      if (disease_s === "สาเหตุของโรคราน้ำค้าง") {
-        return db.collection('Disease').doc('DownyMildew').get().then(doc => {
-          agent.add(doc.data().cause);
-        });
-      }
-      else if (disease_s === "อาการโรคราน้ำค้าง") {
-        return db.collection('Disease').doc('DownyMildew').get().then(doc => {
-          agent.add(doc.data().symptom);
-        });
-      }
-      else if (disease_s === "การป้องกันโรคราน้ำค้าง") {
+      if (disease_s === "การป้องกันโรคราน้ำค้าง") {
         return db.collection('Disease').doc('DownyMildew').get().then(doc => {
           agent.add(doc.data().protection);
-        });
-      }
-      else if (disease_s === "สาเหตุของโรคใบไหม้แผลเล็ก") {
-        return db.collection('Disease').doc('SouthernCornLeafBlight').get().then(doc => {
-          agent.add(doc.data().cause);
-        });
-      }
-      else if (disease_s === "อาการโรคใบไหม้แผลเล็ก") {
-        return db.collection('Disease').doc('SouthernCornLeafBlight').get().then(doc => {
-          agent.add(doc.data().symptom);
         });
       }
       else if (disease_s === "การป้องกันโรคใบไหม้แผลเล็ก") {
@@ -387,30 +482,16 @@ exports.webhook = functions
           agent.add(doc.data().protection);
         });
       }
-      else if (disease_s === "สาเหตุของโรคราสนิม") {
-        return db.collection('Disease').doc('SouthernCornRust').get().then(doc => {
-          agent.add(doc.data().cause);
-        });
-      }
-      else if (disease_s === "อาการโรคราสนิม") {
-        return db.collection('Disease').doc('SouthernCornRust').get().then(doc => {
-          agent.add(doc.data().symptom);
-        });
-      }
       else if (disease_s === "การป้องกันโรคราสนิม") {
         return db.collection('Disease').doc('SouthernCornRust').get().then(doc => {
           agent.add(doc.data().protection);
         });
       }
-    }
+    }*/
+    
 
     // ส่วน function disease_imagemap ให้ผู้ใช้กดเลือกอาการจากแผนภาพเพื่อหาโรคที่เข้าข่าย ------ [2.2]
     const disease_imagemap = async => {
-      // แสดงส่วนที่เกิดโรค
-      /*const textMsg = {
-        "type": "text",
-        "text": "เกิดโรคที่ส่วนไหนคะ"
-      }*/
       const imagemapMsg = {
         "type": "imagemap",
         "baseUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/104.png?alt=media&token=332ec3fb-c09b-47e5-bf58-bf5c34e9e562#?width=auto",
@@ -486,7 +567,7 @@ exports.webhook = functions
       const payloadMsg = new Payload("LINE", imagemapMsg, {
         sendAsMessage: true
       });
-      return agent.add(payloadMsg);
+      return agent.add("เกิดโรคที่ส่วนไหนของข้าวโพดคะ?"), agent.add(payloadMsg);
     }
 
     //แสดงอาการให้ผู้ใช้เลือก
@@ -2295,7 +2376,7 @@ exports.webhook = functions
           });
       }
       else if (leaf_symptom === "ใบมีแผลตามทางยาว") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').get()
+        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('lesion').get()
           .then(doc => {
             let carouselMsg = {
               "type": "template",
@@ -2616,7 +2697,10 @@ exports.webhook = functions
 
     // Disease Carousel
     intentMap.set('Disease Carousel', disease_carousel);
-    intentMap.set('Disease Carousel - Select', disease_select);
+    //intentMap.set('Disease Carousel - Select', disease_select);
+    intentMap.set('Carousel - cause', carousel_cause);
+    intentMap.set('Carousel - Symptom', carousel_symptom);
+    intentMap.set('Carousel - protection', carousel_protection);
 
     // Disease Imagemap
     intentMap.set('Disease Imagemap', disease_imagemap);
@@ -2627,18 +2711,12 @@ exports.webhook = functions
     intentMap.set('Stalk - Select Symptom', stalk_select);
     intentMap.set('Leaf - Select Symptom', leaf_select);
 
-    // Disease Leaf-Spot
-    //intentMap.set('Leaf - Spot', leaf_spot);
-
     // Disease Card
     intentMap.set('Disease card', disease_card);
     intentMap.set('Disease card - cause', disease_cause);
     intentMap.set('Disease card - symptom', disease_symptom);
     intentMap.set('Disease card - treatment', disease_treatment);
     intentMap.set('Disease card - protection', disease_protection);
-
-    // Addition disease
-    //intentMap.set('Basal - Water-soaked', basal_ws);
 
     agent.handleRequest(intentMap);
   });

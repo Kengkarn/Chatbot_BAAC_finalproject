@@ -1256,7 +1256,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['brown']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['brown']}`
                       },
                       {
                         "type": "message",
@@ -1273,7 +1273,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['swell']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['swell']}`
                       },
                       {
                         "type": "message",
@@ -1303,7 +1303,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1333,7 +1333,7 @@ exports.webhook = functions
                 {
                   "type": "message",
                   "label": "ดูรูปเพิ่มเติม",
-                  "text": `${doc.data().diseaseNameTH[0]}`
+                  "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[0]}`
                 },
                 {
                   "type": "message",
@@ -1364,7 +1364,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1395,7 +1395,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1431,7 +1431,7 @@ exports.webhook = functions
                     {
                       "type": "message",
                       "label": "ดูรูปเพิ่มเติม",
-                      "text": `${doc.data().diseaseNameTH[0]}`
+                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[0]}`
                     },
                     {
                       "type": "message",
@@ -1448,7 +1448,7 @@ exports.webhook = functions
                     {
                       "type": "message",
                       "label": "ดูรูปเพิ่มเติม",
-                      "text": `${doc.data().diseaseNameTH[1]}`
+                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[1]}`
                     },
                     {
                       "type": "message",
@@ -1478,7 +1478,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1508,7 +1508,7 @@ exports.webhook = functions
                 {
                   "type": "message",
                   "label": "ดูรูปเพิ่มเติม",
-                  "text": `${doc.data().diseaseNameTH[2]}`
+                  "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[2]}`
                 },
                 {
                   "type": "message",
@@ -1544,7 +1544,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1581,7 +1581,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['dark brown']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['dark brown']}`
                       },
                       {
                         "type": "message",
@@ -1598,7 +1598,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['grayish green']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['grayish green']}`
                       },
                       {
                         "type": "message",
@@ -1615,7 +1615,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['reddish brown']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['reddish brown']}`
                       },
                       {
                         "type": "message",
@@ -1645,7 +1645,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1676,7 +1676,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1707,7 +1707,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1738,7 +1738,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1774,7 +1774,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH['swell']}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['swell']}`
                   },
                   {
                     "type": "message",
@@ -1805,7 +1805,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH['straw']}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['straw']}`
                   },
                   {
                     "type": "message",
@@ -1836,7 +1836,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1867,7 +1867,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1902,7 +1902,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1939,7 +1939,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH[0]}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[0]}`
                       },
                       {
                         "type": "message",
@@ -1956,7 +1956,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH[1]}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[1]}`
                       },
                       {
                         "type": "message",
@@ -1973,7 +1973,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH[2]}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[2]}`
                       },
                       {
                         "type": "message",
@@ -2003,7 +2003,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -2034,7 +2034,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -2065,7 +2065,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -2105,7 +2105,7 @@ exports.webhook = functions
                     {
                       "type": "message",
                       "label": "ดูรูปเพิ่มเติม",
-                      "text": `${doc.data().diseaseNameTH[0]}`
+                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[0]}`
                     },
                     {
                       "type": "message",
@@ -2122,7 +2122,7 @@ exports.webhook = functions
                     {
                       "type": "message",
                       "label": "ดูรูปเพิ่มเติม",
-                      "text": `${doc.data().diseaseNameTH[1]}`
+                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[1]}`
                     },
                     {
                       "type": "message",
@@ -2139,7 +2139,7 @@ exports.webhook = functions
                     {
                       "type": "message",
                       "label": "ดูรูปเพิ่มเติม",
-                      "text": `${doc.data().diseaseNameTH[2]}`
+                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[2]}`
                     },
                     {
                       "type": "message",
@@ -2169,7 +2169,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -2200,7 +2200,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -2231,7 +2231,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -2267,7 +2267,7 @@ exports.webhook = functions
                     {
                       "type": "message",
                       "label": "ดูรูปเพิ่มเติม",
-                      "text": `${doc.data().diseaseNameTH[0]}`
+                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[0]}`
                     },
                     {
                       "type": "message",
@@ -2284,7 +2284,7 @@ exports.webhook = functions
                     {
                       "type": "message",
                       "label": "ดูรูปเพิ่มเติม",
-                      "text": `${doc.data().diseaseNameTH[1]}`
+                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[1]}`
                     },
                     {
                       "type": "message",
@@ -2301,7 +2301,7 @@ exports.webhook = functions
                     {
                       "type": "message",
                       "label": "ดูรูปเพิ่มเติม",
-                      "text": `${doc.data().diseaseNameTH[2]}`
+                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[2]}`
                     },
                     {
                       "type": "message",
@@ -2318,7 +2318,7 @@ exports.webhook = functions
                     {
                       "type": "message",
                       "label": "ดูรูปเพิ่มเติม",
-                      "text": `${doc.data().diseaseNameTH[4]}`
+                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[4]}`
                     },
                     {
                       "type": "message",
@@ -2354,7 +2354,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['brown']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['brown']}`
                       },
                       {
                         "type": "message",
@@ -2371,7 +2371,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['gray']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['gray']}`
                       },
                       {
                         "type": "message",
@@ -2388,7 +2388,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['pale']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['pale']}`
                       },
                       {
                         "type": "message",
@@ -2405,7 +2405,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['white']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['white']}`
                       },
                       {
                         "type": "message",
@@ -2422,7 +2422,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['yellow']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['yellow']}`
                       },
                       {
                         "type": "message",
@@ -2440,7 +2440,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['swell']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['swell']}`
                       },
                       {
                         "type": "message",
@@ -2476,7 +2476,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['brown']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['brown']}`
                       },
                       {
                         "type": "message",
@@ -2493,7 +2493,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['gray']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['gray']}`
                       },
                       {
                         "type": "message",
@@ -2510,7 +2510,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['gray2']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['gray2']}`
                       },
                       {
                         "type": "message",
@@ -2527,7 +2527,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['gray3']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['gray3']}`
                       },
                       {
                         "type": "message",
@@ -2544,7 +2544,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['layer']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['layer']}`
                       },
                       {
                         "type": "message",
@@ -2561,7 +2561,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['yellow']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['yellow']}`
                       },
                       {
                         "type": "message",
@@ -2578,7 +2578,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['light green']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['light green']}`
                       },
                       {
                         "type": "message",
@@ -2595,7 +2595,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": `${doc.data().diseaseNameTH['straw']}`
+                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['straw']}`
                       },
                       {
                         "type": "message",
@@ -2625,7 +2625,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -2768,6 +2768,52 @@ exports.webhook = functions
       });
     }
 
+    /*const image_carousel = async => {
+      const d_image = req.body.queryResult.parameters.moreimage;
+      //const d_cause = req.body.queryResult.parameters.disease_cause;
+      return queryCause = db.collection('Disease').where('forTemplate', 'array-contains', d_image).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          var image = doc.data()
+          let buttonMsg = {
+            "type": "template",
+            "altText": "this is a image carousel template",
+            "template": {
+              "type": "image_carousel",
+              "columns": [
+                {
+                  "imageUrl": `${image.image[0]}`,
+                  "action": {
+                    "type": "postback",
+                    "label": "Buy",
+                    "data": "action=buy&itemid=111"
+                  }
+                },
+                {
+                  "imageUrl": `${image.image[1]}`,
+                  "action": {
+                    "type": "message",
+                    "label": "Yes",
+                    "text": "yes"
+                  }
+                },
+                {
+                  "imageUrl": `${image.image[2]}`,
+                  "action": {
+                    "type": "uri",
+                    "label": "View detail",
+                    "uri": "http://example.com/page/222"
+                  }
+                }
+              ]
+            }
+          }
+          const payloadMsg = new Payload("LINE", buttonMsg, {
+            sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
+        });
+      });
+    }*/
 
 
     let intentMap = new Map();
@@ -2795,12 +2841,15 @@ exports.webhook = functions
     intentMap.set('Stalk - Select Symptom', stalk_select);
     intentMap.set('Leaf - Select Symptom', leaf_select);
 
-    // Disease Card
+    // Disease Card -- See details
     intentMap.set('Disease card', disease_card);
     intentMap.set('Disease card - cause', disease_cause);
     intentMap.set('Disease card - symptom', disease_symptom);
     intentMap.set('Disease card - treatment', disease_treatment);
     intentMap.set('Disease card - protection', disease_protection);
+
+    // Image Carousel -- See more picture
+    //intentMap.set('Image Carousel', image_carousel);
 
     agent.handleRequest(intentMap);
   });

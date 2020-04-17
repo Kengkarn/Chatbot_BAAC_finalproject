@@ -269,7 +269,7 @@ exports.webhook = functions
                 {
                   "type": "message",
                   "label": "อาการ",
-                  "text": "อาการโรคราน้ำค้าง"
+                  "text": "อาการของโรคราน้ำค้าง"
                 },
                 {
                   "type": "message",
@@ -291,7 +291,7 @@ exports.webhook = functions
                 {
                   "type": "message",
                   "label": "อาการ",
-                  "text": "อาการโรคสมัท"
+                  "text": "อาการของโรคสมัท"
                 },
                 {
                   "type": "message",
@@ -313,7 +313,7 @@ exports.webhook = functions
                 {
                   "type": "message",
                   "label": "อาการ",
-                  "text": "อาการโรคใบไหม้แผลเล็ก"
+                  "text": "อาการของโรคใบไหม้แผลเล็ก"
                 },
                 {
                   "type": "message",
@@ -335,7 +335,7 @@ exports.webhook = functions
                 {
                   "type": "message",
                   "label": "อาการ",
-                  "text": "อาการโรคราสนิม"
+                  "text": "อาการของโรคราสนิม"
                 },
                 {
                   "type": "message",
@@ -357,7 +357,7 @@ exports.webhook = functions
                 {
                   "type": "message",
                   "label": "อาการ",
-                  "text": "อาการโรคใบไหม้แผลใหญ่"
+                  "text": "อาการของโรคใบไหม้แผลใหญ่"
                 },
                 {
                   "type": "message",
@@ -367,27 +367,44 @@ exports.webhook = functions
               ]
             },
             {
-              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%95%E0%B9%89%E0%B8%99%E0%B9%80%E0%B8%99%E0%B9%88%E0%B8%B2%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B9%81%E0%B8%9A%E0%B8%84%E0%B8%97%E0%B8%B5%E0%B9%80%E0%B8%A3%E0%B8%B5%E0%B8%A2%2F%E0%B9%81%E0%B8%9A%E0%B8%84%E0%B8%97%E0%B8%B5%E0%B9%80%E0%B8%A3%E0%B8%B5%E0%B8%A2.jpg?alt=media&token=e0cc0bce-9c09-408a-b85c-147eb7c9959a#?width=auto%22",
-              "title": "โรคต้นเน่าจากเชื้อแบคทีเรีย",
-              "text": "โรคต้นเน่าจากเชื้อแบคทีเรีย (Bacterial Stalk Rot",
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/5be55-white-mk630n.jpg?alt=media&token=8cb8c86e-1a11-436d-9335-5e0c061868c0",
+              "title": "  ",
+              "text": "  ",
               "actions": [
                 {
                   "type": "message",
-                  "label": "สาเหตุ",
-                  "text": "สาเหตุของโรคต้นเน่าจากเชื้อแบคทีเรีย"
+                  "label": "ดูโรคเพิ่มเติม",
+                  "text": "ดูโรคเพิ่มเติม"
                 },
                 {
                   "type": "message",
-                  "label": "อาการ",
-                  "text": "อาการโรคต้นเน่าจากเชื้อแบคทีเรีย"
+                  "label": "  ",
+                  "text": "ดูโรคเพิ่มเติม"
                 },
                 {
                   "type": "message",
-                  "label": "การป้องกัน",
-                  "text": "การป้องกันโรคต้นเน่าจากเชื้อแบคทีเรีย"
+                  "label": "  ",
+                  "text": "ดูโรคเพิ่มเติม"
                 }
               ]
-            },
+            }
+          ]
+        }
+      }
+      const payloadMsg = new Payload("LINE", carouselMsg, {
+        sendAsMessage: true
+      });
+      return agent.add(payloadMsg);
+    }
+
+    const disease_carousel_more = async => {
+      const carouselMsg = {
+        "type": "template",
+        "altText": "เลือกโรคข้าวโพด",
+        "template": {
+          "type": "carousel",
+          "actions": [],
+          "columns": [
             {
               "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%81%E0%B8%B2%E0%B8%9A%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B9%83%E0%B8%9A%E0%B9%84%E0%B8%AB%E0%B8%A1%E0%B9%89%2F%E0%B8%81%E0%B8%B2%E0%B8%9A%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B9%83%E0%B8%9A%E0%B9%84%E0%B8%AB%E0%B8%A1%E0%B9%893.jpg?alt=media&token=955b6331-38b9-4605-9ea8-c8cea455fa70#?width=auto%22",
               "title": "โรคกาบและใบไหม้",
@@ -401,7 +418,7 @@ exports.webhook = functions
                 {
                   "type": "message",
                   "label": "อาการ",
-                  "text": "อาการโรคกาบและใบไหม้"
+                  "text": "อาการของโรคกาบและใบไหม้"
                 },
                 {
                   "type": "message",
@@ -411,31 +428,97 @@ exports.webhook = functions
               ]
             },
             {
-              "thumbnailImageUrl": "https://i.ibb.co/S5rzJjQ/Corn-Downy-Mildew.png",
-              "title": "  ",
-              "text": "  ",
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B9%83%E0%B8%9A%E0%B8%88%E0%B8%B8%E0%B8%94%2Fspot3.jpg?alt=media&token=643b14b5-cda7-4788-910a-f01977d10823",
+              "title": "โรคใบจุด",
+              "text": "โรคใบจุด (Leaf Spot)",
               "actions": [
                 {
                   "type": "message",
-                  "label": "ดูโรคเพิ่มเติม",
-                  "text": "ดูโรคเพิ่มเติม"
+                  "label": "สาเหตุ",
+                  "text": "สาเหตุของโรคใบจุด"
                 },
                 {
                   "type": "message",
-                  "label": "ดูโรคเพิ่มเติม",
-                  "text": "ดูโรคเพิ่มเติม"
+                  "label": "อาการ",
+                  "text": "อาการของโรคใบจุด"
+                },
+                {
+
+                  "type": "message",
+                  "label": "การป้องกัน",
+                  "text": "การป้องกันโรคใบจุด"
+                }
+              ]
+            },
+            {
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%95%E0%B9%89%E0%B8%99%E0%B9%80%E0%B8%99%E0%B9%88%E0%B8%B2%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B9%81%E0%B8%9A%E0%B8%84%E0%B8%97%E0%B8%B5%E0%B9%80%E0%B8%A3%E0%B8%B5%E0%B8%A2%2F%E0%B9%81%E0%B8%9A%E0%B8%84%E0%B8%97%E0%B8%B5%E0%B9%80%E0%B8%A3%E0%B8%B5%E0%B8%A2.jpg?alt=media&token=e0cc0bce-9c09-408a-b85c-147eb7c9959a#?width=auto%22",
+              "title": "โรคต้นเน่าจากเชื้อแบคทีเรีย",
+              "text": "โรคต้นเน่าจากเชื้อแบคทีเรีย (Bacterial Stalk Rot)",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "สาเหตุ",
+                  "text": "สาเหตุของโรคต้นเน่าจากเชื้อแบคทีเรีย"
                 },
                 {
                   "type": "message",
-                  "label": "ดูโรคเพิ่มเติม",
-                  "text": "ดูโรคเพิ่มเติม"
+                  "label": "อาการ",
+                  "text": "อาการของโรคต้นเน่าจากเชื้อแบคทีเรีย"
+                },
+                {
+                  "type": "message",
+                  "label": "การป้องกัน",
+                  "text": "การป้องกันโรคต้นเน่าจากเชื้อแบคทีเรีย"
+                }
+              ]
+            },
+            {
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%94%E0%B8%B4%E0%B9%82%E0%B8%9E%E0%B8%A5%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%2Fdiplo.jpg?alt=media&token=09e1c84c-70b6-4e64-8b40-e16894972b7c",
+              "title": "โรคต้นเน่าจากเชื้อฟิวซาเรี่ยม",
+              "text": "โรคต้นเน่าจากเชื้อฟิวซาเรี่ยม (Fusarium Stalk Rot)",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "สาเหตุ",
+                  "text": "สาเหตุของโรคต้นเน่าจากเชื้อฟิวซาเรี่ยม"
+                },
+                {
+                  "type": "message",
+                  "label": "อาการ",
+                  "text": "อาการของโรคต้นเน่าจากเชื้อฟิวซาเรี่ยม"
+                },
+                {
+                  "type": "message",
+                  "label": "การป้องกัน",
+                  "text": "การป้องกันโรคต้นเน่าจากเชื้อฟิวซาเรี่ยม"
+                }
+              ]
+            },
+            {
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%A1%E0%B8%B2%E0%B9%82%E0%B8%84%E0%B8%A3%E0%B9%82%E0%B8%9F%E0%B8%A1%E0%B8%B4%E0%B8%99%E0%B9%88%E0%B8%B2%2Fcha2.jfif?alt=media&token=220dd421-1c50-4a39-bc41-4e1b9d732a4d",
+              "title": "โรคต้นเน่าจากเชื้อมาโครโฟมิน่า",
+              "text": "โรคต้นเน่าจากเชื้อมาโครโฟมิน่า (Charcoal Rot)",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "สาเหตุ",
+                  "text": "สาเหตุของโรคต้นเน่าจากเชื้อมาโครโฟมิน่า"
+                },
+                {
+                  "type": "message",
+                  "label": "อาการ",
+                  "text": "อาการของโรคต้นเน่าจากเชื้อมาโครโฟมิน่า"
+                },
+                {
+                  "type": "message",
+                  "label": "การป้องกัน",
+                  "text": "การป้องกันโรคต้นเน่าจากเชื้อมาโครโฟมิน่า"
                 }
               ]
             }
           ]
         }
       }
-
       const payloadMsg = new Payload("LINE", carouselMsg, {
         sendAsMessage: true
       });
@@ -444,7 +527,7 @@ exports.webhook = functions
 
     // แสดงรายละเอียดของโรคแต่ละหัวข้อที่ผู้ใช้เลือก
     const carousel_cause = async => {
-      let c_cause = req.body.queryResult.parameters.carouselCause;
+      let c_cause = req.body.queryResult.parameters.carouselcause;
       //return agent.add(d_cause);
       return queryCause = db.collection('Disease').where('forTemplate', 'array-contains', c_cause).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
@@ -453,7 +536,7 @@ exports.webhook = functions
       });
     }
     const carousel_symptom = async => {
-      let c_symptom = req.body.queryResult.parameters.carouselSymptom;
+      let c_symptom = req.body.queryResult.parameters.carouselsymptom;
       //return agent.add(d_cause);
       return queryCause = db.collection('Disease').where('forTemplate', 'array-contains', c_symptom).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
@@ -462,7 +545,7 @@ exports.webhook = functions
       });
     }
     const carousel_protection = async => {
-      let c_protection = req.body.queryResult.parameters.carouselProtection;
+      let c_protection = req.body.queryResult.parameters.carouselprotection;
       //return agent.add(d_cause);
       return queryCause = db.collection('Disease').where('forTemplate', 'array-contains', c_protection).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
@@ -2697,10 +2780,11 @@ exports.webhook = functions
 
     // Disease Carousel
     intentMap.set('Disease Carousel', disease_carousel);
-    //intentMap.set('Disease Carousel - Select', disease_select);
     intentMap.set('Carousel - cause', carousel_cause);
-    intentMap.set('Carousel - Symptom', carousel_symptom);
+    intentMap.set('Carousel - symptom', carousel_symptom);
     intentMap.set('Carousel - protection', carousel_protection);
+    intentMap.set('Carousel - more', disease_carousel_more);
+    
 
     // Disease Imagemap
     intentMap.set('Disease Imagemap', disease_imagemap);

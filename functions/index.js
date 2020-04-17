@@ -2768,40 +2768,66 @@ exports.webhook = functions
       });
     }
 
-    /*const image_carousel = async => {
+    const image_carousel = async => {
       const d_image = req.body.queryResult.parameters.moreimage;
       //const d_cause = req.body.queryResult.parameters.disease_cause;
       return queryCause = db.collection('Disease').where('forTemplate', 'array-contains', d_image).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           var image = doc.data()
           let buttonMsg = {
-            "type": "template",
-            "altText": "this is a image carousel template",
-            "template": {
-              "type": "image_carousel",
-              "columns": [
+            "type": "flex",
+            "altText": "Flex Message",
+            "contents": {
+              "type": "carousel",
+              "contents": [
                 {
-                  "imageUrl": `${image.image[0]}`,
-                  "action": {
-                    "type": "postback",
-                    "label": "Buy",
-                    "data": "action=buy&itemid=111"
+                  "type": "bubble",
+                  "direction": "ltr",
+                  "hero": {
+                    "type": "image",
+                    "url": `${image.image[0]}`,
+                    "size": "full",
+                    "aspectMode": "cover"
                   }
                 },
                 {
-                  "imageUrl": `${image.image[1]}`,
-                  "action": {
-                    "type": "message",
-                    "label": "Yes",
-                    "text": "yes"
+                  "type": "bubble",
+                  "direction": "ltr",
+                  "hero": {
+                    "type": "image",
+                    "url": `${image.image[1]}`,
+                    "size": "full",
+                    "aspectMode": "cover"
                   }
                 },
                 {
-                  "imageUrl": `${image.image[2]}`,
-                  "action": {
-                    "type": "uri",
-                    "label": "View detail",
-                    "uri": "http://example.com/page/222"
+                  "type": "bubble",
+                  "direction": "ltr",
+                  "hero": {
+                    "type": "image",
+                    "url": `${image.image[2]}`,
+                    "size": "full",
+                    "aspectMode": "cover"
+                  }
+                },
+                {
+                  "type": "bubble",
+                  "direction": "ltr",
+                  "hero": {
+                    "type": "image",
+                    "url": `${image.image[3]}`,
+                    "size": "full",
+                    "aspectMode": "cover"
+                  }
+                },
+                {
+                  "type": "bubble",
+                  "direction": "ltr",
+                  "hero": {
+                    "type": "image",
+                    "url": `${image.image[4]}`,
+                    "size": "full",
+                    "aspectMode": "cover"
                   }
                 }
               ]
@@ -2813,7 +2839,7 @@ exports.webhook = functions
           return agent.add(payloadMsg);
         });
       });
-    }*/
+    }
 
 
     let intentMap = new Map();
@@ -2849,7 +2875,7 @@ exports.webhook = functions
     intentMap.set('Disease card - protection', disease_protection);
 
     // Image Carousel -- See more picture
-    //intentMap.set('Image Carousel', image_carousel);
+    intentMap.set('Image Carousel', image_carousel);
 
     agent.handleRequest(intentMap);
   });

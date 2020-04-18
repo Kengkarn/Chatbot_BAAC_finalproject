@@ -246,7 +246,17 @@ exports.webhook = functions
       return agent.add("ต้องการทราบข้อมูลโรคข้าวโพดด้วยวิธีไหนคะ?"), agent.add(payloadMsg);
     }
 
-    // ส่วน function disease_carousel แสดงโรคทั้งหมดที่มีในระบบ ------ [2.1]
+    // ส่วนdisease text ให้ผู้ใช้พิมพ์อาการของข้าวโพด ------ [2.1]
+    const disease_text = async => {
+      let full_symptom = req.body.queryResult.parameters.fullDiseaseText;
+      return queryCause = db.collection('Disease').where('query', 'array-contains-any', full_symptom).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          agent.add(doc.data().diseaseNameTH)
+        });
+      });
+    }
+
+    // ส่วน function disease_carousel แสดงโรคทั้งหมดที่มีในระบบ ------ [2.2]
     const disease_carousel = async => {
       // เพิ่ม flex message แสดงโรคข้าวโพด
       const carouselMsg = {
@@ -571,13 +581,13 @@ exports.webhook = functions
         });
       }
     }*/
-    
 
-    // ส่วน function disease_imagemap ให้ผู้ใช้กดเลือกอาการจากแผนภาพเพื่อหาโรคที่เข้าข่าย ------ [2.2]
+
+    // ส่วน function disease_imagemap ให้ผู้ใช้กดเลือกอาการจากแผนภาพเพื่อหาโรคที่เข้าข่าย ------ [2.3]
     const disease_imagemap = async => {
       const imagemapMsg = {
         "type": "imagemap",
-        "baseUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/104.png?alt=media&token=332ec3fb-c09b-47e5-bf58-bf5c34e9e562#?width=auto",
+        "baseUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/106.png?alt=media&token=36f9c308-c59d-4595-9568-ddc09e71e8d7#?width=auto",
         "altText": "This is an imagemap",
         "baseSize": {
           "width": 1040,
@@ -622,7 +632,7 @@ exports.webhook = functions
               "width": 517,
               "height": 349
             },
-            "text": "เปลือกฝัก"
+            "text": "เมล็ด"
           },
           {
             "type": "message",
@@ -714,8 +724,8 @@ exports.webhook = functions
                       "type": "button",
                       "action": {
                         "type": "message",
-                        "label": "มีราขาว",
-                        "text": "ฝักมีราขาว"
+                        "label": "มีราเขียว",
+                        "text": "ฝักมีราเขียว"
                       }
                     }
                   ]
@@ -747,45 +757,6 @@ exports.webhook = functions
                       }
                     }
                   ]
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "box",
-                  "layout": "horizontal",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "เมล็ดสีดำ",
-                        "text": "เมล็ดสีดำ"
-                      }
-                    },
-                    {
-                      "type": "separator"
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "เมล็ดน้อย",
-                        "text": "เมล็ดน้อย"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "ไม่มีเมล็ด",
-                    "text": "ไม่มีเมล็ด"
-                  }
                 }
               ]
             }
@@ -888,6 +859,23 @@ exports.webhook = functions
                       }
                     }
                   ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "vertical",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีราขาว",
+                        "text": "โคนต้นมีราขาว"
+                      }
+                    }
+                  ]
                 }
               ]
             }
@@ -973,44 +961,112 @@ exports.webhook = functions
         return agent.add("เลือกอาการที่เกิดที่กาบใบ"), agent.add(payloadMsg);
       }
 
-      else if (disease_part === "เปลือกฝัก") {
+      else if (disease_part === "เมล็ด") {
         const buttonMsg = {
-          "type": "template",
-          "altText": "this is a image carousel template",
-          "template": {
-            "type": "image_carousel",
-            "columns": [
-              {
-                "imageUrl": "https://example.com/bot/images/item1.jpg",
-                "action": {
-                  "type": "postback",
-                  "label": "Buy",
-                  "data": "action=buy&itemid=111"
+          "type": "flex",
+          "altText": "Flex Message",
+          "contents": {
+            "type": "bubble",
+            "direction": "ltr",
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "box",
+                  "layout": "vertical",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "เมล็ดมีรอยขีดสีขาว",
+                        "text": "เมล็ดมีรอยขีดสีขาว"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "มีแผล",
+                        "text": "เมล็ดมีแผล"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "เมล็ดดำ",
+                        "text": "เมล็ดดำ"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "ไม่มีเมล็ด",
+                        "text": "ไม่มีเมล็ด"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "เมล็ดน้อย",
+                        "text": "เมล็ดน้อย"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "เมล็ดลีบ",
+                        "text": "เมล็ดลีบ"
+                      }
+                    }
+                  ]
                 }
-              },
-              {
-                "imageUrl": "https://example.com/bot/images/item2.jpg",
-                "action": {
-                  "type": "message",
-                  "label": "Yes",
-                  "text": "yes"
-                }
-              },
-              {
-                "imageUrl": "https://example.com/bot/images/item3.jpg",
-                "action": {
-                  "type": "uri",
-                  "label": "View detail",
-                  "uri": "http://example.com/page/222"
-                }
-              }
-            ]
+              ]
+            }
           }
         }
         const payloadMsg = new Payload("LINE", buttonMsg, {
           sendAsMessage: true
         });
-        return agent.add("เลือกอาการที่เกิดที่เปลือกฝัก"), agent.add(payloadMsg);
+        return agent.add("เลือกอาการที่เกิดที่ฝัก"), agent.add(payloadMsg);
       }
 
       else if (disease_part === "ลำต้น") {
@@ -1073,6 +1129,34 @@ exports.webhook = functions
                         "type": "message",
                         "label": "มีแผล",
                         "text": "ลำต้นมีแผล"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "ลำต้นแตก/ฉีก",
+                        "text": "ลำต้นแตก"
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "หักล้ม",
+                        "text": "ลำต้นหักล้ม"
                       }
                     }
                   ]
@@ -1256,7 +1340,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['brown']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['brown']}`
                       },
                       {
                         "type": "message",
@@ -1273,7 +1357,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['swell']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['swell']}`
                       },
                       {
                         "type": "message",
@@ -1303,7 +1387,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1333,7 +1417,7 @@ exports.webhook = functions
                 {
                   "type": "message",
                   "label": "ดูรูปเพิ่มเติม",
-                  "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[0]}`
+                  "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
                 },
                 {
                   "type": "message",
@@ -1364,7 +1448,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1395,7 +1479,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1413,58 +1497,6 @@ exports.webhook = functions
             });
             return agent.add(payloadMsg);
           });
-      }
-      else if (ear_symptom === "เมล็ดสีดำ") {
-        return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('black-kernel').get().then(doc => {
-          let carouselMsg = {
-            "type": "template",
-            "altText": "เลือกประเภทข้าวโพด",
-            "template": {
-              "type": "carousel",
-              "actions": [],
-              "columns": [
-                {
-                  "thumbnailImageUrl": `${doc.data().url[0]}`,
-                  "title": `${doc.data().diseaseNameTH[0]}`,
-                  "text": ear_symptom,
-                  "actions": [
-                    {
-                      "type": "message",
-                      "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[0]}`
-                    },
-                    {
-                      "type": "message",
-                      "label": "อ่านรายละเอียด",
-                      "text": `${doc.data().diseaseNameTH[0]}`
-                    }
-                  ]
-                },
-                {
-                  "thumbnailImageUrl": `${doc.data().url[1]}`,
-                  "title": `${doc.data().diseaseNameTH[1]}`,
-                  "text": ear_symptom,
-                  "actions": [
-                    {
-                      "type": "message",
-                      "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[1]}`
-                    },
-                    {
-                      "type": "message",
-                      "label": "อ่านรายละเอียด",
-                      "text": `${doc.data().diseaseNameTH[1]}`
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-          const payloadMsg = new Payload("LINE", carouselMsg, {
-            sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
-        });
       }
       else if (ear_symptom === "ฝักมีปม") {
         return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('gall').get()
@@ -1478,7 +1510,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1496,36 +1528,6 @@ exports.webhook = functions
             });
             return agent.add(payloadMsg);
           });
-      }
-      else if (ear_symptom === "ไม่มีเมล็ด" || ear_symptom === "เมล็ดน้อย") {
-        return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('stunt').get().then(doc => {
-          let buttonMsg = {
-            "type": "template",
-            "altText": ear_symptom,
-            "template": {
-              "type": "buttons",
-              "actions": [
-                {
-                  "type": "message",
-                  "label": "ดูรูปเพิ่มเติม",
-                  "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[2]}`
-                },
-                {
-                  "type": "message",
-                  "label": "อ่านรายละเอียด",
-                  "text": `${doc.data().diseaseNameTH[2]}`
-                }
-              ],
-              "thumbnailImageUrl": `${doc.data().url}`,
-              "title": `${doc.data().diseaseNameTH[2]}`,
-              "text": ear_symptom
-            }
-          }
-          const payloadMsg = new Payload("LINE", buttonMsg, {
-            sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
-        });
       }
     }
 
@@ -1544,7 +1546,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1581,7 +1583,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['dark brown']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['dark brown']}`
                       },
                       {
                         "type": "message",
@@ -1598,7 +1600,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['grayish green']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['grayish green']}`
                       },
                       {
                         "type": "message",
@@ -1615,7 +1617,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['reddish brown']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['reddish brown']}`
                       },
                       {
                         "type": "message",
@@ -1645,7 +1647,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1676,7 +1678,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1707,7 +1709,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1738,7 +1740,38 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": basal_symptom
+              }
+            }
+            const payloadMsg = new Payload("LINE", buttonMsg, {
+              sendAsMessage: true
+            });
+            return agent.add(payloadMsg);
+          });
+      }
+      else if (basal_symptom === "โคนต้นมีราขาว") {
+        return db.collection('Symptom_disease').doc('Basal').collection('symptom').doc('smell').get()
+          .then(doc => {
+            let buttonMsg = {
+              "type": "template",
+              "altText": basal_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1774,7 +1807,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['swell']}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['swell']}`
                   },
                   {
                     "type": "message",
@@ -1805,7 +1838,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['straw']}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['straw']}`
                   },
                   {
                     "type": "message",
@@ -1836,7 +1869,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1867,7 +1900,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1888,6 +1921,205 @@ exports.webhook = functions
       }
     }
 
+    const kernel_select = async =>{
+      let kernel_symptom = req.body.queryResult.parameters.Kernel_symptom;
+      if (kernel_symptom === "เมล็ดมีรอยขีดสีขาว") {
+        return db.collection('Symptom_disease').doc('Kernel').collection('symptom').doc('scratch').get()
+          .then(doc => {
+            let buttonMsg = {
+              "type": "template",
+              "altText": kernel_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": kernel_symptom
+              }
+            }
+            const payloadMsg = new Payload("LINE", buttonMsg, {
+              sendAsMessage: true
+            });
+            return agent.add(payloadMsg);
+          });
+      }
+      else if (kernel_symptom === "เมล็ดมีแผล"){
+        return db.collection('Symptom_disease').doc('Kernel').collection('symptom').doc('lesion').get().then(doc => {
+          let buttonMsg = {
+            "type": "template",
+            "altText": kernel_symptom,
+            "template": {
+              "type": "buttons",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "ดูรูปเพิ่มเติม",
+                  "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                },
+                {
+                  "type": "message",
+                  "label": "อ่านรายละเอียด",
+                  "text": `${doc.data().diseaseNameTH}`
+                }
+              ],
+              "thumbnailImageUrl": `${doc.data().url}`,
+              "title": `${doc.data().diseaseNameTH}`,
+              "text": kernel_symptom
+            }
+          }
+          const payloadMsg = new Payload("LINE", buttonMsg, {
+            sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
+        });
+      }
+      else if (kernel_symptom === "เมล็ดดำ") {
+        return db.collection('Symptom_disease').doc('Kernel').collection('symptom').doc('black').get().then(doc => {
+          let carouselMsg = {
+            "type": "template",
+            "altText": kernel_symptom,
+            "template": {
+              "type": "carousel",
+              "actions": [],
+              "columns": [
+                {
+                  "thumbnailImageUrl": `${doc.data().url[0]}`,
+                  "title": `${doc.data().diseaseNameTH[0]}`,
+                  "text": kernel_symptom,
+                  "actions": [
+                    {
+                      "type": "message",
+                      "label": "ดูรูปเพิ่มเติม",
+                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
+                    },
+                    {
+                      "type": "message",
+                      "label": "อ่านรายละเอียด",
+                      "text": `${doc.data().diseaseNameTH[0]}`
+                    }
+                  ]
+                },
+                {
+                  "thumbnailImageUrl": `${doc.data().url[1]}`,
+                  "title": `${doc.data().diseaseNameTH[1]}`,
+                  "text": kernel_symptom,
+                  "actions": [
+                    {
+                      "type": "message",
+                      "label": "ดูรูปเพิ่มเติม",
+                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
+                    },
+                    {
+                      "type": "message",
+                      "label": "อ่านรายละเอียด",
+                      "text": `${doc.data().diseaseNameTH[1]}`
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+          const payloadMsg = new Payload("LINE", carouselMsg, {
+            sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
+        });
+      }
+      else if (kernel_symptom === "ไม่มีเมล็ด" || kernel_symptom === "เมล็ดน้อย") {
+        return db.collection('Symptom_disease').doc('Kernel').collection('symptom').doc('stunt').get().then(doc => {
+          let buttonMsg = {
+            "type": "template",
+            "altText": kernel_symptom,
+            "template": {
+              "type": "buttons",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "ดูรูปเพิ่มเติม",
+                  "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                },
+                {
+                  "type": "message",
+                  "label": "อ่านรายละเอียด",
+                  "text": `${doc.data().diseaseNameTH}`
+                }
+              ],
+              "thumbnailImageUrl": `${doc.data().url}`,
+              "title": `${doc.data().diseaseNameTH}`,
+              "text": kernel_symptom
+            }
+          }
+          const payloadMsg = new Payload("LINE", buttonMsg, {
+            sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
+        });
+      }
+      else if (kernel_symptom === "เมล็ดลีบ") {
+        return db.collection('Symptom_disease').doc('Kernel').collection('symptom').doc('lean').get().then(doc => {
+          let carouselMsg = {
+            "type": "template",
+            "altText": kernel_symptom,
+            "template": {
+              "type": "carousel",
+              "actions": [],
+              "columns": [
+                {
+                  "thumbnailImageUrl": `${doc.data().url[0]}`,
+                  "title": `${doc.data().diseaseNameTH[0]}`,
+                  "text": kernel_symptom,
+                  "actions": [
+                    {
+                      "type": "message",
+                      "label": "ดูรูปเพิ่มเติม",
+                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
+                    },
+                    {
+                      "type": "message",
+                      "label": "อ่านรายละเอียด",
+                      "text": `${doc.data().diseaseNameTH[0]}`
+                    }
+                  ]
+                },
+                {
+                  "thumbnailImageUrl": `${doc.data().url[1]}`,
+                  "title": `${doc.data().diseaseNameTH[1]}`,
+                  "text": kernel_symptom,
+                  "actions": [
+                    {
+                      "type": "message",
+                      "label": "ดูรูปเพิ่มเติม",
+                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
+                    },
+                    {
+                      "type": "message",
+                      "label": "อ่านรายละเอียด",
+                      "text": `${doc.data().diseaseNameTH[1]}`
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+          const payloadMsg = new Payload("LINE", carouselMsg, {
+            sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
+        });
+      }
+    }
+
     const stalk_select = async => {
       let stalk_symptom = req.body.queryResult.parameters.Stalk_symptom;
       if (stalk_symptom === "ลำต้นมีจุด") {
@@ -1902,7 +2134,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -1939,7 +2171,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[0]}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
                       },
                       {
                         "type": "message",
@@ -1956,7 +2188,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[1]}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
                       },
                       {
                         "type": "message",
@@ -1973,7 +2205,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[2]}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[2]}`
                       },
                       {
                         "type": "message",
@@ -2003,7 +2235,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -2034,7 +2266,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -2056,29 +2288,121 @@ exports.webhook = functions
       else if (stalk_symptom === "กลวงเป็นโพรง") {
         return db.collection('Symptom_disease').doc('Stalk').collection('symptom').doc('hollow').get()
           .then(doc => {
-            let buttonMsg = {
+            let carouselMsg = {
               "type": "template",
               "altText": stalk_symptom,
               "template": {
-                "type": "buttons",
-                "actions": [
+                "type": "carousel",
+                "actions": [],
+                "columns": [
                   {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "thumbnailImageUrl": `${doc.data().url[0]}`,
+                    "title": `${doc.data().diseaseNameTH[0]}`,
+                    "text": stalk_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH[0]}`
+                      }
+                    ]
                   },
                   {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": stalk_symptom
+                    "thumbnailImageUrl": `${doc.data().url[1]}`,
+                    "title": `${doc.data().diseaseNameTH[1]}`,
+                    "text": stalk_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH[1]}`
+                      }
+                    ]
+                  },
+                ]
               }
             }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
+            const payloadMsg = new Payload("LINE", carouselMsg, {
+              sendAsMessage: true
+            });
+            return agent.add(payloadMsg);
+          });
+      }
+      else if (stalk_symptom === "ลำต้นหักล้ม") {
+        return db.collection('Symptom_disease').doc('Stalk').collection('symptom').doc('fall over').get()
+          .then(doc => {
+            let carouselMsg = {
+              "type": "template",
+              "altText": stalk_symptom,
+              "template": {
+                "type": "carousel",
+                "actions": [],
+                "columns": [
+                  {
+                    "thumbnailImageUrl": `${doc.data().url[0]}`,
+                    "title": `${doc.data().diseaseNameTH[0]}`,
+                    "text": stalk_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH[0]}`
+                      }
+                    ]
+                  },
+                  {
+                    "thumbnailImageUrl": `${doc.data().url[1]}`,
+                    "title": `${doc.data().diseaseNameTH[1]}`,
+                    "text": stalk_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH[1]}`
+                      }
+                    ]
+                  },
+                  {
+                    "thumbnailImageUrl": `${doc.data().url[2]}`,
+                    "title": `${doc.data().diseaseNameTH[2]}`,
+                    "text": stalk_symptom,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[2]}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH[2]}`
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+            const payloadMsg = new Payload("LINE", carouselMsg, {
               sendAsMessage: true
             });
             return agent.add(payloadMsg);
@@ -2105,7 +2429,7 @@ exports.webhook = functions
                     {
                       "type": "message",
                       "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[0]}`
+                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
                     },
                     {
                       "type": "message",
@@ -2122,7 +2446,7 @@ exports.webhook = functions
                     {
                       "type": "message",
                       "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[1]}`
+                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
                     },
                     {
                       "type": "message",
@@ -2139,7 +2463,7 @@ exports.webhook = functions
                     {
                       "type": "message",
                       "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[2]}`
+                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[2]}`
                     },
                     {
                       "type": "message",
@@ -2169,7 +2493,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -2200,7 +2524,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -2231,7 +2555,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -2267,7 +2591,7 @@ exports.webhook = functions
                     {
                       "type": "message",
                       "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[0]}`
+                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
                     },
                     {
                       "type": "message",
@@ -2284,7 +2608,7 @@ exports.webhook = functions
                     {
                       "type": "message",
                       "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[1]}`
+                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
                     },
                     {
                       "type": "message",
@@ -2301,7 +2625,7 @@ exports.webhook = functions
                     {
                       "type": "message",
                       "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[2]}`
+                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[2]}`
                     },
                     {
                       "type": "message",
@@ -2318,7 +2642,7 @@ exports.webhook = functions
                     {
                       "type": "message",
                       "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH[4]}`
+                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[4]}`
                     },
                     {
                       "type": "message",
@@ -2354,7 +2678,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['brown']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['brown']}`
                       },
                       {
                         "type": "message",
@@ -2371,7 +2695,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['gray']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['gray']}`
                       },
                       {
                         "type": "message",
@@ -2388,7 +2712,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['pale']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['pale']}`
                       },
                       {
                         "type": "message",
@@ -2405,7 +2729,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['white']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['white']}`
                       },
                       {
                         "type": "message",
@@ -2422,7 +2746,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['yellow']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['yellow']}`
                       },
                       {
                         "type": "message",
@@ -2440,7 +2764,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['swell']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['swell']}`
                       },
                       {
                         "type": "message",
@@ -2476,7 +2800,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['brown']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['brown']}`
                       },
                       {
                         "type": "message",
@@ -2493,7 +2817,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['gray']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['gray']}`
                       },
                       {
                         "type": "message",
@@ -2510,7 +2834,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['gray2']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['gray2']}`
                       },
                       {
                         "type": "message",
@@ -2527,7 +2851,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['gray3']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['gray3']}`
                       },
                       {
                         "type": "message",
@@ -2544,7 +2868,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['layer']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['layer']}`
                       },
                       {
                         "type": "message",
@@ -2561,7 +2885,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['yellow']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['yellow']}`
                       },
                       {
                         "type": "message",
@@ -2578,7 +2902,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['light green']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['light green']}`
                       },
                       {
                         "type": "message",
@@ -2595,7 +2919,7 @@ exports.webhook = functions
                       {
                         "type": "message",
                         "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH['straw']}`
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['straw']}`
                       },
                       {
                         "type": "message",
@@ -2625,7 +2949,7 @@ exports.webhook = functions
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม"+`${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
                   },
                   {
                     "type": "message",
@@ -2850,13 +3174,16 @@ exports.webhook = functions
     // Disease
     intentMap.set('Disease', disease);
 
+    // Disease Text
+    intentMap.set('Type your corn symptoms', disease_text);
+
     // Disease Carousel
     intentMap.set('Disease Carousel', disease_carousel);
     intentMap.set('Carousel - cause', carousel_cause);
     intentMap.set('Carousel - symptom', carousel_symptom);
     intentMap.set('Carousel - protection', carousel_protection);
     intentMap.set('Carousel - more', disease_carousel_more);
-    
+
 
     // Disease Imagemap
     intentMap.set('Disease Imagemap', disease_imagemap);
@@ -2864,6 +3191,7 @@ exports.webhook = functions
     intentMap.set('Ear - Select Symptom', ear_select);
     intentMap.set('Basal - Select Symptom', basal_select);
     intentMap.set('Leaf-Sheath - Select Symptom', leaf_sheath_select);
+    intentMap.set('Kernel - Select Symptom', kernel_select);
     intentMap.set('Stalk - Select Symptom', stalk_select);
     intentMap.set('Leaf - Select Symptom', leaf_select);
 

@@ -246,17 +246,7 @@ exports.webhook = functions
       return agent.add("ต้องการทราบข้อมูลโรคข้าวโพดด้วยวิธีไหนคะ?"), agent.add(payloadMsg);
     }
 
-    // ส่วนdisease text ให้ผู้ใช้พิมพ์อาการของข้าวโพด ------ [2.1]
-    const disease_text = async => {
-      let full_symptom = req.body.queryResult.parameters.fullDiseaseText;
-      return queryCause = db.collection('Disease').where('query', 'array-contains-any', full_symptom).get().then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          agent.add(doc.data().diseaseNameTH)
-        });
-      });
-    }
-
-    // ส่วน function disease_carousel แสดงโรคทั้งหมดที่มีในระบบ ------ [2.2]
+    // ส่วน function disease_carousel แสดงโรคทั้งหมดที่มีในระบบ ------ [2.1]
     const disease_carousel = async => {
       // เพิ่ม flex message แสดงโรคข้าวโพด
       const carouselMsg = {
@@ -267,7 +257,7 @@ exports.webhook = functions
           "actions": [],
           "columns": [
             {
-              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%A3%E0%B8%B2%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%84%E0%B9%89%E0%B8%B2%E0%B8%87%2F%E0%B8%A3%E0%B8%B2%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%84%E0%B9%89%E0%B8%B2%E0%B8%87.jpg?alt=media&token=aeaf06d2-a701-494a-ad5f-bcb17ec2dc18#?width=auto%22",
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/DownyMildew%2Fleaf_downy15sq.jpg?alt=media&token=32eef626-b075-4805-a981-580e8b0377c8#?width=auto%22",
               "title": "โรคราน้ำค้าง หรือโรคใบลาย",
               "text": "โรคราน้ำค้าง หรือโรคใบลาย (Corn Downy Mildew)",
               "actions": [
@@ -289,7 +279,7 @@ exports.webhook = functions
               ]
             },
             {
-              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%AA%E0%B8%A1%E0%B8%B1%E0%B8%97%2FcommonSmut.jpg?alt=media&token=c2e53e57-234b-4805-b653-ba560ab62f82#?width=auto%22",
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/CommonSmut%2Fear_commonSmut5sq.jpg?alt=media&token=f9b91008-7b2a-4b2b-89f7-76a90c9c6e26#?width=auto%22",
               "title": "โรคสมัท หรือ ราเขม่าสีดำ",
               "text": "โรคสมัท หรือ ราเขม่าสีดำ (Common Smut)",
               "actions": [
@@ -311,7 +301,7 @@ exports.webhook = functions
               ]
             },
             {
-              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B9%83%E0%B8%9A%E0%B9%84%E0%B8%AB%E0%B8%A1%E0%B9%89%E0%B9%81%E0%B8%9C%E0%B8%A5%E0%B9%80%E0%B8%A5%E0%B9%87%E0%B8%81%2Flek3.jpg?alt=media&token=0f1f6621-7ba1-462a-b69f-81bd23f650f6",
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%20SouthernCornLeafBlight%2Fleaf_sblight6.jpg?alt=media&token=f8df6c5a-3cca-49e9-b583-22a4091ca22c#?width=auto%22",
               "title": "โรคใบไหม้แผลเล็ก",
               "text": "โรคใบไหม้แผลเล็ก  (Southern or Maydis LeafBlight)",
               "actions": [
@@ -333,7 +323,7 @@ exports.webhook = functions
               ]
             },
             {
-              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%A3%E0%B8%B2%E0%B8%AA%E0%B8%99%E0%B8%B4%E0%B8%A1%2F%E0%B8%A3%E0%B8%B2%E0%B8%AA%E0%B8%99%E0%B8%B4%E0%B8%A1.jpg?alt=media&token=26f8e007-0e9e-4953-bd54-f2a322824fb0#?width=auto%22",
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/SouthernCornRust%2Fleaf_rust13sq.jpg?alt=media&token=ca83ef5e-f131-4629-8682-173319978149#?width=auto%22",
               "title": "โรคราสนิม",
               "text": "โรคราสนิม (Southern Corn Rust)",
               "actions": [
@@ -355,7 +345,7 @@ exports.webhook = functions
               ]
             },
             {
-              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B9%83%E0%B8%9A%E0%B9%84%E0%B8%AB%E0%B8%A1%E0%B9%89%E0%B9%81%E0%B8%9C%E0%B8%A5%E0%B9%83%E0%B8%AB%E0%B8%8D%E0%B9%88%2Fyai1.jpg?alt=media&token=6bb92208-6251-4f5e-9f94-116b08f7feab",
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/NorthenCornLeafBlight%2Fleaf_nblight6.jpg?alt=media&token=0bdd7c39-c984-445e-bd50-7b124120489a#?width=auto%22",
               "title": "โรคใบไหม้แผลใหญ่",
               "text": "โรคใบไหม้แผลใหญ่ (Northen Corn Leaf Blight)",
               "actions": [
@@ -377,7 +367,29 @@ exports.webhook = functions
               ]
             },
             {
-              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/5be55-white-mk630n.jpg?alt=media&token=8cb8c86e-1a11-436d-9335-5e0c061868c0",
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/BandedLeafAndSheathBlight%2Frhizoctonia15.jpg?alt=media&token=8afb5714-967a-4ca4-908c-e287a8f3b921#?width=auto%22",
+              "title": "โรคกาบและใบไหม้",
+              "text": "โรคกาบและใบไหม้ (Banded Leaf and Sheath Blight)",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "สาเหตุ",
+                  "text": "สาเหตุของโรคกาบและใบไหม้"
+                },
+                {
+                  "type": "message",
+                  "label": "อาการ",
+                  "text": "อาการของโรคกาบและใบไหม้"
+                },
+                {
+                  "type": "message",
+                  "label": "การป้องกัน",
+                  "text": "การป้องกันโรคกาบและใบไหม้"
+                }
+              ]
+            },
+            {
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/whtieBG.jpg?alt=media&token=9b73336d-f0ac-4370-91d2-038a953f20f6",
               "title": "  ",
               "text": "  ",
               "actions": [
@@ -416,29 +428,7 @@ exports.webhook = functions
           "actions": [],
           "columns": [
             {
-              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%81%E0%B8%B2%E0%B8%9A%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B9%83%E0%B8%9A%E0%B9%84%E0%B8%AB%E0%B8%A1%E0%B9%89%2F%E0%B8%81%E0%B8%B2%E0%B8%9A%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B9%83%E0%B8%9A%E0%B9%84%E0%B8%AB%E0%B8%A1%E0%B9%893.jpg?alt=media&token=955b6331-38b9-4605-9ea8-c8cea455fa70#?width=auto%22",
-              "title": "โรคกาบและใบไหม้",
-              "text": "โรคกาบและใบไหม้ (Banded Leaf and Sheath Blight)",
-              "actions": [
-                {
-                  "type": "message",
-                  "label": "สาเหตุ",
-                  "text": "สาเหตุของโรคกาบและใบไหม้"
-                },
-                {
-                  "type": "message",
-                  "label": "อาการ",
-                  "text": "อาการของโรคกาบและใบไหม้"
-                },
-                {
-                  "type": "message",
-                  "label": "การป้องกัน",
-                  "text": "การป้องกันโรคกาบและใบไหม้"
-                }
-              ]
-            },
-            {
-              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B9%83%E0%B8%9A%E0%B8%88%E0%B8%B8%E0%B8%94%2Fspot3.jpg?alt=media&token=643b14b5-cda7-4788-910a-f01977d10823",
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/LeafSpot%2Fcurvularia18sq.jpg?alt=media&token=f8c15411-135d-4865-85e6-e1975f7a82a9#?width=auto%22",
               "title": "โรคใบจุด",
               "text": "โรคใบจุด (Leaf Spot)",
               "actions": [
@@ -461,7 +451,7 @@ exports.webhook = functions
               ]
             },
             {
-              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%95%E0%B9%89%E0%B8%99%E0%B9%80%E0%B8%99%E0%B9%88%E0%B8%B2%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B9%81%E0%B8%9A%E0%B8%84%E0%B8%97%E0%B8%B5%E0%B9%80%E0%B8%A3%E0%B8%B5%E0%B8%A2%2F%E0%B9%81%E0%B8%9A%E0%B8%84%E0%B8%97%E0%B8%B5%E0%B9%80%E0%B8%A3%E0%B8%B5%E0%B8%A2.jpg?alt=media&token=e0cc0bce-9c09-408a-b85c-147eb7c9959a#?width=auto%22",
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/BacterialStalkRot%2Fstalk_bacterial15.jpg?alt=media&token=4386b918-d134-418c-85e9-355ca23daa7a#?width=auto%22",
               "title": "โรคต้นเน่าจากเชื้อแบคทีเรีย",
               "text": "โรคต้นเน่าจากเชื้อแบคทีเรีย (Bacterial Stalk Rot)",
               "actions": [
@@ -483,7 +473,7 @@ exports.webhook = functions
               ]
             },
             {
-              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%94%E0%B8%B4%E0%B9%82%E0%B8%9E%E0%B8%A5%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%2Fdiplo.jpg?alt=media&token=09e1c84c-70b6-4e64-8b40-e16894972b7c",
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%20FusariumStalkRot%2Fstalk_fasarium9sq.jpg?alt=media&token=7462e351-7169-4516-bfa3-409ddd859bc9#?width=auto%22",
               "title": "โรคต้นเน่าจากเชื้อฟิวซาเรี่ยม",
               "text": "โรคต้นเน่าจากเชื้อฟิวซาเรี่ยม (Fusarium Stalk Rot)",
               "actions": [
@@ -505,7 +495,7 @@ exports.webhook = functions
               ]
             },
             {
-              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%E0%B8%A1%E0%B8%B2%E0%B9%82%E0%B8%84%E0%B8%A3%E0%B9%82%E0%B8%9F%E0%B8%A1%E0%B8%B4%E0%B8%99%E0%B9%88%E0%B8%B2%2Fcha2.jfif?alt=media&token=220dd421-1c50-4a39-bc41-4e1b9d732a4d",
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/%20CharcoalRot%2Fstalk_charcoal11.jpg?alt=media&token=e49bf671-c77b-405d-a61a-8fce38f72e8e#?width=auto%22",
               "title": "โรคต้นเน่าจากเชื้อมาโครโฟมิน่า",
               "text": "โรคต้นเน่าจากเชื้อมาโครโฟมิน่า (Charcoal Rot)",
               "actions": [
@@ -523,6 +513,51 @@ exports.webhook = functions
                   "type": "message",
                   "label": "การป้องกัน",
                   "text": "การป้องกันโรคต้นเน่าจากเชื้อมาโครโฟมิน่า"
+                }
+              ]
+            },
+            {
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/DiplodiaStalkKernelAndEarRot%2Fear_diplodia13.jpg?alt=media&token=ddd1ab6f-3454-4814-a368-18d162a9ebd5#?width=auto%22",
+              "title": "โรคฝัก ต้นและเมล็ดเน่าจากเชื้อดิโพลเดีย",
+              "text": "โรคฝัก ต้นและเมล็ดเน่าจากเชื้อดิโพลเดีย",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "สาเหตุ",
+                  "text": "สาเหตุของโรคฝัก ต้นและเมล็ดเน่าจากเชื้อดิโพลเดีย"
+                },
+                {
+                  "type": "message",
+                  "label": "อาการ",
+                  "text": "อาการของโรคฝัก ต้นและเมล็ดเน่าจากเชื้อดิโพลเดีย"
+                },
+                {
+                  "type": "message",
+                  "label": "การป้องกัน",
+                  "text": "การป้องกันโรคฝัก ต้นและเมล็ดเน่าจากเชื้อดิโพลเดีย"
+                }
+              ]
+            }
+            ,
+            {
+              "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/PenicilliumKernelAndEarRot%2Fpenicillium4.jpg?alt=media&token=f5fcad26-b798-4e11-b6d1-0436ea6f6d33#?width=auto%22",
+              "title": "โรคเมล็ดและฝักเน่าจากเชื้อราเพนิซิลเลียม",
+              "text": "โรคเมล็ดและฝักเน่าจากเชื้อราเพนิซิลเลียม",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "สาเหตุ",
+                  "text": "สาเหตุของโรคเมล็ดและฝักเน่าจากเชื้อราเพนิซิลเลียม"
+                },
+                {
+                  "type": "message",
+                  "label": "อาการ",
+                  "text": "อาการของโรคเมล็ดและฝักเน่าจากเชื้อราเพนิซิลเลียม"
+                },
+                {
+                  "type": "message",
+                  "label": "การป้องกัน",
+                  "text": "การป้องกันโรคเมล็ดและฝักเน่าจากเชื้อราเพนิซิลเลียม"
                 }
               ]
             }
@@ -563,31 +598,194 @@ exports.webhook = functions
         });
       });
     }
-    /*const disease_select = async => {
-      let disease_s = req.body.queryResult.parameters.disease_select;
-      if (disease_s === "การป้องกันโรคราน้ำค้าง") {
-        return db.collection('Disease').doc('DownyMildew').get().then(doc => {
-          agent.add(doc.data().protection);
-        });
-      }
-      else if (disease_s === "การป้องกันโรคใบไหม้แผลเล็ก") {
-        return db.collection('Disease').doc('SouthernCornLeafBlight').get().then(doc => {
-          agent.add(doc.data().protection);
-        });
-      }
-      else if (disease_s === "การป้องกันโรคราสนิม") {
-        return db.collection('Disease').doc('SouthernCornRust').get().then(doc => {
-          agent.add(doc.data().protection);
-        });
-      }
-    }*/
 
+    // ส่วนdisease text ให้ผู้ใช้พิมพ์อาการของข้าวโพด ------ [2.2]
+    const disease_text = async => {
+      let full_symptom = req.body.queryResult.parameters.fullDiseaseText;
+      const diseases = new Array();
+      //return agent.add(queryDiseaseText(full_symptom))
+      return queryCause = db.collection('Disease').where('query', 'array-contains-any', full_symptom).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          diseases.push(doc.data().diseaseNameTH)
+          return agent.add(doc.data().diseaseNameTH);
+          /*if (diseases.length == 1) {
+            let buttonMsg = {
+              "type": "template",
+              "altText": `${doc.data().diseaseNameTH}`,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": `${doc.data().diseaseNameTH}`
+              }
+            }
+            const payloadMsg = new Payload("LINE", buttonMsg, {
+              sendAsMessage: true
+            });
+            return agent.add(payloadMsg);
+          }
+          else {
+            return agent.add(doc.data().diseaseNameTH);
+          }*/
+
+          /*else if (diseases.length == 2){
+            let carouselMsg = {
+              "type": "template",
+              "altText": "ค้นหาอาการ",
+              "template": {
+                "type": "carousel",
+                "actions": [],
+                "columns": [
+                  {
+                    "thumbnailImageUrl": `${doc.data().url}`,
+                    "title": `${doc.data().diseaseNameTH}`,
+                    "text": `${doc.data().diseaseNameTH}`,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH}`
+                      }
+                    ]
+                  },
+                  {
+                    "thumbnailImageUrl": `${doc.data().url}`,
+                    "title": `${doc.data().diseaseNameTH}`,
+                    "text": `${doc.data().diseaseNameTH}`,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH}`
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+            const payloadMsg = new Payload("LINE", carouselMsg, {
+              sendAsMessage: true
+            });
+            return agent.add(payloadMsg);
+          }
+          else if (diseases.length >= 3){
+            let carouselMsg = {
+              "type": "template",
+              "altText": "ค้นหาอาการ",
+              "template": {
+                "type": "carousel",
+                "actions": [],
+                "columns": [
+                  {
+                    "thumbnailImageUrl": `${doc.data().url}`,
+                    "title": `${doc.data().diseaseNameTH}`,
+                    "text": `${doc.data().diseaseNameTH}`,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH}`
+                      }
+                    ]
+                  },
+                  {
+                    "thumbnailImageUrl": `${doc.data().url}`,
+                    "title": `${doc.data().diseaseNameTH}`,
+                    "text": `${doc.data().diseaseNameTH}`,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH}`
+                      }
+                    ]
+                  },
+                  {
+                    "thumbnailImageUrl": `${doc.data().url}`,
+                    "title": `${doc.data().diseaseNameTH}`,
+                    "text": `${doc.data().diseaseNameTH}`,
+                    "actions": [
+                      {
+                        "type": "message",
+                        "label": "ดูรูปเพิ่มเติม",
+                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                      },
+                      {
+                        "type": "message",
+                        "label": "อ่านรายละเอียด",
+                        "text": `${doc.data().diseaseNameTH}`
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+            const payloadMsg = new Payload("LINE", carouselMsg, {
+              sendAsMessage: true
+            });
+            return agent.add(payloadMsg);
+          }*/
+        });
+        //return agent.add(diseases[1])
+        /*let buttonMsg = queryDiseaseText(diseases)
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);*/
+
+        return agent.add("สามารถดูรายละเอียดเพิ่มเติมแต่ละโรคได้ที่เมนู โรคพืช > แสดงโรคทั้งหมด ค่ะ");
+      });
+
+    }
+    /*function queryDiseaseText(all_symptom) {
+      let full_symptom = req.body.queryResult.parameters.fullDiseaseText;
+      const diseases = new Array();
+      //return agent.add(queryDiseaseText(full_symptom))
+      return queryCause = db.collection('Disease').where('query', 'array-contains-any', full_symptom).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          diseases.push(doc.data().diseaseNameTH)
+        });
+        return diseases
+      });
+    }*/
 
     // ส่วน function disease_imagemap ให้ผู้ใช้กดเลือกอาการจากแผนภาพเพื่อหาโรคที่เข้าข่าย ------ [2.3]
     const disease_imagemap = async => {
       const imagemapMsg = {
         "type": "imagemap",
-        "baseUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/106.png?alt=media&token=36f9c308-c59d-4595-9568-ddc09e71e8d7#?width=auto",
+        "baseUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/imagemap.png?alt=media&token=417c6f0f-ab74-41a6-b8c6-857fa2551eea#?width=auto",
         "altText": "This is an imagemap",
         "baseSize": {
           "width": 1040,
@@ -1235,8 +1433,8 @@ exports.webhook = functions
                       "type": "button",
                       "action": {
                         "type": "message",
-                        "label": "ซีดเหลือง",
-                        "text": "ใบซีดเหลือง"
+                        "label": "แผลฉ่ำน้ำ",
+                        "text": "ใบมีแผลฉ่ำน้ำ"
                       }
                     },
                     {
@@ -1294,17 +1492,6 @@ exports.webhook = functions
                         "label": "มีแผลตามทางยาว",
                         "text": "ใบมีแผลตามทางยาว"
                       }
-                    },
-                    {
-                      "type": "separator"
-                    },
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "มีแผลช้ำ/ฉ่ำน้ำ",
-                        "text": "ใบมีแผลฉ่ำน้ำ"
-                      }
                     }
                   ]
                 }
@@ -1335,7 +1522,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['brown']}`,
                     "title": `${doc.data().diseaseNameTH['brown']}`,
-                    "text": ear_symptom,
+                    "text": `${doc.data().description['brown']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -1352,7 +1539,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['swell']}`,
                     "title": `${doc.data().diseaseNameTH['swell']}`,
-                    "text": ear_symptom,
+                    "text": `${doc.data().description['swell']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -1397,7 +1584,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": ear_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -1427,7 +1614,7 @@ exports.webhook = functions
               ],
               "thumbnailImageUrl": `${doc.data().url}`,
               "title": `${doc.data().diseaseNameTH[0]}`,
-              "text": ear_symptom
+              "text": `${doc.data().description}`
             }
           }
           const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -1436,7 +1623,7 @@ exports.webhook = functions
           return agent.add(payloadMsg);
         });
       }
-      else if (ear_symptom === "ฝักมีราขาว") {
+      else if (ear_symptom === "ฝักมีราเขียว") {
         return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('fungus').get()
           .then(doc => {
             let buttonMsg = {
@@ -1458,7 +1645,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": ear_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -1489,7 +1676,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": ear_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -1520,7 +1707,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": ear_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -1556,7 +1743,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": basal_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -1578,7 +1765,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['dark brown']}`,
                     "title": `${doc.data().diseaseNameTH['dark brown']}`,
-                    "text": basal_symptom,
+                    "text": `${doc.data().description['dark brown']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -1595,7 +1782,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['grayish green']}`,
                     "title": `${doc.data().diseaseNameTH['grayish green']}`,
-                    "text": basal_symptom,
+                    "text": `${doc.data().description['grayish green']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -1612,7 +1799,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['reddish brown']}`,
                     "title": `${doc.data().diseaseNameTH['reddish brown']}`,
-                    "text": basal_symptom,
+                    "text": `${doc.data().description['reddish brown']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -1657,7 +1844,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": basal_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -1688,7 +1875,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": basal_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", flexMsg, {
@@ -1719,7 +1906,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": basal_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -1750,7 +1937,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": basal_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -1760,7 +1947,7 @@ exports.webhook = functions
           });
       }
       else if (basal_symptom === "โคนต้นมีราขาว") {
-        return db.collection('Symptom_disease').doc('Basal').collection('symptom').doc('smell').get()
+        return db.collection('Symptom_disease').doc('Basal').collection('symptom').doc('fungus').get()
           .then(doc => {
             let buttonMsg = {
               "type": "template",
@@ -1781,7 +1968,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": basal_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -1817,7 +2004,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url['swell']}`,
                 "title": `${doc.data().diseaseNameTH['swell']}`,
-                "text": leaf_sheath_symptom
+                "text": `${doc.data().description['swell']}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -1848,7 +2035,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url['straw']}`,
                 "title": `${doc.data().diseaseNameTH['straw']}`,
-                "text": leaf_sheath_symptom
+                "text": `${doc.data().description['straw']}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -1879,7 +2066,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": leaf_sheath_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -1910,7 +2097,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": leaf_sheath_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -1921,7 +2108,7 @@ exports.webhook = functions
       }
     }
 
-    const kernel_select = async =>{
+    const kernel_select = async => {
       let kernel_symptom = req.body.queryResult.parameters.Kernel_symptom;
       if (kernel_symptom === "เมล็ดมีรอยขีดสีขาว") {
         return db.collection('Symptom_disease').doc('Kernel').collection('symptom').doc('scratch').get()
@@ -1945,7 +2132,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": kernel_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -1954,7 +2141,7 @@ exports.webhook = functions
             return agent.add(payloadMsg);
           });
       }
-      else if (kernel_symptom === "เมล็ดมีแผล"){
+      else if (kernel_symptom === "เมล็ดมีแผล") {
         return db.collection('Symptom_disease').doc('Kernel').collection('symptom').doc('lesion').get().then(doc => {
           let buttonMsg = {
             "type": "template",
@@ -1975,7 +2162,7 @@ exports.webhook = functions
               ],
               "thumbnailImageUrl": `${doc.data().url}`,
               "title": `${doc.data().diseaseNameTH}`,
-              "text": kernel_symptom
+              "text": `${doc.data().description}`
             }
           }
           const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -1996,7 +2183,7 @@ exports.webhook = functions
                 {
                   "thumbnailImageUrl": `${doc.data().url[0]}`,
                   "title": `${doc.data().diseaseNameTH[0]}`,
-                  "text": kernel_symptom,
+                  "text": `${doc.data().description[0]}`,
                   "actions": [
                     {
                       "type": "message",
@@ -2013,7 +2200,7 @@ exports.webhook = functions
                 {
                   "thumbnailImageUrl": `${doc.data().url[1]}`,
                   "title": `${doc.data().diseaseNameTH[1]}`,
-                  "text": kernel_symptom,
+                  "text": `${doc.data().description[1]}`,
                   "actions": [
                     {
                       "type": "message",
@@ -2057,7 +2244,7 @@ exports.webhook = functions
               ],
               "thumbnailImageUrl": `${doc.data().url}`,
               "title": `${doc.data().diseaseNameTH}`,
-              "text": kernel_symptom
+              "text": `${doc.data().description}`
             }
           }
           const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -2078,7 +2265,7 @@ exports.webhook = functions
                 {
                   "thumbnailImageUrl": `${doc.data().url[0]}`,
                   "title": `${doc.data().diseaseNameTH[0]}`,
-                  "text": kernel_symptom,
+                  "text": `${doc.data().description[0]}`,
                   "actions": [
                     {
                       "type": "message",
@@ -2095,7 +2282,7 @@ exports.webhook = functions
                 {
                   "thumbnailImageUrl": `${doc.data().url[1]}`,
                   "title": `${doc.data().diseaseNameTH[1]}`,
-                  "text": kernel_symptom,
+                  "text": `${doc.data().description[1]}`,
                   "actions": [
                     {
                       "type": "message",
@@ -2144,7 +2331,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": stalk_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -2166,7 +2353,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url[0]}`,
                     "title": `${doc.data().diseaseNameTH[0]}`,
-                    "text": stalk_symptom,
+                    "text": `${doc.data().description[0]}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2183,7 +2370,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url[1]}`,
                     "title": `${doc.data().diseaseNameTH[1]}`,
-                    "text": stalk_symptom,
+                    "text": `${doc.data().description[1]}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2200,7 +2387,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url[2]}`,
                     "title": `${doc.data().diseaseNameTH[2]}`,
-                    "text": stalk_symptom,
+                    "text": `${doc.data().description[2]}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2245,7 +2432,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": stalk_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -2276,7 +2463,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": stalk_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -2298,7 +2485,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url[0]}`,
                     "title": `${doc.data().diseaseNameTH[0]}`,
-                    "text": stalk_symptom,
+                    "text": `${doc.data().description[0]}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2315,7 +2502,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url[1]}`,
                     "title": `${doc.data().diseaseNameTH[1]}`,
-                    "text": stalk_symptom,
+                    "text": `${doc.data().description[1]}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2351,7 +2538,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url[0]}`,
                     "title": `${doc.data().diseaseNameTH[0]}`,
-                    "text": stalk_symptom,
+                    "text": `${doc.data().description[0]}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2368,7 +2555,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url[1]}`,
                     "title": `${doc.data().diseaseNameTH[1]}`,
-                    "text": stalk_symptom,
+                    "text": `${doc.data().description[1]}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2385,7 +2572,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url[2]}`,
                     "title": `${doc.data().diseaseNameTH[2]}`,
-                    "text": stalk_symptom,
+                    "text": `${doc.data().description[2]}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2408,12 +2595,43 @@ exports.webhook = functions
             return agent.add(payloadMsg);
           });
       }
+      else if (stalk_symptom === "ลำต้นแตก") {
+        return db.collection('Symptom_disease').doc('Stalk').collection('symptom').doc('shred').get()
+          .then(doc => {
+            let buttonMsg = {
+              "type": "template",
+              "altText": stalk_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH}`,
+                "text": `${doc.data().description}`
+              }
+            }
+            const payloadMsg = new Payload("LINE", buttonMsg, {
+              sendAsMessage: true
+            });
+            return agent.add(payloadMsg);
+          });
+      }
     }
 
     const leaf_select = async => {
       let leaf_symptom = req.body.queryResult.parameters.Leaf_symptom;
       if (leaf_symptom === "ใบไหม้") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('burn').get().then(doc => {
+        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('blight').get().then(doc => {
           let carouselMsg = {
             "type": "template",
             "altText": leaf_symptom,
@@ -2424,7 +2642,7 @@ exports.webhook = functions
                 {
                   "thumbnailImageUrl": `${doc.data().url[0]}`,
                   "title": `${doc.data().diseaseNameTH[0]}`,
-                  "text": leaf_symptom,
+                  "text": `${doc.data().description[0]}`,
                   "actions": [
                     {
                       "type": "message",
@@ -2441,7 +2659,7 @@ exports.webhook = functions
                 {
                   "thumbnailImageUrl": `${doc.data().url[1]}`,
                   "title": `${doc.data().diseaseNameTH[1]}`,
-                  "text": leaf_symptom,
+                  "text": `${doc.data().description[1]}`,
                   "actions": [
                     {
                       "type": "message",
@@ -2458,7 +2676,7 @@ exports.webhook = functions
                 {
                   "thumbnailImageUrl": `${doc.data().url[2]}`,
                   "title": `${doc.data().diseaseNameTH[2]}`,
-                  "text": leaf_symptom,
+                  "text": `${doc.data().description[2]}`,
                   "actions": [
                     {
                       "type": "message",
@@ -2503,7 +2721,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": leaf_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -2534,7 +2752,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": leaf_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -2565,7 +2783,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": leaf_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -2575,7 +2793,7 @@ exports.webhook = functions
           });
       }
       else if (leaf_symptom === "ใบแห้ง") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('blight').get().then(doc => {
+        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('burn').get().then(doc => {
           let carouselMsg = {
             "type": "template",
             "altText": leaf_symptom,
@@ -2586,7 +2804,7 @@ exports.webhook = functions
                 {
                   "thumbnailImageUrl": `${doc.data().url[0]}`,
                   "title": `${doc.data().diseaseNameTH[0]}`,
-                  "text": leaf_symptom,
+                  "text": `${doc.data().description[0]}`,
                   "actions": [
                     {
                       "type": "message",
@@ -2603,7 +2821,7 @@ exports.webhook = functions
                 {
                   "thumbnailImageUrl": `${doc.data().url[1]}`,
                   "title": `${doc.data().diseaseNameTH[1]}`,
-                  "text": leaf_symptom,
+                  "text": `${doc.data().description[1]}`,
                   "actions": [
                     {
                       "type": "message",
@@ -2620,7 +2838,7 @@ exports.webhook = functions
                 {
                   "thumbnailImageUrl": `${doc.data().url[2]}`,
                   "title": `${doc.data().diseaseNameTH[2]}`,
-                  "text": leaf_symptom,
+                  "text": `${doc.data().description[2]}`,
                   "actions": [
                     {
                       "type": "message",
@@ -2637,7 +2855,7 @@ exports.webhook = functions
                 {
                   "thumbnailImageUrl": `${doc.data().url[4]}`,
                   "title": `${doc.data().diseaseNameTH[4]}`,
-                  "text": leaf_symptom,
+                  "text": `${doc.data().description[4]}`,
                   "actions": [
                     {
                       "type": "message",
@@ -2673,7 +2891,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['brown']}`,
                     "title": `${doc.data().diseaseNameTH['brown']}`,
-                    "text": leaf_symptom,
+                    "text": `${doc.data().description['brown']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2690,7 +2908,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['gray']}`,
                     "title": `${doc.data().diseaseNameTH['gray']}`,
-                    "text": leaf_symptom,
+                    "text": `${doc.data().description['gray']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2707,7 +2925,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['pale']}`,
                     "title": `${doc.data().diseaseNameTH['pale']}`,
-                    "text": leaf_symptom,
+                    "text": `${doc.data().description['pale']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2724,7 +2942,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['white']}`,
                     "title": `${doc.data().diseaseNameTH['white']}`,
-                    "text": leaf_symptom,
+                    "text": `${doc.data().description['white']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2741,7 +2959,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['yellow']}`,
                     "title": `${doc.data().diseaseNameTH['yellow']}`,
-                    "text": leaf_symptom,
+                    "text": `${doc.data().description['yellow']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2759,7 +2977,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['swell']}`,
                     "title": `${doc.data().diseaseNameTH['swell']}`,
-                    "text": leaf_symptom,
+                    "text": `${doc.data().description['swell']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2795,7 +3013,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['brown']}`,
                     "title": `${doc.data().diseaseNameTH['brown']}`,
-                    "text": leaf_symptom,
+                    "text": `${doc.data().description['brown']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2812,7 +3030,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['gray']}`,
                     "title": `${doc.data().diseaseNameTH['gray']}`,
-                    "text": leaf_symptom,
+                    "text": `${doc.data().description['gray']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2829,7 +3047,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['gray2']}`,
                     "title": `${doc.data().diseaseNameTH['gray2']}`,
-                    "text": leaf_symptom,
+                    "text": `${doc.data().description['gray2']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2846,7 +3064,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['gray3']}`,
                     "title": `${doc.data().diseaseNameTH['gray3']}`,
-                    "text": leaf_symptom,
+                    "text": `${doc.data().description['gray3']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2863,7 +3081,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['layer']}`,
                     "title": `${doc.data().diseaseNameTH['layer']}`,
-                    "text": leaf_symptom,
+                    "text": `${doc.data().description['layer']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2880,7 +3098,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['yellow']}`,
                     "title": `${doc.data().diseaseNameTH['yellow']}`,
-                    "text": leaf_symptom,
+                    "text": `${doc.data().description['yellow']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2897,7 +3115,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['light green']}`,
                     "title": `${doc.data().diseaseNameTH['light green']}`,
-                    "text": leaf_symptom,
+                    "text": `${doc.data().description['light green']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2914,7 +3132,7 @@ exports.webhook = functions
                   {
                     "thumbnailImageUrl": `${doc.data().url['straw']}`,
                     "title": `${doc.data().diseaseNameTH['straw']}`,
-                    "text": leaf_symptom,
+                    "text": `${doc.data().description['straw']}`,
                     "actions": [
                       {
                         "type": "message",
@@ -2959,7 +3177,7 @@ exports.webhook = functions
                 ],
                 "thumbnailImageUrl": `${doc.data().url}`,
                 "title": `${doc.data().diseaseNameTH}`,
-                "text": leaf_symptom
+                "text": `${doc.data().description}`
               }
             }
             const payloadMsg = new Payload("LINE", buttonMsg, {
@@ -2982,68 +3200,133 @@ exports.webhook = functions
             "contents": {
               "type": "bubble",
               "direction": "ltr",
-              "header": {
+              "hero": {
+                "type": "image",
+                "url": `${data.url}`,
+                "size": "full",
+                "aspectRatio": "1.51:1",
+                "aspectMode": "cover"
+              },
+              "body": {
                 "type": "box",
-                "layout": "vertical",
+                "layout": "horizontal",
                 "contents": [
                   {
-                    "type": "text",
-                    "text": `${data.diseaseNameTH}`,
-                    "align": "center"
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                      {
+                        "type": "button",
+                        "action": {
+                          "type": "message",
+                          "label": "สาเหตุ",
+                          "text": `${data.forTemplate[0]}`
+                        }
+                      },
+                      {
+                        "type": "separator"
+                      },
+                      {
+                        "type": "button",
+                        "action": {
+                          "type": "message",
+                          "label": "วิธีรักษา",
+                          "text": `${data.forTemplate[2]}`
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                      {
+                        "type": "button",
+                        "action": {
+                          "type": "message",
+                          "label": "อาการ",
+                          "text": `${data.forTemplate[1]}`
+                        }
+                      },
+                      {
+                        "type": "separator"
+                      },
+                      {
+                        "type": "button",
+                        "action": {
+                          "type": "message",
+                          "label": "การป้องกัน",
+                          "text": `${data.forTemplate[3]}`
+                        }
+                      }
+                    ]
                   }
                 ]
+              }
+            }
+          }
+          /*{
+            "type": "flex",
+            "altText": "Flex Message",
+            "contents": {
+              "type": "bubble",
+              "direction": "ltr",
+              "hero": {
+                "type": "image",
+                "url": `${data.url}`,
+                "size": "full",
+                "aspectRatio": "1.51:1",
+                "aspectMode": "cover"
               },
               "body": {
                 "type": "box",
                 "layout": "vertical",
                 "contents": [
                   {
-                    "type": "image",
-                    "url": `${data.url}`,
-                    "size": "full"
-                  }
-                ]
-              },
-              "footer": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                  {
-                    "type": "button",
-                    "action": {
-                      "type": "message",
-                      "label": "สาเหตุ",
-                      "text": `${data.forTemplate[0]}`
-                    }
-                  },
-                  {
-                    "type": "button",
-                    "action": {
-                      "type": "message",
-                      "label": "อาการ",
-                      "text": `${data.forTemplate[1]}`
-                    }
-                  },
-                  {
-                    "type": "button",
-                    "action": {
-                      "type": "message",
-                      "label": "วิธีรักษา",
-                      "text": `${data.forTemplate[2]}`
-                    }
-                  },
-                  {
-                    "type": "button",
-                    "action": {
-                      "type": "message",
-                      "label": "การป้องกัน",
-                      "text": `${data.forTemplate[3]}`
-                    }
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                      {
+                        "type": "button",
+                        "action": {
+                          "type": "message",
+                          "label": "สาเหตุ",
+                          "text": `${data.forTemplate[0]}`
+                        }
+                      },
+                      {
+                        "type": "button",
+                        "action": {
+                          "type": "message",
+                          "label": "อาการ",
+                          "text": `${data.forTemplate[1]}`
+                        }
+                      },
+                      {
+                        "type": "button",
+                        "action": {
+                          "type": "message",
+                          "label": "วิธีรักษา",
+                          "text": `${data.forTemplate[2]}`
+                        }
+                      },
+                      {
+                        "type": "button",
+                        "action": {
+                          "type": "message",
+                          "label": "การป้องกัน",
+                          "text": `${data.forTemplate[3]}`
+                        }
+                      }
+                    ]
                   }
                 ]
               }
             }
-          }
+          }*/
           const payloadMsg = new Payload("LINE", buttonMsg, {
             sendAsMessage: true
           });

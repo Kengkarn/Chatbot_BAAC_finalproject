@@ -17,6 +17,7 @@ const runtimeOptions = {
   memory: "2GB"
 };
 
+//ทำ webhook request url
 exports.webhook = functions
   .region(region)
   .runWith(runtimeOptions)
@@ -24,6 +25,21 @@ exports.webhook = functions
     console.log("LINE REQUEST BODY", JSON.stringify(req.body));
 
     const agent = new WebhookClient({ request: req, response: res });
+
+    let source = req.body.originalDetectIntentRequest.source;
+      if (typeof source === "undefined") {
+        source = "";
+      }
+
+      //ดึงข้อมูล userId
+      let userId = "";
+      if (source === "line") {
+        userId =
+          req.body.originalDetectIntentRequest.payload.data.source.userId;
+        userText = req.body.originalDetectIntentRequest.payload.data.message.text;
+      }
+
+      const currentDate = Date.now();
 
     const app_suggestion = async agent => {
       return db.collection('Application').get().then(doc => {
@@ -728,29 +744,35 @@ exports.webhook = functions
     const carousel_cause = async => {
       let c_cause = req.body.queryResult.parameters.carouselcause;
       //return agent.add(d_cause);
-      return queryCause = db.collection('Disease').where('forTemplate', 'array-contains', c_cause).get().then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          agent.add(doc.data().cause)
+      return queryCause = db.collection('Disease')
+        .where('forTemplate', 'array-contains', c_cause)
+        .get().then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            agent.add(doc.data().cause)
+          });
         });
-      });
     }
     const carousel_symptom = async => {
       let c_symptom = req.body.queryResult.parameters.carouselsymptom;
       //return agent.add(d_cause);
-      return queryCause = db.collection('Disease').where('forTemplate', 'array-contains', c_symptom).get().then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          agent.add(doc.data().symptom)
+      return queryCause = db.collection('Disease')
+        .where('forTemplate', 'array-contains', c_symptom)
+        .get().then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            agent.add(doc.data().symptom)
+          });
         });
-      });
     }
     const carousel_protection = async => {
       let c_protection = req.body.queryResult.parameters.carouselprotection;
       //return agent.add(d_cause);
-      return queryCause = db.collection('Disease').where('forTemplate', 'array-contains', c_protection).get().then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          agent.add(doc.data().protection)
+      return queryCause = db.collection('Disease')
+        .where('forTemplate', 'array-contains', c_protection)
+        .get().then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            agent.add(doc.data().protection)
+          });
         });
-      });
     }
 
     // ส่วนdisease text ให้ผู้ใช้พิมพ์อาการของข้าวโพด ------ [2.2]
@@ -758,169 +780,171 @@ exports.webhook = functions
       let full_symptom = req.body.queryResult.parameters.fullDiseaseText;
       const diseases = new Array();
       //return agent.add(queryDiseaseText(full_symptom))
-      return queryCause = db.collection('Disease').where('query', 'array-contains-any', full_symptom).get().then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          diseases.push(doc.data().diseaseNameTH)
-          return agent.add(doc.data().diseaseNameTH);
-          /*if (diseases.length == 1) {
-            let buttonMsg = {
-              "type": "template",
-              "altText": `${doc.data().diseaseNameTH}`,
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().diseaseNameTH}`
-              }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          }
-          else {
+      return queryCause = db.collection('Disease')
+        .where('query', 'array-contains-any', full_symptom)
+        .get().then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            diseases.push(doc.data().diseaseNameTH)
             return agent.add(doc.data().diseaseNameTH);
-          }*/
-
-          /*else if (diseases.length == 2){
-            let carouselMsg = {
-              "type": "template",
-              "altText": "ค้นหาอาการ",
-              "template": {
-                "type": "carousel",
-                "actions": [],
-                "columns": [
-                  {
-                    "thumbnailImageUrl": `${doc.data().url}`,
-                    "title": `${doc.data().diseaseNameTH}`,
-                    "text": `${doc.data().diseaseNameTH}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url}`,
-                    "title": `${doc.data().diseaseNameTH}`,
-                    "text": `${doc.data().diseaseNameTH}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    ]
-                  }
-                ]
+            /*if (diseases.length == 1) {
+              let buttonMsg = {
+                "type": "template",
+                "altText": `${doc.data().diseaseNameTH}`,
+                "template": {
+                  "type": "buttons",
+                  "actions": [
+                    {
+                      "type": "message",
+                      "label": "ดูรูปเพิ่มเติม",
+                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                    },
+                    {
+                      "type": "message",
+                      "label": "อ่านรายละเอียด",
+                      "text": `${doc.data().diseaseNameTH}`
+                    }
+                  ],
+                  "thumbnailImageUrl": `${doc.data().url}`,
+                  "title": `${doc.data().diseaseNameTH}`,
+                  "text": `${doc.data().diseaseNameTH}`
+                }
               }
+              const payloadMsg = new Payload("LINE", buttonMsg, {
+                sendAsMessage: true
+              });
+              return agent.add(payloadMsg);
             }
-            const payloadMsg = new Payload("LINE", carouselMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          }
-          else if (diseases.length >= 3){
-            let carouselMsg = {
-              "type": "template",
-              "altText": "ค้นหาอาการ",
-              "template": {
-                "type": "carousel",
-                "actions": [],
-                "columns": [
-                  {
-                    "thumbnailImageUrl": `${doc.data().url}`,
-                    "title": `${doc.data().diseaseNameTH}`,
-                    "text": `${doc.data().diseaseNameTH}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url}`,
-                    "title": `${doc.data().diseaseNameTH}`,
-                    "text": `${doc.data().diseaseNameTH}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url}`,
-                    "title": `${doc.data().diseaseNameTH}`,
-                    "text": `${doc.data().diseaseNameTH}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH}`
-                      }
-                    ]
-                  }
-                ]
-              }
-            }
-            const payloadMsg = new Payload("LINE", carouselMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          }*/
-        });
-        //return agent.add(diseases[1])
-        /*let buttonMsg = queryDiseaseText(diseases)
-        const payloadMsg = new Payload("LINE", buttonMsg, {
-          sendAsMessage: true
-        });
-        return agent.add(payloadMsg);*/
+            else {
+              return agent.add(doc.data().diseaseNameTH);
+            }*/
 
-        return agent.add("สามารถดูรายละเอียดเพิ่มเติมแต่ละโรคได้ที่เมนู โรคพืช > แสดงโรคทั้งหมด ค่ะ");
-      });
+            /*else if (diseases.length == 2){
+              let carouselMsg = {
+                "type": "template",
+                "altText": "ค้นหาอาการ",
+                "template": {
+                  "type": "carousel",
+                  "actions": [],
+                  "columns": [
+                    {
+                      "thumbnailImageUrl": `${doc.data().url}`,
+                      "title": `${doc.data().diseaseNameTH}`,
+                      "text": `${doc.data().diseaseNameTH}`,
+                      "actions": [
+                        {
+                          "type": "message",
+                          "label": "ดูรูปเพิ่มเติม",
+                          "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                        },
+                        {
+                          "type": "message",
+                          "label": "อ่านรายละเอียด",
+                          "text": `${doc.data().diseaseNameTH}`
+                        }
+                      ]
+                    },
+                    {
+                      "thumbnailImageUrl": `${doc.data().url}`,
+                      "title": `${doc.data().diseaseNameTH}`,
+                      "text": `${doc.data().diseaseNameTH}`,
+                      "actions": [
+                        {
+                          "type": "message",
+                          "label": "ดูรูปเพิ่มเติม",
+                          "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                        },
+                        {
+                          "type": "message",
+                          "label": "อ่านรายละเอียด",
+                          "text": `${doc.data().diseaseNameTH}`
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+              const payloadMsg = new Payload("LINE", carouselMsg, {
+                sendAsMessage: true
+              });
+              return agent.add(payloadMsg);
+            }
+            else if (diseases.length >= 3){
+              let carouselMsg = {
+                "type": "template",
+                "altText": "ค้นหาอาการ",
+                "template": {
+                  "type": "carousel",
+                  "actions": [],
+                  "columns": [
+                    {
+                      "thumbnailImageUrl": `${doc.data().url}`,
+                      "title": `${doc.data().diseaseNameTH}`,
+                      "text": `${doc.data().diseaseNameTH}`,
+                      "actions": [
+                        {
+                          "type": "message",
+                          "label": "ดูรูปเพิ่มเติม",
+                          "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                        },
+                        {
+                          "type": "message",
+                          "label": "อ่านรายละเอียด",
+                          "text": `${doc.data().diseaseNameTH}`
+                        }
+                      ]
+                    },
+                    {
+                      "thumbnailImageUrl": `${doc.data().url}`,
+                      "title": `${doc.data().diseaseNameTH}`,
+                      "text": `${doc.data().diseaseNameTH}`,
+                      "actions": [
+                        {
+                          "type": "message",
+                          "label": "ดูรูปเพิ่มเติม",
+                          "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                        },
+                        {
+                          "type": "message",
+                          "label": "อ่านรายละเอียด",
+                          "text": `${doc.data().diseaseNameTH}`
+                        }
+                      ]
+                    },
+                    {
+                      "thumbnailImageUrl": `${doc.data().url}`,
+                      "title": `${doc.data().diseaseNameTH}`,
+                      "text": `${doc.data().diseaseNameTH}`,
+                      "actions": [
+                        {
+                          "type": "message",
+                          "label": "ดูรูปเพิ่มเติม",
+                          "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                        },
+                        {
+                          "type": "message",
+                          "label": "อ่านรายละเอียด",
+                          "text": `${doc.data().diseaseNameTH}`
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+              const payloadMsg = new Payload("LINE", carouselMsg, {
+                sendAsMessage: true
+              });
+              return agent.add(payloadMsg);
+            }*/
+          });
+          //return agent.add(diseases[1])
+          /*let buttonMsg = queryDiseaseText(diseases)
+          const payloadMsg = new Payload("LINE", buttonMsg, {
+            sendAsMessage: true
+          });
+          return agent.add(payloadMsg);*/
+
+          return agent.add("สามารถดูรายละเอียดเพิ่มเติมแต่ละโรคได้ที่เมนู โรคพืช > แสดงโรคทั้งหมด ค่ะ");
+        });
 
     }
     /*function queryDiseaseText(all_symptom) {
@@ -1662,7 +1686,29 @@ exports.webhook = functions
 
 
     const ear_select = async => {
+      /*let source = req.body.originalDetectIntentRequest.source;
+      if (typeof source === "undefined") {
+        source = "";
+      }
+
+      //ดึงข้อมูล userId
+      let userId = "";
+      if (source === "line") {
+        userId =
+          req.body.originalDetectIntentRequest.payload.data.source.userId;
+        userText = req.body.originalDetectIntentRequest.payload.data.message.text;
+      }
+
+      const currentDate = Date.now();*/
+       
+
       let ear_symptom = req.body.queryResult.parameters.Ear_symptom;
+      return db.collection("Chat-history").doc().set({
+        timestamp: currentDate,
+        userId: userId,
+        userText: userText
+        
+      }).then(snapshot => {
       if (ear_symptom === "ฝักมีจุด") {
         return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('spot').get()
           .then(doc => {
@@ -1717,7 +1763,8 @@ exports.webhook = functions
           });
       }
       else if (ear_symptom === "ฝักมีแผล") {
-        return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('lesion').get()
+        return db.collection('Symptom_disease').doc('Ear')
+          .collection('symptom').doc('lesion').get()
           .then(doc => {
             let buttonMsg = {
               "type": "template",
@@ -1748,37 +1795,39 @@ exports.webhook = functions
           });
       }
       else if (ear_symptom === "ฝักซีดเหลือง") {
-        return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('yellow').get().then(doc => {
-          let buttonMsg = {
-            "type": "template",
-            "altText": ear_symptom,
-            "template": {
-              "type": "buttons",
-              "actions": [
-                {
-                  "type": "message",
-                  "label": "ดูรูปเพิ่มเติม",
-                  "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
-                },
-                {
-                  "type": "message",
-                  "label": "อ่านรายละเอียด",
-                  "text": `${doc.data().diseaseNameTH[0]}`
-                }
-              ],
-              "thumbnailImageUrl": `${doc.data().url}`,
-              "title": `${doc.data().diseaseNameTH[0]}`,
-              "text": `${doc.data().description}`
+        return db.collection('Symptom_disease').doc('Ear')
+          .collection('symptom').doc('yellow').get().then(doc => {
+            let buttonMsg = {
+              "type": "template",
+              "altText": ear_symptom,
+              "template": {
+                "type": "buttons",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[0]}`
+                  }
+                ],
+                "thumbnailImageUrl": `${doc.data().url}`,
+                "title": `${doc.data().diseaseNameTH[0]}`,
+                "text": `${doc.data().description}`
+              }
             }
-          }
-          const payloadMsg = new Payload("LINE", buttonMsg, {
-            sendAsMessage: true
+            const payloadMsg = new Payload("LINE", buttonMsg, {
+              sendAsMessage: true
+            });
+            return agent.add(payloadMsg);
           });
-          return agent.add(payloadMsg);
-        });
       }
       else if (ear_symptom === "ฝักมีราเขียว") {
-        return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('fungus').get()
+        return db.collection('Symptom_disease').doc('Ear')
+          .collection('symptom').doc('fungus').get()
           .then(doc => {
             let buttonMsg = {
               "type": "template",
@@ -1809,7 +1858,8 @@ exports.webhook = functions
           });
       }
       else if (ear_symptom === "ฝักเน่า") {
-        return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('rot').get()
+        return db.collection('Symptom_disease').doc('Ear')
+          .collection('symptom').doc('rot').get()
           .then(doc => {
             let buttonMsg = {
               "type": "template",
@@ -1840,7 +1890,8 @@ exports.webhook = functions
           });
       }
       else if (ear_symptom === "ฝักมีปม") {
-        return db.collection('Symptom_disease').doc('Ear').collection('symptom').doc('gall').get()
+        return db.collection('Symptom_disease').doc('Ear')
+          .collection('symptom').doc('gall').get()
           .then(doc => {
             let buttonMsg = {
               "type": "template",
@@ -1870,280 +1921,1298 @@ exports.webhook = functions
             return agent.add(payloadMsg);
           });
       }
-    }
+    })
+
+  }
 
 
     const basal_select = async => {
-      let basal_symptom = req.body.queryResult.parameters.Basal_symptom;
-      if (basal_symptom === "โคนต้นแตก") {
-        return db.collection('Symptom_disease').doc('Basal').collection('symptom').doc('split').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": basal_symptom,
-              "template": {
-                "type": "buttons",
+  let basal_symptom = req.body.queryResult.parameters.Basal_symptom;
+  if (basal_symptom === "โคนต้นแตก") {
+    return db.collection('Symptom_disease').doc('Basal')
+      .collection('symptom').doc('split').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": basal_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
+              }
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (basal_symptom === "โคนต้นมีแผลช้ำ") {
+    return db.collection('Symptom_disease').doc('Basal')
+      .collection('symptom').doc('water-soaked').get()
+      .then(doc => {
+        let carouselMsg = {
+          "type": "template",
+          "altText": basal_symptom,
+          "template": {
+            "type": "carousel",
+            "actions": [],
+            "columns": [
+              {
+                "thumbnailImageUrl": `${doc.data().url['dark brown']}`,
+                "title": `${doc.data().diseaseNameTH['dark brown']}`,
+                "text": `${doc.data().description['dark brown']}`,
                 "actions": [
                   {
                     "type": "message",
                     "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['dark brown']}`
                   },
                   {
                     "type": "message",
                     "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
+                    "text": `${doc.data().diseaseNameTH['dark brown']}`
                   }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
-              }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (basal_symptom === "โคนต้นมีแผลช้ำ") {
-        return db.collection('Symptom_disease').doc('Basal').collection('symptom').doc('water-soaked').get()
-          .then(doc => {
-            let carouselMsg = {
-              "type": "template",
-              "altText": basal_symptom,
-              "template": {
-                "type": "carousel",
-                "actions": [],
-                "columns": [
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url['grayish green']}`,
+                "title": `${doc.data().diseaseNameTH['grayish green']}`,
+                "text": `${doc.data().description['grayish green']}`,
+                "actions": [
                   {
-                    "thumbnailImageUrl": `${doc.data().url['dark brown']}`,
-                    "title": `${doc.data().diseaseNameTH['dark brown']}`,
-                    "text": `${doc.data().description['dark brown']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['dark brown']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['dark brown']}`
-                      }
-                    ]
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['grayish green']}`
                   },
                   {
-                    "thumbnailImageUrl": `${doc.data().url['grayish green']}`,
-                    "title": `${doc.data().diseaseNameTH['grayish green']}`,
-                    "text": `${doc.data().description['grayish green']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['grayish green']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['grayish green']}`
-                      }
-                    ]
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH['grayish green']}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url['reddish brown']}`,
+                "title": `${doc.data().diseaseNameTH['reddish brown']}`,
+                "text": `${doc.data().description['reddish brown']}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['reddish brown']}`
                   },
                   {
-                    "thumbnailImageUrl": `${doc.data().url['reddish brown']}`,
-                    "title": `${doc.data().diseaseNameTH['reddish brown']}`,
-                    "text": `${doc.data().description['reddish brown']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['reddish brown']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['reddish brown']}`
-                      }
-                    ]
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH['reddish brown']}`
                   }
                 ]
               }
-            }
-            const payloadMsg = new Payload("LINE", carouselMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (basal_symptom === "โคนต้นมีน้ำเมือก") {
-        return db.collection('Symptom_disease').doc('Basal').collection('symptom').doc('slime').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": basal_symptom,
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
+            ]
+          }
+        }
+        const payloadMsg = new Payload("LINE", carouselMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (basal_symptom === "โคนต้นมีน้ำเมือก") {
+    return db.collection('Symptom_disease').doc('Basal')
+      .collection('symptom').doc('slime').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": basal_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
               }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (basal_symptom === "โคนหักล้ม") {
-        return db.collection('Symptom_disease').doc('Basal').collection('symptom').doc('fall-over').get()
-          .then(doc => {
-            let flexMsg = {
-              "type": "template",
-              "altText": "this is a buttons template",
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (basal_symptom === "โคนหักล้ม") {
+    return db.collection('Symptom_disease').doc('Basal')
+      .collection('symptom').doc('fall-over').get()
+      .then(doc => {
+        let flexMsg = {
+          "type": "template",
+          "altText": "this is a buttons template",
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
               }
-            }
-            const payloadMsg = new Payload("LINE", flexMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (basal_symptom === "โคนต้นมีกลิ่นเหม็น") {
-        return db.collection('Symptom_disease').doc('Basal').collection('symptom').doc('smell').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": basal_symptom,
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", flexMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (basal_symptom === "โคนต้นมีกลิ่นเหม็น") {
+    return db.collection('Symptom_disease').doc('Basal')
+      .collection('symptom').doc('smell').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": basal_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
               }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (basal_symptom === "โคนต้นซีดเหลือง") {
-        return db.collection('Symptom_disease').doc('Basal').collection('symptom').doc('yellow').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": basal_symptom,
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (basal_symptom === "โคนต้นซีดเหลือง") {
+    return db.collection('Symptom_disease').doc('Basal')
+      .collection('symptom').doc('yellow').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": basal_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
               }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (basal_symptom === "โคนต้นมีราขาว") {
-        return db.collection('Symptom_disease').doc('Basal').collection('symptom').doc('fungus').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": basal_symptom,
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (basal_symptom === "โคนต้นมีราขาว") {
+    return db.collection('Symptom_disease').doc('Basal')
+      .collection('symptom').doc('fungus').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": basal_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
               }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-    }
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+}
 
 
-    const leaf_sheath_select = async => {
-      let leaf_sheath_symptom = req.body.queryResult.parameters.Leaf_sheath_symptom;
-      if (leaf_sheath_symptom === "กาบใบมีจุด") {
-        return db.collection('Symptom_disease').doc('LeafSheath').collection('symptom').doc('spot').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": leaf_sheath_symptom,
-              "template": {
-                "type": "buttons",
+const leaf_sheath_select = async => {
+  let leaf_sheath_symptom = req.body.queryResult.parameters.Leaf_sheath_symptom;
+  if (leaf_sheath_symptom === "กาบใบมีจุด") {
+    return db.collection('Symptom_disease').doc('LeafSheath')
+      .collection('symptom').doc('spot').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": leaf_sheath_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['swell']}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH['swell']}`
+              }
+            ],
+            "thumbnailImageUrl": `${doc.data().url['swell']}`,
+            "title": `${doc.data().diseaseNameTH['swell']}`,
+            "text": `${doc.data().description['swell']}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (leaf_sheath_symptom === "กาบใบมีแผล") {
+    return db.collection('Symptom_disease').doc('LeafSheath')
+      .collection('symptom').doc('lesion').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": leaf_sheath_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['straw']}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH['straw']}`
+              }
+            ],
+            "thumbnailImageUrl": `${doc.data().url['straw']}`,
+            "title": `${doc.data().diseaseNameTH['straw']}`,
+            "text": `${doc.data().description['straw']}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (leaf_sheath_symptom === "กาบใบซีดเหลือง") {
+    return db.collection('Symptom_disease').doc('LeafSheath')
+      .collection('symptom').doc('yellow').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": leaf_sheath_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
+              }
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (leaf_sheath_symptom === "กาบใบแห้ง") {
+    return db.collection('Symptom_disease').doc('LeafSheath')
+      .collection('symptom').doc('blight').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": leaf_sheath_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
+              }
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+}
+
+const kernel_select = async => {
+  let kernel_symptom = req.body.queryResult.parameters.Kernel_symptom;
+  if (kernel_symptom === "เมล็ดมีรอยขีดสีขาว") {
+    return db.collection('Symptom_disease').doc('Kernel')
+      .collection('symptom').doc('scratch').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": kernel_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
+              }
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (kernel_symptom === "เมล็ดมีแผล") {
+    return db.collection('Symptom_disease').doc('Kernel')
+      .collection('symptom').doc('lesion').get().then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": kernel_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
+              }
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (kernel_symptom === "เมล็ดดำ") {
+    return db.collection('Symptom_disease').doc('Kernel')
+      .collection('symptom').doc('black').get().then(doc => {
+        let carouselMsg = {
+          "type": "template",
+          "altText": kernel_symptom,
+          "template": {
+            "type": "carousel",
+            "actions": [],
+            "columns": [
+              {
+                "thumbnailImageUrl": `${doc.data().url[0]}`,
+                "title": `${doc.data().diseaseNameTH[0]}`,
+                "text": `${doc.data().description[0]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[0]}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url[1]}`,
+                "title": `${doc.data().diseaseNameTH[1]}`,
+                "text": `${doc.data().description[1]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[1]}`
+                  }
+                ]
+              }
+            ]
+          }
+        }
+        const payloadMsg = new Payload("LINE", carouselMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (kernel_symptom === "ไม่มีเมล็ด" || kernel_symptom === "เมล็ดน้อย") {
+    return db.collection('Symptom_disease').doc('Kernel').collection('symptom').doc('stunt').get().then(doc => {
+      let buttonMsg = {
+        "type": "template",
+        "altText": kernel_symptom,
+        "template": {
+          "type": "buttons",
+          "actions": [
+            {
+              "type": "message",
+              "label": "ดูรูปเพิ่มเติม",
+              "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+            },
+            {
+              "type": "message",
+              "label": "อ่านรายละเอียด",
+              "text": `${doc.data().diseaseNameTH}`
+            }
+          ],
+          "thumbnailImageUrl": `${doc.data().url}`,
+          "title": `${doc.data().diseaseNameTH}`,
+          "text": `${doc.data().description}`
+        }
+      }
+      const payloadMsg = new Payload("LINE", buttonMsg, {
+        sendAsMessage: true
+      });
+      return agent.add(payloadMsg);
+    });
+  }
+  else if (kernel_symptom === "เมล็ดลีบ") {
+    return db.collection('Symptom_disease').doc('Kernel')
+      .collection('symptom').doc('lean').get().then(doc => {
+        let carouselMsg = {
+          "type": "template",
+          "altText": kernel_symptom,
+          "template": {
+            "type": "carousel",
+            "actions": [],
+            "columns": [
+              {
+                "thumbnailImageUrl": `${doc.data().url[0]}`,
+                "title": `${doc.data().diseaseNameTH[0]}`,
+                "text": `${doc.data().description[0]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[0]}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url[1]}`,
+                "title": `${doc.data().diseaseNameTH[1]}`,
+                "text": `${doc.data().description[1]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[1]}`
+                  }
+                ]
+              }
+            ]
+          }
+        }
+        const payloadMsg = new Payload("LINE", carouselMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+}
+
+const stalk_select = async => {
+  let stalk_symptom = req.body.queryResult.parameters.Stalk_symptom;
+  if (stalk_symptom === "ลำต้นมีจุด") {
+    return db.collection('Symptom_disease').doc('Stalk')
+      .collection('symptom').doc('spot').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": stalk_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
+              }
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (stalk_symptom === "ลำต้นเน่า") {
+    return db.collection('Symptom_disease').doc('Stalk')
+      .collection('symptom').doc('rot').get()
+      .then(doc => {
+        let carouselMsg = {
+          "type": "template",
+          "altText": stalk_symptom,
+          "template": {
+            "type": "carousel",
+            "actions": [],
+            "columns": [
+              {
+                "thumbnailImageUrl": `${doc.data().url[0]}`,
+                "title": `${doc.data().diseaseNameTH[0]}`,
+                "text": `${doc.data().description[0]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[0]}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url[1]}`,
+                "title": `${doc.data().diseaseNameTH[1]}`,
+                "text": `${doc.data().description[1]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[1]}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url[2]}`,
+                "title": `${doc.data().diseaseNameTH[2]}`,
+                "text": `${doc.data().description[2]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[2]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[2]}`
+                  }
+                ]
+              }
+            ]
+          }
+        }
+        const payloadMsg = new Payload("LINE", carouselMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (stalk_symptom === "ลำต้นเหี่ยวแห้ง") {
+    return db.collection('Symptom_disease').doc('Stalk')
+      .collection('symptom').doc('blight').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": stalk_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
+              }
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (stalk_symptom === "ลำต้นมีแผล") {
+    return db.collection('Symptom_disease').doc('Stalk')
+      .collection('symptom').doc('lesion').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": stalk_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
+              }
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (stalk_symptom === "กลวงเป็นโพรง") {
+    return db.collection('Symptom_disease').doc('Stalk')
+      .collection('symptom').doc('hollow').get()
+      .then(doc => {
+        let carouselMsg = {
+          "type": "template",
+          "altText": stalk_symptom,
+          "template": {
+            "type": "carousel",
+            "actions": [],
+            "columns": [
+              {
+                "thumbnailImageUrl": `${doc.data().url[0]}`,
+                "title": `${doc.data().diseaseNameTH[0]}`,
+                "text": `${doc.data().description[0]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[0]}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url[1]}`,
+                "title": `${doc.data().diseaseNameTH[1]}`,
+                "text": `${doc.data().description[1]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[1]}`
+                  }
+                ]
+              },
+            ]
+          }
+        }
+        const payloadMsg = new Payload("LINE", carouselMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (stalk_symptom === "ลำต้นหักล้ม") {
+    return db.collection('Symptom_disease').doc('Stalk')
+      .collection('symptom').doc('fall over').get()
+      .then(doc => {
+        let carouselMsg = {
+          "type": "template",
+          "altText": stalk_symptom,
+          "template": {
+            "type": "carousel",
+            "actions": [],
+            "columns": [
+              {
+                "thumbnailImageUrl": `${doc.data().url[0]}`,
+                "title": `${doc.data().diseaseNameTH[0]}`,
+                "text": `${doc.data().description[0]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[0]}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url[1]}`,
+                "title": `${doc.data().diseaseNameTH[1]}`,
+                "text": `${doc.data().description[1]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[1]}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url[2]}`,
+                "title": `${doc.data().diseaseNameTH[2]}`,
+                "text": `${doc.data().description[2]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[2]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[2]}`
+                  }
+                ]
+              }
+            ]
+          }
+        }
+        const payloadMsg = new Payload("LINE", carouselMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (stalk_symptom === "ลำต้นแตก") {
+    return db.collection('Symptom_disease').doc('Stalk')
+      .collection('symptom').doc('shred').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": stalk_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
+              }
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+}
+
+const leaf_select = async => {
+  let leaf_symptom = req.body.queryResult.parameters.Leaf_symptom;
+  if (leaf_symptom === "ใบไหม้") {
+    return db.collection('Symptom_disease').doc('Leaf')
+      .collection('symptom').doc('blight').get().then(doc => {
+        let carouselMsg = {
+          "type": "template",
+          "altText": leaf_symptom,
+          "template": {
+            "type": "carousel",
+            "actions": [],
+            "columns": [
+              {
+                "thumbnailImageUrl": `${doc.data().url[0]}`,
+                "title": `${doc.data().diseaseNameTH[0]}`,
+                "text": `${doc.data().description[0]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[0]}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url[1]}`,
+                "title": `${doc.data().diseaseNameTH[1]}`,
+                "text": `${doc.data().description[1]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[1]}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url[2]}`,
+                "title": `${doc.data().diseaseNameTH[2]}`,
+                "text": `${doc.data().description[2]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[2]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[2]}`
+                  }
+                ]
+              }
+            ]
+          }
+        }
+        const payloadMsg = new Payload("LINE", carouselMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (leaf_symptom === "ใบมีฝุ่นขาว") {
+    return db.collection('Symptom_disease').doc('Leaf')
+      .collection('symptom').doc('powder').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": leaf_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
+              }
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (leaf_symptom === "ใบมีปม") {
+    return db.collection('Symptom_disease').doc('Leaf')
+      .collection('symptom').doc('gall').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": leaf_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
+              }
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (leaf_symptom === "ใบซีดเหลือง") {
+    return db.collection('Symptom_disease').doc('Leaf')
+      .collection('symptom').doc('yellow').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": leaf_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
+              },
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
+              }
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (leaf_symptom === "ใบแห้ง") {
+    return db.collection('Symptom_disease').doc('Leaf')
+      .collection('symptom').doc('burn').get().then(doc => {
+        let carouselMsg = {
+          "type": "template",
+          "altText": leaf_symptom,
+          "template": {
+            "type": "carousel",
+            "actions": [],
+            "columns": [
+              {
+                "thumbnailImageUrl": `${doc.data().url[0]}`,
+                "title": `${doc.data().diseaseNameTH[0]}`,
+                "text": `${doc.data().description[0]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[0]}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url[1]}`,
+                "title": `${doc.data().diseaseNameTH[1]}`,
+                "text": `${doc.data().description[1]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[1]}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url[2]}`,
+                "title": `${doc.data().diseaseNameTH[2]}`,
+                "text": `${doc.data().description[2]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[2]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[2]}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url[4]}`,
+                "title": `${doc.data().diseaseNameTH[4]}`,
+                "text": `${doc.data().description[4]}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[4]}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH[4]}`
+                  }
+                ]
+              }
+            ]
+          }
+        }
+        const payloadMsg = new Payload("LINE", carouselMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (leaf_symptom === "ใบมีจุด") {
+    return db.collection('Symptom_disease').doc('Leaf')
+      .collection('symptom').doc('spot').get()
+      .then(doc => {
+        let carouselMsg = {
+          "type": "template",
+          "altText": leaf_symptom,
+          "template": {
+            "type": "carousel",
+            "actions": [],
+            "columns": [
+              {
+                "thumbnailImageUrl": `${doc.data().url['brown']}`,
+                "title": `${doc.data().diseaseNameTH['brown']}`,
+                "text": `${doc.data().description['brown']}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['brown']}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH['brown']}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url['gray']}`,
+                "title": `${doc.data().diseaseNameTH['gray']}`,
+                "text": `${doc.data().description['gray']}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['gray']}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH['gray']}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url['pale']}`,
+                "title": `${doc.data().diseaseNameTH['pale']}`,
+                "text": `${doc.data().description['pale']}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['pale']}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH['pale']}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url['white']}`,
+                "title": `${doc.data().diseaseNameTH['white']}`,
+                "text": `${doc.data().description['white']}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['white']}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH['white']}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url['yellow']}`,
+                "title": `${doc.data().diseaseNameTH['yellow']}`,
+                "text": `${doc.data().description['yellow']}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['yellow']}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH['yellow']}`
+                  }
+                ]
+              }
+              ,
+              {
+                "thumbnailImageUrl": `${doc.data().url['swell']}`,
+                "title": `${doc.data().diseaseNameTH['swell']}`,
+                "text": `${doc.data().description['swell']}`,
                 "actions": [
                   {
                     "type": "message",
@@ -2155,26 +3224,151 @@ exports.webhook = functions
                     "label": "อ่านรายละเอียด",
                     "text": `${doc.data().diseaseNameTH['swell']}`
                   }
-                ],
-                "thumbnailImageUrl": `${doc.data().url['swell']}`,
-                "title": `${doc.data().diseaseNameTH['swell']}`,
-                "text": `${doc.data().description['swell']}`
+                ]
               }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (leaf_sheath_symptom === "กาบใบมีแผล") {
-        return db.collection('Symptom_disease').doc('LeafSheath').collection('symptom').doc('lesion').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": leaf_sheath_symptom,
-              "template": {
-                "type": "buttons",
+            ]
+          }
+        }
+        const payloadMsg = new Payload("LINE", carouselMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (leaf_symptom === "ใบมีแผลตามทางยาว") {
+    return db.collection('Symptom_disease').doc('Leaf')
+      .collection('symptom').doc('lesion').get()
+      .then(doc => {
+        let carouselMsg = {
+          "type": "template",
+          "altText": leaf_symptom,
+          "template": {
+            "type": "carousel",
+            "actions": [],
+            "columns": [
+              {
+                "thumbnailImageUrl": `${doc.data().url['brown']}`,
+                "title": `${doc.data().diseaseNameTH['brown']}`,
+                "text": `${doc.data().description['brown']}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['brown']}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH['brown']}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url['gray']}`,
+                "title": `${doc.data().diseaseNameTH['gray']}`,
+                "text": `${doc.data().description['gray']}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['gray']}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH['gray']}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url['gray2']}`,
+                "title": `${doc.data().diseaseNameTH['gray2']}`,
+                "text": `${doc.data().description['gray2']}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['gray2']}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH['gray2']}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url['gray3']}`,
+                "title": `${doc.data().diseaseNameTH['gray3']}`,
+                "text": `${doc.data().description['gray3']}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['gray3']}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH['gray3']}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url['layer']}`,
+                "title": `${doc.data().diseaseNameTH['layer']}`,
+                "text": `${doc.data().description['layer']}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['layer']}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH['layer']}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url['yellow']}`,
+                "title": `${doc.data().diseaseNameTH['yellow']}`,
+                "text": `${doc.data().description['yellow']}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['yellow']}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH['yellow']}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url['light green']}`,
+                "title": `${doc.data().diseaseNameTH['light green']}`,
+                "text": `${doc.data().description['light green']}`,
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดูรูปเพิ่มเติม",
+                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['light green']}`
+                  },
+                  {
+                    "type": "message",
+                    "label": "อ่านรายละเอียด",
+                    "text": `${doc.data().diseaseNameTH['light green']}`
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": `${doc.data().url['straw']}`,
+                "title": `${doc.data().diseaseNameTH['straw']}`,
+                "text": `${doc.data().description['straw']}`,
                 "actions": [
                   {
                     "type": "message",
@@ -2186,1769 +3380,677 @@ exports.webhook = functions
                     "label": "อ่านรายละเอียด",
                     "text": `${doc.data().diseaseNameTH['straw']}`
                   }
-                ],
-                "thumbnailImageUrl": `${doc.data().url['straw']}`,
-                "title": `${doc.data().diseaseNameTH['straw']}`,
-                "text": `${doc.data().description['straw']}`
-              }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (leaf_sheath_symptom === "กาบใบซีดเหลือง") {
-        return db.collection('Symptom_disease').doc('LeafSheath').collection('symptom').doc('yellow').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": leaf_sheath_symptom,
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
-              }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (leaf_sheath_symptom === "กาบใบแห้ง") {
-        return db.collection('Symptom_disease').doc('LeafSheath').collection('symptom').doc('blight').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": leaf_sheath_symptom,
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
-              }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-    }
-
-    const kernel_select = async => {
-      let kernel_symptom = req.body.queryResult.parameters.Kernel_symptom;
-      if (kernel_symptom === "เมล็ดมีรอยขีดสีขาว") {
-        return db.collection('Symptom_disease').doc('Kernel').collection('symptom').doc('scratch').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": kernel_symptom,
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
-              }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (kernel_symptom === "เมล็ดมีแผล") {
-        return db.collection('Symptom_disease').doc('Kernel').collection('symptom').doc('lesion').get().then(doc => {
-          let buttonMsg = {
-            "type": "template",
-            "altText": kernel_symptom,
-            "template": {
-              "type": "buttons",
-              "actions": [
-                {
-                  "type": "message",
-                  "label": "ดูรูปเพิ่มเติม",
-                  "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                },
-                {
-                  "type": "message",
-                  "label": "อ่านรายละเอียด",
-                  "text": `${doc.data().diseaseNameTH}`
-                }
-              ],
-              "thumbnailImageUrl": `${doc.data().url}`,
-              "title": `${doc.data().diseaseNameTH}`,
-              "text": `${doc.data().description}`
-            }
-          }
-          const payloadMsg = new Payload("LINE", buttonMsg, {
-            sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
-        });
-      }
-      else if (kernel_symptom === "เมล็ดดำ") {
-        return db.collection('Symptom_disease').doc('Kernel').collection('symptom').doc('black').get().then(doc => {
-          let carouselMsg = {
-            "type": "template",
-            "altText": kernel_symptom,
-            "template": {
-              "type": "carousel",
-              "actions": [],
-              "columns": [
-                {
-                  "thumbnailImageUrl": `${doc.data().url[0]}`,
-                  "title": `${doc.data().diseaseNameTH[0]}`,
-                  "text": `${doc.data().description[0]}`,
-                  "actions": [
-                    {
-                      "type": "message",
-                      "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
-                    },
-                    {
-                      "type": "message",
-                      "label": "อ่านรายละเอียด",
-                      "text": `${doc.data().diseaseNameTH[0]}`
-                    }
-                  ]
-                },
-                {
-                  "thumbnailImageUrl": `${doc.data().url[1]}`,
-                  "title": `${doc.data().diseaseNameTH[1]}`,
-                  "text": `${doc.data().description[1]}`,
-                  "actions": [
-                    {
-                      "type": "message",
-                      "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
-                    },
-                    {
-                      "type": "message",
-                      "label": "อ่านรายละเอียด",
-                      "text": `${doc.data().diseaseNameTH[1]}`
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-          const payloadMsg = new Payload("LINE", carouselMsg, {
-            sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
-        });
-      }
-      else if (kernel_symptom === "ไม่มีเมล็ด" || kernel_symptom === "เมล็ดน้อย") {
-        return db.collection('Symptom_disease').doc('Kernel').collection('symptom').doc('stunt').get().then(doc => {
-          let buttonMsg = {
-            "type": "template",
-            "altText": kernel_symptom,
-            "template": {
-              "type": "buttons",
-              "actions": [
-                {
-                  "type": "message",
-                  "label": "ดูรูปเพิ่มเติม",
-                  "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                },
-                {
-                  "type": "message",
-                  "label": "อ่านรายละเอียด",
-                  "text": `${doc.data().diseaseNameTH}`
-                }
-              ],
-              "thumbnailImageUrl": `${doc.data().url}`,
-              "title": `${doc.data().diseaseNameTH}`,
-              "text": `${doc.data().description}`
-            }
-          }
-          const payloadMsg = new Payload("LINE", buttonMsg, {
-            sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
-        });
-      }
-      else if (kernel_symptom === "เมล็ดลีบ") {
-        return db.collection('Symptom_disease').doc('Kernel').collection('symptom').doc('lean').get().then(doc => {
-          let carouselMsg = {
-            "type": "template",
-            "altText": kernel_symptom,
-            "template": {
-              "type": "carousel",
-              "actions": [],
-              "columns": [
-                {
-                  "thumbnailImageUrl": `${doc.data().url[0]}`,
-                  "title": `${doc.data().diseaseNameTH[0]}`,
-                  "text": `${doc.data().description[0]}`,
-                  "actions": [
-                    {
-                      "type": "message",
-                      "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
-                    },
-                    {
-                      "type": "message",
-                      "label": "อ่านรายละเอียด",
-                      "text": `${doc.data().diseaseNameTH[0]}`
-                    }
-                  ]
-                },
-                {
-                  "thumbnailImageUrl": `${doc.data().url[1]}`,
-                  "title": `${doc.data().diseaseNameTH[1]}`,
-                  "text": `${doc.data().description[1]}`,
-                  "actions": [
-                    {
-                      "type": "message",
-                      "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
-                    },
-                    {
-                      "type": "message",
-                      "label": "อ่านรายละเอียด",
-                      "text": `${doc.data().diseaseNameTH[1]}`
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-          const payloadMsg = new Payload("LINE", carouselMsg, {
-            sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
-        });
-      }
-    }
-
-    const stalk_select = async => {
-      let stalk_symptom = req.body.queryResult.parameters.Stalk_symptom;
-      if (stalk_symptom === "ลำต้นมีจุด") {
-        return db.collection('Symptom_disease').doc('Stalk').collection('symptom').doc('spot').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": stalk_symptom,
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
-              }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (stalk_symptom === "ลำต้นเน่า") {
-        return db.collection('Symptom_disease').doc('Stalk').collection('symptom').doc('rot').get()
-          .then(doc => {
-            let carouselMsg = {
-              "type": "template",
-              "altText": stalk_symptom,
-              "template": {
-                "type": "carousel",
-                "actions": [],
-                "columns": [
-                  {
-                    "thumbnailImageUrl": `${doc.data().url[0]}`,
-                    "title": `${doc.data().diseaseNameTH[0]}`,
-                    "text": `${doc.data().description[0]}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH[0]}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url[1]}`,
-                    "title": `${doc.data().diseaseNameTH[1]}`,
-                    "text": `${doc.data().description[1]}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH[1]}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url[2]}`,
-                    "title": `${doc.data().diseaseNameTH[2]}`,
-                    "text": `${doc.data().description[2]}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[2]}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH[2]}`
-                      }
-                    ]
-                  }
                 ]
               }
-            }
-            const payloadMsg = new Payload("LINE", carouselMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (stalk_symptom === "ลำต้นเหี่ยวแห้ง") {
-        return db.collection('Symptom_disease').doc('Stalk').collection('symptom').doc('blight').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": stalk_symptom,
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
-              }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (stalk_symptom === "ลำต้นมีแผล") {
-        return db.collection('Symptom_disease').doc('Stalk').collection('symptom').doc('lesion').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": stalk_symptom,
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
-              }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (stalk_symptom === "กลวงเป็นโพรง") {
-        return db.collection('Symptom_disease').doc('Stalk').collection('symptom').doc('hollow').get()
-          .then(doc => {
-            let carouselMsg = {
-              "type": "template",
-              "altText": stalk_symptom,
-              "template": {
-                "type": "carousel",
-                "actions": [],
-                "columns": [
-                  {
-                    "thumbnailImageUrl": `${doc.data().url[0]}`,
-                    "title": `${doc.data().diseaseNameTH[0]}`,
-                    "text": `${doc.data().description[0]}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH[0]}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url[1]}`,
-                    "title": `${doc.data().diseaseNameTH[1]}`,
-                    "text": `${doc.data().description[1]}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH[1]}`
-                      }
-                    ]
-                  },
-                ]
-              }
-            }
-            const payloadMsg = new Payload("LINE", carouselMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (stalk_symptom === "ลำต้นหักล้ม") {
-        return db.collection('Symptom_disease').doc('Stalk').collection('symptom').doc('fall over').get()
-          .then(doc => {
-            let carouselMsg = {
-              "type": "template",
-              "altText": stalk_symptom,
-              "template": {
-                "type": "carousel",
-                "actions": [],
-                "columns": [
-                  {
-                    "thumbnailImageUrl": `${doc.data().url[0]}`,
-                    "title": `${doc.data().diseaseNameTH[0]}`,
-                    "text": `${doc.data().description[0]}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH[0]}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url[1]}`,
-                    "title": `${doc.data().diseaseNameTH[1]}`,
-                    "text": `${doc.data().description[1]}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH[1]}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url[2]}`,
-                    "title": `${doc.data().diseaseNameTH[2]}`,
-                    "text": `${doc.data().description[2]}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[2]}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH[2]}`
-                      }
-                    ]
-                  }
-                ]
-              }
-            }
-            const payloadMsg = new Payload("LINE", carouselMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (stalk_symptom === "ลำต้นแตก") {
-        return db.collection('Symptom_disease').doc('Stalk').collection('symptom').doc('shred').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": stalk_symptom,
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
-              }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-    }
-
-    const leaf_select = async => {
-      let leaf_symptom = req.body.queryResult.parameters.Leaf_symptom;
-      if (leaf_symptom === "ใบไหม้") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('blight').get().then(doc => {
-          let carouselMsg = {
-            "type": "template",
-            "altText": leaf_symptom,
-            "template": {
-              "type": "carousel",
-              "actions": [],
-              "columns": [
-                {
-                  "thumbnailImageUrl": `${doc.data().url[0]}`,
-                  "title": `${doc.data().diseaseNameTH[0]}`,
-                  "text": `${doc.data().description[0]}`,
-                  "actions": [
-                    {
-                      "type": "message",
-                      "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
-                    },
-                    {
-                      "type": "message",
-                      "label": "อ่านรายละเอียด",
-                      "text": `${doc.data().diseaseNameTH[0]}`
-                    }
-                  ]
-                },
-                {
-                  "thumbnailImageUrl": `${doc.data().url[1]}`,
-                  "title": `${doc.data().diseaseNameTH[1]}`,
-                  "text": `${doc.data().description[1]}`,
-                  "actions": [
-                    {
-                      "type": "message",
-                      "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
-                    },
-                    {
-                      "type": "message",
-                      "label": "อ่านรายละเอียด",
-                      "text": `${doc.data().diseaseNameTH[1]}`
-                    }
-                  ]
-                },
-                {
-                  "thumbnailImageUrl": `${doc.data().url[2]}`,
-                  "title": `${doc.data().diseaseNameTH[2]}`,
-                  "text": `${doc.data().description[2]}`,
-                  "actions": [
-                    {
-                      "type": "message",
-                      "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[2]}`
-                    },
-                    {
-                      "type": "message",
-                      "label": "อ่านรายละเอียด",
-                      "text": `${doc.data().diseaseNameTH[2]}`
-                    }
-                  ]
-                }
-              ]
-            }
+            ]
           }
-          const payloadMsg = new Payload("LINE", carouselMsg, {
-            sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
+        }
+        const payloadMsg = new Payload("LINE", carouselMsg, {
+          sendAsMessage: true
         });
-      }
-      else if (leaf_symptom === "ใบมีฝุ่นขาว") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('powder').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": leaf_symptom,
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
-              }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (leaf_symptom === "ใบมีปม") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('gall').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": leaf_symptom,
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
-              }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (leaf_symptom === "ใบซีดเหลือง") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('yellow').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": leaf_symptom,
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
-              }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (leaf_symptom === "ใบแห้ง") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('burn').get().then(doc => {
-          let carouselMsg = {
-            "type": "template",
-            "altText": leaf_symptom,
-            "template": {
-              "type": "carousel",
-              "actions": [],
-              "columns": [
-                {
-                  "thumbnailImageUrl": `${doc.data().url[0]}`,
-                  "title": `${doc.data().diseaseNameTH[0]}`,
-                  "text": `${doc.data().description[0]}`,
-                  "actions": [
-                    {
-                      "type": "message",
-                      "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[0]}`
-                    },
-                    {
-                      "type": "message",
-                      "label": "อ่านรายละเอียด",
-                      "text": `${doc.data().diseaseNameTH[0]}`
-                    }
-                  ]
-                },
-                {
-                  "thumbnailImageUrl": `${doc.data().url[1]}`,
-                  "title": `${doc.data().diseaseNameTH[1]}`,
-                  "text": `${doc.data().description[1]}`,
-                  "actions": [
-                    {
-                      "type": "message",
-                      "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[1]}`
-                    },
-                    {
-                      "type": "message",
-                      "label": "อ่านรายละเอียด",
-                      "text": `${doc.data().diseaseNameTH[1]}`
-                    }
-                  ]
-                },
-                {
-                  "thumbnailImageUrl": `${doc.data().url[2]}`,
-                  "title": `${doc.data().diseaseNameTH[2]}`,
-                  "text": `${doc.data().description[2]}`,
-                  "actions": [
-                    {
-                      "type": "message",
-                      "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[2]}`
-                    },
-                    {
-                      "type": "message",
-                      "label": "อ่านรายละเอียด",
-                      "text": `${doc.data().diseaseNameTH[2]}`
-                    }
-                  ]
-                },
-                {
-                  "thumbnailImageUrl": `${doc.data().url[4]}`,
-                  "title": `${doc.data().diseaseNameTH[4]}`,
-                  "text": `${doc.data().description[4]}`,
-                  "actions": [
-                    {
-                      "type": "message",
-                      "label": "ดูรูปเพิ่มเติม",
-                      "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH[4]}`
-                    },
-                    {
-                      "type": "message",
-                      "label": "อ่านรายละเอียด",
-                      "text": `${doc.data().diseaseNameTH[4]}`
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-          const payloadMsg = new Payload("LINE", carouselMsg, {
-            sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
-        });
-      }
-      else if (leaf_symptom === "ใบมีจุด") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('spot').get()
-          .then(doc => {
-            let carouselMsg = {
-              "type": "template",
-              "altText": leaf_symptom,
-              "template": {
-                "type": "carousel",
-                "actions": [],
-                "columns": [
-                  {
-                    "thumbnailImageUrl": `${doc.data().url['brown']}`,
-                    "title": `${doc.data().diseaseNameTH['brown']}`,
-                    "text": `${doc.data().description['brown']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['brown']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['brown']}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url['gray']}`,
-                    "title": `${doc.data().diseaseNameTH['gray']}`,
-                    "text": `${doc.data().description['gray']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['gray']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['gray']}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url['pale']}`,
-                    "title": `${doc.data().diseaseNameTH['pale']}`,
-                    "text": `${doc.data().description['pale']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['pale']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['pale']}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url['white']}`,
-                    "title": `${doc.data().diseaseNameTH['white']}`,
-                    "text": `${doc.data().description['white']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['white']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['white']}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url['yellow']}`,
-                    "title": `${doc.data().diseaseNameTH['yellow']}`,
-                    "text": `${doc.data().description['yellow']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['yellow']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['yellow']}`
-                      }
-                    ]
-                  }
-                  ,
-                  {
-                    "thumbnailImageUrl": `${doc.data().url['swell']}`,
-                    "title": `${doc.data().diseaseNameTH['swell']}`,
-                    "text": `${doc.data().description['swell']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['swell']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['swell']}`
-                      }
-                    ]
-                  }
-                ]
-              }
-            }
-            const payloadMsg = new Payload("LINE", carouselMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (leaf_symptom === "ใบมีแผลตามทางยาว") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('lesion').get()
-          .then(doc => {
-            let carouselMsg = {
-              "type": "template",
-              "altText": leaf_symptom,
-              "template": {
-                "type": "carousel",
-                "actions": [],
-                "columns": [
-                  {
-                    "thumbnailImageUrl": `${doc.data().url['brown']}`,
-                    "title": `${doc.data().diseaseNameTH['brown']}`,
-                    "text": `${doc.data().description['brown']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['brown']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['brown']}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url['gray']}`,
-                    "title": `${doc.data().diseaseNameTH['gray']}`,
-                    "text": `${doc.data().description['gray']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['gray']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['gray']}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url['gray2']}`,
-                    "title": `${doc.data().diseaseNameTH['gray2']}`,
-                    "text": `${doc.data().description['gray2']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['gray2']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['gray2']}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url['gray3']}`,
-                    "title": `${doc.data().diseaseNameTH['gray3']}`,
-                    "text": `${doc.data().description['gray3']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['gray3']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['gray3']}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url['layer']}`,
-                    "title": `${doc.data().diseaseNameTH['layer']}`,
-                    "text": `${doc.data().description['layer']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['layer']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['layer']}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url['yellow']}`,
-                    "title": `${doc.data().diseaseNameTH['yellow']}`,
-                    "text": `${doc.data().description['yellow']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['yellow']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['yellow']}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url['light green']}`,
-                    "title": `${doc.data().diseaseNameTH['light green']}`,
-                    "text": `${doc.data().description['light green']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['light green']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['light green']}`
-                      }
-                    ]
-                  },
-                  {
-                    "thumbnailImageUrl": `${doc.data().url['straw']}`,
-                    "title": `${doc.data().diseaseNameTH['straw']}`,
-                    "text": `${doc.data().description['straw']}`,
-                    "actions": [
-                      {
-                        "type": "message",
-                        "label": "ดูรูปเพิ่มเติม",
-                        "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH['straw']}`
-                      },
-                      {
-                        "type": "message",
-                        "label": "อ่านรายละเอียด",
-                        "text": `${doc.data().diseaseNameTH['straw']}`
-                      }
-                    ]
-                  }
-                ]
-              }
-            }
-            const payloadMsg = new Payload("LINE", carouselMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-      else if (leaf_symptom === "ใบมีแผลฉ่ำน้ำ") {
-        return db.collection('Symptom_disease').doc('Leaf').collection('symptom').doc('water-soaked').get()
-          .then(doc => {
-            let buttonMsg = {
-              "type": "template",
-              "altText": leaf_symptom,
-              "template": {
-                "type": "buttons",
-                "actions": [
-                  {
-                    "type": "message",
-                    "label": "ดูรูปเพิ่มเติม",
-                    "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
-                  },
-                  {
-                    "type": "message",
-                    "label": "อ่านรายละเอียด",
-                    "text": `${doc.data().diseaseNameTH}`
-                  }
-                ],
-                "thumbnailImageUrl": `${doc.data().url}`,
-                "title": `${doc.data().diseaseNameTH}`,
-                "text": `${doc.data().description}`
-              }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
-            });
-            return agent.add(payloadMsg);
-          });
-      }
-    }
-
-    const disease_card = async => {
-      const d_name = req.body.queryResult.parameters.disease;
-      return queryDisease = db.collection('Disease').where('diseaseNameTH', '==', d_name).get().then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          var data = doc.data()
-          //agent.add(dataa.symptom)
-          let buttonMsg = {
-            "type": "flex",
-            "altText": "Flex Message",
-            "contents": {
-              "type": "bubble",
-              "direction": "ltr",
-              "hero": {
-                "type": "image",
-                "url": `${data.url}`,
-                "size": "full",
-                "aspectRatio": "1.51:1",
-                "aspectMode": "cover"
+        return agent.add(payloadMsg);
+      });
+  }
+  else if (leaf_symptom === "ใบมีแผลฉ่ำน้ำ") {
+    return db.collection('Symptom_disease').doc('Leaf')
+      .collection('symptom').doc('water-soaked').get()
+      .then(doc => {
+        let buttonMsg = {
+          "type": "template",
+          "altText": leaf_symptom,
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "message",
+                "label": "ดูรูปเพิ่มเติม",
+                "text": "ดูรูปเพิ่มเติม" + `${doc.data().diseaseNameTH}`
               },
-              "body": {
-                "type": "box",
-                "layout": "horizontal",
-                "contents": [
-                  {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "สาเหตุ",
-                          "text": `${data.forTemplate[0]}`
-                        }
-                      },
-                      {
-                        "type": "separator"
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "วิธีรักษา",
-                          "text": `${data.forTemplate[2]}`
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "type": "separator"
-                  },
-                  {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "อาการ",
-                          "text": `${data.forTemplate[1]}`
-                        }
-                      },
-                      {
-                        "type": "separator"
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "การป้องกัน",
-                          "text": `${data.forTemplate[3]}`
-                        }
-                      }
-                    ]
-                  }
-                ]
+              {
+                "type": "message",
+                "label": "อ่านรายละเอียด",
+                "text": `${doc.data().diseaseNameTH}`
               }
-            }
+            ],
+            "thumbnailImageUrl": `${doc.data().url}`,
+            "title": `${doc.data().diseaseNameTH}`,
+            "text": `${doc.data().description}`
           }
-          /*{
-            "type": "flex",
-            "altText": "Flex Message",
-            "contents": {
-              "type": "bubble",
-              "direction": "ltr",
-              "hero": {
-                "type": "image",
-                "url": `${data.url}`,
-                "size": "full",
-                "aspectRatio": "1.51:1",
-                "aspectMode": "cover"
-              },
-              "body": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                  {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "สาเหตุ",
-                          "text": `${data.forTemplate[0]}`
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "อาการ",
-                          "text": `${data.forTemplate[1]}`
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "วิธีรักษา",
-                          "text": `${data.forTemplate[2]}`
-                        }
-                      },
-                      {
-                        "type": "button",
-                        "action": {
-                          "type": "message",
-                          "label": "การป้องกัน",
-                          "text": `${data.forTemplate[3]}`
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            }
-          }*/
-          const payloadMsg = new Payload("LINE", buttonMsg, {
-            sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
         });
+        return agent.add(payloadMsg);
       });
-    }
+  }
+}
 
-    const disease_cause = async => {
-      const d_name = req.body.queryResult.parameters.disease;
-      return queryCause = db.collection('Disease').where('diseaseNameTH', '==', d_name).get().then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          agent.add(doc.data().cause)
-        });
-      });
-    }
-
-    const disease_symptom = async => {
-      const d_name = req.body.queryResult.parameters.disease;
-      return querySymptom = db.collection('Disease').where('diseaseNameTH', '==', d_name).get().then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          agent.add(doc.data().symptom)
-        });
-      });
-    }
-
-    const disease_treatment = async => {
-      const d_name = req.body.queryResult.parameters.disease;
-      return queryTreatment = db.collection('Disease').where('diseaseNameTH', '==', d_name).get().then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          agent.add(doc.data().treatment)
-        });
-      });
-    }
-
-    const disease_protection = async => {
-      const d_name = req.body.queryResult.parameters.disease;
-      return queryProtection = db.collection('Disease').where('diseaseNameTH', '==', d_name).get().then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          agent.add(doc.data().protection)
-        });
-      });
-    }
-
-    //------------------------- ดูรูปเพิ่มเติม -----------------------------
-    const image_carousel = async => {
-      const d_image = req.body.queryResult.parameters.moreimage;
-      return queryCause = db.collection('Disease').where('forTemplate', 'array-contains', d_image).get().then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          var image = doc.data()
-          let buttonMsg = {
-            "type": "flex",
-            "altText": "Flex Message",
-            "contents": {
-              "type": "carousel",
+const disease_card = async => {
+  const d_name = req.body.queryResult.parameters.disease;
+  return queryDisease = db.collection('Disease')
+    .where('diseaseNameTH', '==', d_name).get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        var data = doc.data()
+        //agent.add(dataa.symptom)
+        let buttonMsg = {
+          "type": "flex",
+          "altText": "Flex Message",
+          "contents": {
+            "type": "bubble",
+            "direction": "ltr",
+            "hero": {
+              "type": "image",
+              "url": `${data.url}`,
+              "size": "full",
+              "aspectRatio": "1.51:1",
+              "aspectMode": "cover"
+            },
+            "body": {
+              "type": "box",
+              "layout": "horizontal",
               "contents": [
                 {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "hero": {
-                    "type": "image",
-                    "url": `${image.image[0]}`,
-                    "size": "full",
-                    "aspectMode": "cover"
-                  }
+                  "type": "box",
+                  "layout": "vertical",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "สาเหตุ",
+                        "text": `${data.forTemplate[0]}`
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "วิธีรักษา",
+                        "text": `${data.forTemplate[2]}`
+                      }
+                    }
+                  ]
                 },
                 {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "hero": {
-                    "type": "image",
-                    "url": `${image.image[1]}`,
-                    "size": "full",
-                    "aspectMode": "cover"
-                  }
+                  "type": "separator"
                 },
                 {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "hero": {
-                    "type": "image",
-                    "url": `${image.image[2]}`,
-                    "size": "full",
-                    "aspectMode": "cover"
-                  }
-                },
-                {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "hero": {
-                    "type": "image",
-                    "url": `${image.image[3]}`,
-                    "size": "full",
-                    "aspectMode": "cover"
-                  }
-                },
-                {
-                  "type": "bubble",
-                  "direction": "ltr",
-                  "hero": {
-                    "type": "image",
-                    "url": `${image.image[4]}`,
-                    "size": "full",
-                    "aspectMode": "cover"
-                  }
+                  "type": "box",
+                  "layout": "vertical",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "อาการ",
+                        "text": `${data.forTemplate[1]}`
+                      }
+                    },
+                    {
+                      "type": "separator"
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "การป้องกัน",
+                        "text": `${data.forTemplate[3]}`
+                      }
+                    }
+                  ]
                 }
               ]
             }
           }
-          const payloadMsg = new Payload("LINE", buttonMsg, {
-            sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
+        }
+        /*{
+          "type": "flex",
+          "altText": "Flex Message",
+          "contents": {
+            "type": "bubble",
+            "direction": "ltr",
+            "hero": {
+              "type": "image",
+              "url": `${data.url}`,
+              "size": "full",
+              "aspectRatio": "1.51:1",
+              "aspectMode": "cover"
+            },
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "box",
+                  "layout": "vertical",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "สาเหตุ",
+                        "text": `${data.forTemplate[0]}`
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "อาการ",
+                        "text": `${data.forTemplate[1]}`
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "วิธีรักษา",
+                        "text": `${data.forTemplate[2]}`
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "message",
+                        "label": "การป้องกัน",
+                        "text": `${data.forTemplate[3]}`
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }*/
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
         });
+        return agent.add(payloadMsg);
       });
-    }
+    });
+}
 
-    //---------------------- ส่วนของแมลง ---------------------
-    const insect = async => {
-      const buttonMsg = {
-        "type": "flex",
-        "altText": "Flex Message",
-        "contents": {
-          "type": "bubble",
-          "direction": "ltr",
-          "body": {
-            "type": "box",
-            "layout": "vertical",
+const disease_cause = async => {
+  const d_name = req.body.queryResult.parameters.disease;
+  return queryCause = db.collection('Disease')
+    .where('diseaseNameTH', '==', d_name).get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        agent.add(doc.data().cause)
+      });
+    });
+}
+
+const disease_symptom = async => {
+  const d_name = req.body.queryResult.parameters.disease;
+  return querySymptom = db.collection('Disease')
+    .where('diseaseNameTH', '==', d_name).get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        agent.add(doc.data().symptom)
+      });
+    });
+}
+
+const disease_treatment = async => {
+  const d_name = req.body.queryResult.parameters.disease;
+  return queryTreatment = db.collection('Disease')
+    .where('diseaseNameTH', '==', d_name).get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        agent.add(doc.data().treatment)
+      });
+    });
+}
+
+const disease_protection = async => {
+  const d_name = req.body.queryResult.parameters.disease;
+  return queryProtection = db.collection('Disease')
+    .where('diseaseNameTH', '==', d_name).get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        agent.add(doc.data().protection)
+      });
+    });
+}
+
+//------------------------- ดูรูปเพิ่มเติม -----------------------------
+const image_carousel = async => {
+  const d_image = req.body.queryResult.parameters.moreimage;
+  return queryCause = db.collection('Disease')
+    .where('forTemplate', 'array-contains', d_image).get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        var image = doc.data()
+        let buttonMsg = {
+          "type": "flex",
+          "altText": "Flex Message",
+          "contents": {
+            "type": "carousel",
             "contents": [
               {
-                "type": "button",
-                "action": {
-                  "type": "message",
-                  "label": "แสดงแมลงทั้งหมด",
-                  "text": "แสดงแมลงทั้งหมด"
+                "type": "bubble",
+                "direction": "ltr",
+                "hero": {
+                  "type": "image",
+                  "url": `${image.image[0]}`,
+                  "size": "full",
+                  "aspectMode": "cover"
                 }
               },
               {
-                "type": "separator"
+                "type": "bubble",
+                "direction": "ltr",
+                "hero": {
+                  "type": "image",
+                  "url": `${image.image[1]}`,
+                  "size": "full",
+                  "aspectMode": "cover"
+                }
               },
               {
-                "type": "button",
-                "action": {
-                  "type": "message",
-                  "label": "ค้นหาจากอาการ",
-                  "text": "ค้นหาแมลงจากอาการ"
+                "type": "bubble",
+                "direction": "ltr",
+                "hero": {
+                  "type": "image",
+                  "url": `${image.image[2]}`,
+                  "size": "full",
+                  "aspectMode": "cover"
+                }
+              },
+              {
+                "type": "bubble",
+                "direction": "ltr",
+                "hero": {
+                  "type": "image",
+                  "url": `${image.image[3]}`,
+                  "size": "full",
+                  "aspectMode": "cover"
+                }
+              },
+              {
+                "type": "bubble",
+                "direction": "ltr",
+                "hero": {
+                  "type": "image",
+                  "url": `${image.image[4]}`,
+                  "size": "full",
+                  "aspectMode": "cover"
                 }
               }
             ]
           }
         }
-      }
-      const payloadMsg = new Payload("LINE", buttonMsg, {
-        sendAsMessage: true
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
       });
-      return agent.add(payloadMsg);
-    }
+    });
+}
 
-    const insect_carousel = async => {
-      /*const snapshot = await db.collection('Insect').get()
-        .then(doc => {*/
-      const carouselMsg = {
-        "type": "template",
-        "altText": "this is a image carousel template",
-        "template": {
-          "type": "image_carousel",
-          "columns": [
-            {
-              "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FFallArmyworm%2FFallArmyworm27sq.jpg?alt=media&token=93c4557f-29af-4663-9317-4c2758cc1105",
-              "action": {
-                "type": "message",
-                "label": "กระทู้ลายจุด",
-                "text": "หนอนกระทู้ข้าวโพดลายจุด"
-              }
-            },
-            {
-              "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2F%20BeetArmyworm%2FBeetArmy12sq.jpg?alt=media&token=df3d83c0-a1ab-4051-b794-0cabe3bfb9e1",
-              "action": {
-                "type": "message",
-                "label": "กระทู้หอม",
-                "text": "หนอนกระทู้หอม"
-              }
-            },
-            {
-              "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FCornEarworm%2FCornEarworm16sq.jpg?alt=media&token=3aa3352b-7abd-4fa2-86b8-610ae1206044",
-              "action": {
-                "type": "message",
-                "label": "เจาะฝัก",
-                "text": "หนอนเจาะฝักข้าวโพด"
-              }
-            },
-            {
-              "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FCornBorer%2FCornBorer19sq.jpg?alt=media&token=f919ad25-71fb-4d82-bd46-9571144a6661",
-              "action": {
-                "type": "message",
-                "label": "เจาะลำต้น",
-                "text": "หนอนเจาะลำต้นข้าวโพด"
-              }
-            },
-            {
-              "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FCornLeafAphid%2FCornLeafAphid24sq.jpg?alt=media&token=28303b36-bfcc-4222-887c-c33c36fcc446",
-              "action": {
-                "type": "message",
-                "label": "เพลี้ยอ่อน",
-                "text": "เพลี้ยอ่อนข้าวโพด"
-              }
-            },
-            {
-              "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FRiceLeafFolder%2FRiceLeafFolder8sq.jpg?alt=media&token=22f660e1-2022-4dbb-9a66-ccd7803b280d",
-              "action": {
-                "type": "message",
-                "label": "หนอนห่อใบ",
-                "text": "หนอนห่อใบข้าวในข้าวโพด"
-              }
+//---------------------- ส่วนของแมลง ---------------------
+const insect = async => {
+  const buttonMsg = {
+    "type": "flex",
+    "altText": "Flex Message",
+    "contents": {
+      "type": "bubble",
+      "direction": "ltr",
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "button",
+            "action": {
+              "type": "message",
+              "label": "แสดงแมลงทั้งหมด",
+              "text": "แสดงแมลงทั้งหมด"
             }
-          ]
-        }
-      }
-      const payloadMsg = new Payload("LINE", carouselMsg, {
-        sendAsMessage: true
-      });
-      return agent.add(payloadMsg);
-      //});
-    }
-
-    const insect_select = async => {
-      const insectName = req.body.queryResult.parameters.insect;
-      return queryCause = db.collection('Insect').where('insectName', '==', insectName).get().then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          //agent.add(doc.data().action)
-          const cardMsg = {
-            "type": "flex",
-            "altText": "Flex Message",
-            "contents": {
-              "type": "bubble",
-              "direction": "ltr",
-              "body": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                  {
-                    "type": "spacer"
-                  },
-                  {
-                    "type": "text",
-                    "text": `${doc.data().insectName}`,
-                    "size": "lg",
-                    "align": "center",
-                    "weight": "bold"
-                  },
-
-                  {
-                    "type": "box",
-                    "layout": "baseline",
-                    "margin": "lg",
-                    "contents": [
-                      {
-                        "type": "filler"
-                      },
-                      {
-                        "type": "icon",
-                        "size": "sm",
-                        "margin": "none",
-                        "url": `${doc.data().damageRate[0]}`
-                      },
-                      {
-                        "type": "icon",
-                        "size": "sm",
-                        "url": `${doc.data().damageRate[1]}`
-                      },
-                      {
-                        "type": "icon",
-                        "size": "sm",
-                        "url": `${doc.data().damageRate[2]}`
-                      },
-                      {
-                        "type": "icon",
-                        "size": "sm",
-                        "url": `${doc.data().damageRate[3]}`
-                      },
-                      {
-                        "type": "icon",
-                        "size": "sm",
-                        "url": `${doc.data().damageRate[4]}`
-                      },
-                      {
-                        "type": "filler"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "margin": "xs",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "size": "sm",
-                        "text": "ระดับความเสียหาย:",
-                        "color": "#000000",
-                        "align": "center",
-                        "wrap": true
-                      },
-                      {
-                        "type": "text",
-                        "size": "sm",
-                        "text": `${doc.data().damage}`,
-                        "wrap": true
-                      }
-                    ]
-                  }
-                  ,
-                  {
-                    "type": "separator",
-                    "margin": "lg"
-
-                  },
-                  {
-                    "type": "text",
-                    "text": "ลักษณะแมลง",
-                    "margin": "lg",
-                    "color": "#000000"
-                  },
-                  {
-                    "type": "text",
-                    "text": `${doc.data().Identification['egg']}` + "\n" + `${doc.data().Identification['larva']}` + "\n" + `${doc.data().Identification['adult']}`,
-                    "size": "sm",
-                    "wrap": true
-                  },
-                  {
-                    "type": "text",
-                    "text": "พบ/ระบาด",
-                    "margin": "lg",
-                    "color": "#000000"
-                  },
-                  {
-                    "type": "text",
-                    "text": `${doc.data().condition}`,
-                    "size": "sm",
-                    "wrap": true
-                  },
-                  {
-                    "type": "separator",
-                    "margin": "lg"
-                  },
-                  {
-                    "type": "text",
-                    "text": "ความเสียหาย",
-                    "margin": "lg",
-                    "color": "#000000"
-                  },
-                  {
-                    "type": "text",
-                    "text": `${doc.data().action}`,
-                    "size": "sm",
-                    "wrap": true
-                  },
-                  {
-                    "type": "separator",
-                    "margin": "lg"
-                  },
-                  {
-                    "type": "text",
-                    "text": "แมลงศัตรูธรรมชาติ",
-                    "margin": "lg",
-                    "color": "#000000"
-                  },
-                  {
-                    "type": "text",
-                    "text": `${doc.data().naturalEnermy}`,
-                    "size": "sm",
-                    "wrap": true
-                  },
-                  {
-                    "type": "text",
-                    "text": "เชื้อโรคกำจัด",
-                    "margin": "lg",
-                    "color": "#000000"
-                  },
-                  {
-                    "type": "text",
-                    "text": `${doc.data().biologicalControl}`,
-                    "size": "sm",
-                    "wrap": true
-                  },
-                  {
-                    "type": "text",
-                    "text": "สารเคมี",
-                    "margin": "lg",
-                    "color": "#000000"
-                  },
-                  {
-                    "type": "text",
-                    "text": `${doc.data().insecticide[0]}` + "\n" + `${doc.data().insecticide[1]}` + "\n" + `${doc.data().insecticide[2]}` + "\n" + `${doc.data().insecticide[3]}`,
-                    "size": "sm",
-                    "wrap": true
-                  },
-                  {
-                    "type": "button",
-                    "action": {
-                      "type": "message",
-                      "label": "ความเสียหาย",
-                      "text": "ความเสียหายจาก" + `${doc.data().insectName}`
-                    },
-                    "margin": "lg",
-                    "height": "sm",
-                    "style": "secondary"
-                  }
-                ]
-              }
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "message",
+              "label": "ค้นหาจากอาการ",
+              "text": "ค้นหาแมลงจากอาการ"
             }
           }
-          const payloadMsg = new Payload("LINE", cardMsg, {
-            sendAsMessage: true
-          });
-          return agent.add(payloadMsg);
-        });
-      });
+        ]
+      }
     }
+  }
+  const payloadMsg = new Payload("LINE", buttonMsg, {
+    sendAsMessage: true
+  });
+  return agent.add(payloadMsg);
+}
+
+const insect_carousel = async => {
+  /*const snapshot = await db.collection('Insect').get()
+    .then(doc => {*/
+  const carouselMsg = {
+    "type": "template",
+    "altText": "this is a image carousel template",
+    "template": {
+      "type": "image_carousel",
+      "columns": [
+        {
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FFallArmyworm%2FFallArmyworm27sq.jpg?alt=media&token=93c4557f-29af-4663-9317-4c2758cc1105",
+          "action": {
+            "type": "message",
+            "label": "กระทู้ลายจุด",
+            "text": "หนอนกระทู้ข้าวโพดลายจุด"
+          }
+        },
+        {
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2F%20BeetArmyworm%2FBeetArmy12sq.jpg?alt=media&token=df3d83c0-a1ab-4051-b794-0cabe3bfb9e1",
+          "action": {
+            "type": "message",
+            "label": "กระทู้หอม",
+            "text": "หนอนกระทู้หอม"
+          }
+        },
+        {
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FCornEarworm%2FCornEarworm16sq.jpg?alt=media&token=3aa3352b-7abd-4fa2-86b8-610ae1206044",
+          "action": {
+            "type": "message",
+            "label": "เจาะฝัก",
+            "text": "หนอนเจาะฝักข้าวโพด"
+          }
+        },
+        {
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FCornBorer%2FCornBorer19sq.jpg?alt=media&token=f919ad25-71fb-4d82-bd46-9571144a6661",
+          "action": {
+            "type": "message",
+            "label": "เจาะลำต้น",
+            "text": "หนอนเจาะลำต้นข้าวโพด"
+          }
+        },
+        {
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FCornLeafAphid%2FCornLeafAphid24sq.jpg?alt=media&token=28303b36-bfcc-4222-887c-c33c36fcc446",
+          "action": {
+            "type": "message",
+            "label": "เพลี้ยอ่อน",
+            "text": "เพลี้ยอ่อนข้าวโพด"
+          }
+        },
+        {
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FRiceLeafFolder%2FRiceLeafFolder8sq.jpg?alt=media&token=22f660e1-2022-4dbb-9a66-ccd7803b280d",
+          "action": {
+            "type": "message",
+            "label": "หนอนห่อใบ",
+            "text": "หนอนห่อใบข้าวในข้าวโพด"
+          }
+        }
+      ]
+    }
+  }
+  const payloadMsg = new Payload("LINE", carouselMsg, {
+    sendAsMessage: true
+  });
+  return agent.add(payloadMsg);
+  //});
+}
+
+const insect_select = async => {
+  const insectName = req.body.queryResult.parameters.insect;
+  return queryCause = db.collection('Insect')
+    .where('insectName', '==', insectName).get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        //agent.add(doc.data().action)
+        const cardMsg = {
+          "type": "flex",
+          "altText": "Flex Message",
+          "contents": {
+            "type": "bubble",
+            "direction": "ltr",
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "spacer"
+                },
+                {
+                  "type": "text",
+                  "text": `${doc.data().insectName}`,
+                  "size": "lg",
+                  "align": "center",
+                  "weight": "bold"
+                },
+
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "margin": "lg",
+                  "contents": [
+                    {
+                      "type": "filler"
+                    },
+                    {
+                      "type": "icon",
+                      "size": "sm",
+                      "margin": "none",
+                      "url": `${doc.data().damageRate[0]}`
+                    },
+                    {
+                      "type": "icon",
+                      "size": "sm",
+                      "url": `${doc.data().damageRate[1]}`
+                    },
+                    {
+                      "type": "icon",
+                      "size": "sm",
+                      "url": `${doc.data().damageRate[2]}`
+                    },
+                    {
+                      "type": "icon",
+                      "size": "sm",
+                      "url": `${doc.data().damageRate[3]}`
+                    },
+                    {
+                      "type": "icon",
+                      "size": "sm",
+                      "url": `${doc.data().damageRate[4]}`
+                    },
+                    {
+                      "type": "filler"
+                    }
+                  ]
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "margin": "xs",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "size": "sm",
+                      "text": "ระดับความเสียหาย:",
+                      "color": "#000000",
+                      "align": "center",
+                      "wrap": true
+                    },
+                    {
+                      "type": "text",
+                      "size": "sm",
+                      "text": `${doc.data().damage}`,
+                      "wrap": true
+                    }
+                  ]
+                }
+                ,
+                {
+                  "type": "separator",
+                  "margin": "lg"
+
+                },
+                {
+                  "type": "text",
+                  "text": "ลักษณะแมลง",
+                  "margin": "lg",
+                  "color": "#000000"
+                },
+                {
+                  "type": "text",
+                  "text": `${doc.data().Identification['egg']}` + "\n"
+                    + `${doc.data().Identification['larva']}` + "\n"
+                    + `${doc.data().Identification['adult']}`,
+                  "size": "sm",
+                  "wrap": true
+                },
+                {
+                  "type": "text",
+                  "text": "พบ/ระบาด",
+                  "margin": "lg",
+                  "color": "#000000"
+                },
+                {
+                  "type": "text",
+                  "text": `${doc.data().condition}`,
+                  "size": "sm",
+                  "wrap": true
+                },
+                {
+                  "type": "separator",
+                  "margin": "lg"
+                },
+                {
+                  "type": "text",
+                  "text": "ความเสียหาย",
+                  "margin": "lg",
+                  "color": "#000000"
+                },
+                {
+                  "type": "text",
+                  "text": `${doc.data().action}`,
+                  "size": "sm",
+                  "wrap": true
+                },
+                {
+                  "type": "separator",
+                  "margin": "lg"
+                },
+                {
+                  "type": "text",
+                  "text": "แมลงศัตรูธรรมชาติ",
+                  "margin": "lg",
+                  "color": "#000000"
+                },
+                {
+                  "type": "text",
+                  "text": `${doc.data().naturalEnermy}`,
+                  "size": "sm",
+                  "wrap": true
+                },
+                {
+                  "type": "text",
+                  "text": "เชื้อโรคกำจัด",
+                  "margin": "lg",
+                  "color": "#000000"
+                },
+                {
+                  "type": "text",
+                  "text": `${doc.data().biologicalControl}`,
+                  "size": "sm",
+                  "wrap": true
+                },
+                {
+                  "type": "text",
+                  "text": "สารเคมี",
+                  "margin": "lg",
+                  "color": "#000000"
+                },
+                {
+                  "type": "text",
+                  "text": `${doc.data().insecticide[0]}` + "\n"
+                    + `${doc.data().insecticide[1]}` + "\n"
+                    + `${doc.data().insecticide[2]}` + "\n"
+                    + `${doc.data().insecticide[3]}`,
+                  "size": "sm",
+                  "wrap": true
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "ความเสียหาย",
+                    "text": "ความเสียหายจาก" + `${doc.data().insectName}`
+                  },
+                  "margin": "lg",
+                  "height": "sm",
+                  "style": "secondary"
+                }
+              ]
+            }
+          }
+        }
+        const payloadMsg = new Payload("LINE", cardMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+    });
+}
 
 
-    let intentMap = new Map();
-    // App
-    intentMap.set("App Suggestion", app_suggestion);
+let intentMap = new Map();
+// App
+intentMap.set("App Suggestion", app_suggestion);
 
-    // knowledge
-    intentMap.set("Knowledge", knowledge);
-    intentMap.set('Knowledge - Select', knowledge_select);
+// knowledge
+intentMap.set("Knowledge", knowledge);
+intentMap.set('Knowledge - Select', knowledge_select);
 
-    // Disease
-    intentMap.set('Disease', disease);
+// Disease
+intentMap.set('Disease', disease);
 
-    // Disease Text
-    intentMap.set('Type your corn symptoms', disease_text);
+// Disease Text
+intentMap.set('Type your corn symptoms', disease_text);
 
-    // Disease Carousel
-    intentMap.set('Disease Carousel', disease_carousel);
-    intentMap.set('Carousel - cause', carousel_cause);
-    intentMap.set('Carousel - symptom', carousel_symptom);
-    intentMap.set('Carousel - protection', carousel_protection);
-    intentMap.set('Carousel - more', disease_carousel_more);
+// Disease Carousel
+intentMap.set('Disease Carousel', disease_carousel);
+intentMap.set('Carousel - cause', carousel_cause);
+intentMap.set('Carousel - symptom', carousel_symptom);
+intentMap.set('Carousel - protection', carousel_protection);
+intentMap.set('Carousel - more', disease_carousel_more);
 
-    // Disease Imagemap
-    intentMap.set('Disease Imagemap', disease_imagemap);
-    intentMap.set('Disease Imagemap - Select Part', disease_imagemap_part);
-    intentMap.set('Ear - Select Symptom', ear_select);
-    intentMap.set('Basal - Select Symptom', basal_select);
-    intentMap.set('Leaf-Sheath - Select Symptom', leaf_sheath_select);
-    intentMap.set('Kernel - Select Symptom', kernel_select);
-    intentMap.set('Stalk - Select Symptom', stalk_select);
-    intentMap.set('Leaf - Select Symptom', leaf_select);
+// Disease Imagemap
+intentMap.set('Disease Imagemap', disease_imagemap);
+intentMap.set('Disease Imagemap - Select Part', disease_imagemap_part);
+intentMap.set('Ear - Select Symptom', ear_select);
+intentMap.set('Basal - Select Symptom', basal_select);
+intentMap.set('Leaf-Sheath - Select Symptom', leaf_sheath_select);
+intentMap.set('Kernel - Select Symptom', kernel_select);
+intentMap.set('Stalk - Select Symptom', stalk_select);
+intentMap.set('Leaf - Select Symptom', leaf_select);
 
-    // Disease Card -- See details
-    intentMap.set('Disease card', disease_card);
-    intentMap.set('Disease card - cause', disease_cause);
-    intentMap.set('Disease card - symptom', disease_symptom);
-    intentMap.set('Disease card - treatment', disease_treatment);
-    intentMap.set('Disease card - protection', disease_protection);
+// Disease Card -- See details
+intentMap.set('Disease card', disease_card);
+intentMap.set('Disease card - cause', disease_cause);
+intentMap.set('Disease card - symptom', disease_symptom);
+intentMap.set('Disease card - treatment', disease_treatment);
+intentMap.set('Disease card - protection', disease_protection);
 
-    // Image Carousel -- See more picture
-    intentMap.set('Image Carousel', image_carousel);
+// Image Carousel -- See more picture
+intentMap.set('Image Carousel', image_carousel);
 
-    // Pest
-    intentMap.set('Insect', insect);
-    intentMap.set('Insect Carousel', insect_carousel);
-    intentMap.set('Insect Carousel - select', insect_select);
+// Pest
+intentMap.set('Insect', insect);
+intentMap.set('Insect Carousel', insect_carousel);
+intentMap.set('Insect Carousel - select', insect_select);
 
-    agent.handleRequest(intentMap);
+agent.handleRequest(intentMap);
   });
 
 //function สำหรับ reply กลับไปหา LINE โดยต้องการ reply token และ messages (array)

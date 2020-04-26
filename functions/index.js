@@ -25,6 +25,161 @@ exports.webhook = functions
 
     const agent = new WebhookClient({ request: req, response: res });
 
+    const app_suggestion = async agent => {
+      return db.collection('Application').get().then(doc => {
+        const carouselMsg = {
+          "type": "template",
+          "altText": "this is a carousel template",
+          "template": {
+            "type": "carousel",
+            "actions": [],
+            "columns": [
+              {
+                "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Application%2Fapp_4corn.jpg?alt=media&token=06c40288-bbe8-48e2-a2c5-5a5421df784d",
+                "title": "4 Corn Production",
+                "text": "แอปพลิเคชั่นที่บูรณาข้อมูลอุตุนิยมวิทยา แผนปลูกข้าวโพด ขั้นตอนต่างๆ",
+                "actions": [
+                  {
+                    "type": "uri",
+                    "label": "ดาวน์โหลด (Andriod)",
+                    "uri": "https://play.google.com/store/apps/details?id=th.ac.ku.agr.maizeWela&hl=th"
+                  },
+                  {
+                    "type": "uri",
+                    "label": "ดาวน์โหลด (ios)",
+                    "uri": "https://apps.apple.com/th/app/4-corn-production/id1333353844?fbclid=IwAR1Cv7cRTBH9NOZrskMDtId-Vaf2pjB0f7J15oQX1_jrtSkvkmm4_11lpzI"
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Application%2Fapp_farmai.jpg?alt=media&token=7a2a7296-655c-4e26-9e1b-edb1c4442b52",
+                "title": "FarmAI - ฟาร์มเอไอ",
+                "text": "แอปพลิเคชั่นเพื่อการทำเกษตรกรอย่างแม่นยำและยั่งยืน เสหมือนมีพี่เลี้ยง",
+                "actions": [
+                  {
+                    "type": "uri",
+                    "label": "ดาวน์โหลด (Andriod)",
+                    "uri": "https://play.google.com/store/apps/details?id=com.farmai"
+                  },
+                  {
+                    "type": "uri",
+                    "label": "ดาวน์โหลด (ios)",
+                    "uri": "https://apps.apple.com/th/app/farmai/id1466037389?fbclid=IwAR0yWTgm_IU6fFjClytOtPPXMxWgq4D_HvZ2U15hRpjKrwAURqyG6g4Tuoo"
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Application%2Fapp_talad.jpg?alt=media&token=99607869-50f4-4bce-ae3a-d5cc954697f3",
+                "title": "TALAD ตลาด",
+                "text": "แอปพลิเคชั่นเพื่อหาผู้รับจ้าง-จองคิวงานเกษตร เช่น ซ่อมรถ/เครื่องจักร",
+                "actions": [
+                  {
+                    "type": "uri",
+                    "label": "ดาวน์โหลด (Andriod)",
+                    "uri": "https://play.google.com/store/apps/details?id=app.talad&hl=th"
+                  },
+                  {
+                    "type": "uri",
+                    "label": "ดาวน์โหลด (ios)",
+                    "uri": "https://apps.apple.com/th/app/talad-%E0%B8%95%E0%B8%A5%E0%B8%B2%E0%B8%94/id1436394639"
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Application%2Fapp_getztrac.jpg?alt=media&token=d7c0445f-284e-4f6d-b3cb-5132f307c9e5",
+                "title": "Getztrac เก็ทแทรค",
+                "text": "แอปพลิเคชันจ้างรถเกี่ยวข้าวและเครื่องจักรการเกษตรอื่นๆ",
+                "actions": [
+                  {
+                    "type": "uri",
+                    "label": "ดาวน์โหลด (Andriod)",
+                    "uri": "https://play.google.com/store/apps/details?id=com.tomsuthee.getztrac&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
+                  },
+                  {
+                    "type": "uri",
+                    "label": "ดาวน์โหลด (ios)",
+                    "uri": "https://apps.apple.com/th/app/getztrac-%E0%B9%80%E0%B8%81-%E0%B8%97%E0%B9%81%E0%B8%97%E0%B8%A3%E0%B8%84/id1453958112"
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Application%2Fapp_dtac%20farmer%20info.jpg?alt=media&token=53ebd49b-3c01-46ec-900a-b2836dab0b76",
+                "title": "Farmer Info",
+                "text": "แอปพลิเคชั่นสำหรับลูกค้า Dtac เป็นศูนย์รวมความรู้ด้านการเกษตรแบบครบวงจร",
+                "actions": [
+                  {
+                    "type": "uri",
+                    "label": "ดาวน์โหลด (Andriod)",
+                    "uri": "https://play.google.com/store/apps/details?id=com.rakbankerd.farmerinfo&hl=en"
+                  },
+                  {
+                    "type": "uri",
+                    "label": "ดาวน์โหลด (ios)",
+                    "uri": "https://apps.apple.com/th/app/farmer-info/id541507104?l=th"
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Application%2Fapp_ac%20vocab.jpg?alt=media&token=55e3057c-9761-4393-9ff8-60ebc101f479",
+                "title": "AC AGRI VOCAB",
+                "text": "แอปพลิเคชั่นสำหรับเรียนรู้คำศัพท์พื้นฐานด้านการเกษตรใน 5 ภาษาอาเซียน",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "ดาวน์โหลด (Andriod)",
+                    "text": "ดาวน์โหลด AC AGRI VOCAB แอนดรอยด์"
+                  },
+                  {
+                    "type": "uri",
+                    "label": "ดาวน์โหลด (ios)",
+                    "uri": "https://apps.apple.com/th/app/ac-agri-vocab/id1048524071"
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Application%2FOAE%20Reduce%20Cost.png?alt=media&token=59441855-eb5a-41e4-8fd7-b593f9e3c147",
+                "title": "กระดานเศรษฐี:เกษตรกรมีโอกาส",
+                "text": "แอปพลิเคชันเพื่อคำนวณต้นทุนและเปรียบเทียบต้นทุนการผลิตสินค้าเกษตร",
+                "actions": [
+                  {
+                    "type": "uri",
+                    "label": "ดาวน์โหลด (Andriod)",
+                    "uri": "https://play.google.com/store/apps/details?id=th.go.oae.rcmo&hl=th"
+                  },
+                  {
+                    "type": "uri",
+                    "label": "ดาวน์โหลด (ios)",
+                    "uri": "https://apps.apple.com/th/app/%E0%B8%81%E0%B8%A3%E0%B8%B0%E0%B8%94%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%A8%E0%B8%A3%E0%B8%A9%E0%B8%90-%E0%B9%80%E0%B8%81%E0%B8%A9%E0%B8%95%E0%B8%A3%E0%B8%81%E0%B8%A3%E0%B8%A1-%E0%B9%82%E0%B8%AD%E0%B8%81%E0%B8%B2%E0%B8%AA/id1138196348"
+                  }
+                ]
+              },
+              {
+                "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Application%2Fapp_MOAC.jpg?alt=media&token=52d32afa-1e4c-46da-a195-6f8867bd4b2d",
+                "title": "MOAC App Center",
+                "text": "เป็นศูนย์รวมแอพพลิเคชั่นเพื่อการเกษตรสำหรับเกษตรกรและผู้ที่สนใจ",
+                "actions": [
+                  {
+                    "type": "uri",
+                    "label": "ดาวน์โหลด (Andriod)",
+                    "uri": "https://play.google.com/store/apps/details?id=com.app.moac.appcenter&hl=en"
+                  },
+                  {
+                    "type": "uri",
+                    "label": "ดาวน์โหลด (ios)",
+                    "uri": "https://apps.apple.com/th/app/moac-app-center/id1086873114?l=th"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+        const payloadMsg = new Payload("LINE", carouselMsg, {
+          sendAsMessage: true
+        });
+        return agent.add(payloadMsg);
+      });
+
+    }
     //-----------------------------------ส่วนของเมนู ความรู้ทั่วไป-----------------------------------------//
 
     // ทำ function knowledge เพื่อแสดงผลบางอย่างกลับไปที่หน้าจอของ bot ------ [1]
@@ -106,7 +261,6 @@ exports.webhook = functions
           ]
         }
       };
-
       const payloadMsg = new Payload("LINE", carouselMsg, {
         sendAsMessage: true
       });
@@ -3337,7 +3491,6 @@ exports.webhook = functions
 
     const disease_cause = async => {
       const d_name = req.body.queryResult.parameters.disease;
-      //const d_cause = req.body.queryResult.parameters.disease_cause;
       return queryCause = db.collection('Disease').where('diseaseNameTH', '==', d_name).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           agent.add(doc.data().cause)
@@ -3347,7 +3500,6 @@ exports.webhook = functions
 
     const disease_symptom = async => {
       const d_name = req.body.queryResult.parameters.disease;
-      //const d_symptom = req.body.queryResult.parameters.disease_cause;
       return querySymptom = db.collection('Disease').where('diseaseNameTH', '==', d_name).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           agent.add(doc.data().symptom)
@@ -3357,7 +3509,6 @@ exports.webhook = functions
 
     const disease_treatment = async => {
       const d_name = req.body.queryResult.parameters.disease;
-      //const d_treatment = req.body.queryResult.parameters.disease_cause;
       return queryTreatment = db.collection('Disease').where('diseaseNameTH', '==', d_name).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           agent.add(doc.data().treatment)
@@ -3367,7 +3518,6 @@ exports.webhook = functions
 
     const disease_protection = async => {
       const d_name = req.body.queryResult.parameters.disease;
-      //const d_protection = req.body.queryResult.parameters.disease_cause;
       return queryProtection = db.collection('Disease').where('diseaseNameTH', '==', d_name).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           agent.add(doc.data().protection)
@@ -3375,9 +3525,9 @@ exports.webhook = functions
       });
     }
 
+    //------------------------- ดูรูปเพิ่มเติม -----------------------------
     const image_carousel = async => {
       const d_image = req.body.queryResult.parameters.moreimage;
-      //const d_cause = req.body.queryResult.parameters.disease_cause;
       return queryCause = db.collection('Disease').where('forTemplate', 'array-contains', d_image).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           var image = doc.data()
@@ -3448,8 +3598,314 @@ exports.webhook = functions
       });
     }
 
+    //---------------------- ส่วนของแมลง ---------------------
+    const insect = async => {
+      const buttonMsg = {
+        "type": "flex",
+        "altText": "Flex Message",
+        "contents": {
+          "type": "bubble",
+          "direction": "ltr",
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "message",
+                  "label": "แสดงแมลงทั้งหมด",
+                  "text": "แสดงแมลงทั้งหมด"
+                }
+              },
+              {
+                "type": "separator"
+              },
+              {
+                "type": "button",
+                "action": {
+                  "type": "message",
+                  "label": "ค้นหาจากอาการ",
+                  "text": "ค้นหาแมลงจากอาการ"
+                }
+              }
+            ]
+          }
+        }
+      }
+      const payloadMsg = new Payload("LINE", buttonMsg, {
+        sendAsMessage: true
+      });
+      return agent.add(payloadMsg);
+    }
+
+    const insect_carousel = async => {
+      /*const snapshot = await db.collection('Insect').get()
+        .then(doc => {*/
+      const carouselMsg = {
+        "type": "template",
+        "altText": "this is a image carousel template",
+        "template": {
+          "type": "image_carousel",
+          "columns": [
+            {
+              "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FFallArmyworm%2FFallArmyworm27sq.jpg?alt=media&token=93c4557f-29af-4663-9317-4c2758cc1105",
+              "action": {
+                "type": "message",
+                "label": "กระทู้ลายจุด",
+                "text": "หนอนกระทู้ข้าวโพดลายจุด"
+              }
+            },
+            {
+              "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2F%20BeetArmyworm%2FBeetArmy12sq.jpg?alt=media&token=df3d83c0-a1ab-4051-b794-0cabe3bfb9e1",
+              "action": {
+                "type": "message",
+                "label": "กระทู้หอม",
+                "text": "หนอนกระทู้หอม"
+              }
+            },
+            {
+              "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FCornEarworm%2FCornEarworm16sq.jpg?alt=media&token=3aa3352b-7abd-4fa2-86b8-610ae1206044",
+              "action": {
+                "type": "message",
+                "label": "เจาะฝัก",
+                "text": "หนอนเจาะฝักข้าวโพด"
+              }
+            },
+            {
+              "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FCornBorer%2FCornBorer19sq.jpg?alt=media&token=f919ad25-71fb-4d82-bd46-9571144a6661",
+              "action": {
+                "type": "message",
+                "label": "เจาะลำต้น",
+                "text": "หนอนเจาะลำต้นข้าวโพด"
+              }
+            },
+            {
+              "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FCornLeafAphid%2FCornLeafAphid24sq.jpg?alt=media&token=28303b36-bfcc-4222-887c-c33c36fcc446",
+              "action": {
+                "type": "message",
+                "label": "เพลี้ยอ่อน",
+                "text": "เพลี้ยอ่อนข้าวโพด"
+              }
+            },
+            {
+              "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FRiceLeafFolder%2FRiceLeafFolder8sq.jpg?alt=media&token=22f660e1-2022-4dbb-9a66-ccd7803b280d",
+              "action": {
+                "type": "message",
+                "label": "หนอนห่อใบ",
+                "text": "หนอนห่อใบข้าวในข้าวโพด"
+              }
+            }
+          ]
+        }
+      }
+      const payloadMsg = new Payload("LINE", carouselMsg, {
+        sendAsMessage: true
+      });
+      return agent.add(payloadMsg);
+      //});
+    }
+
+    const insect_select = async => {
+      const insectName = req.body.queryResult.parameters.insect;
+      return queryCause = db.collection('Insect').where('insectName', '==', insectName).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          //agent.add(doc.data().action)
+          const cardMsg = {
+            "type": "flex",
+            "altText": "Flex Message",
+            "contents": {
+              "type": "bubble",
+              "direction": "ltr",
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "spacer"
+                  },
+                  {
+                    "type": "text",
+                    "text": `${doc.data().insectName}`,
+                    "size": "lg",
+                    "align": "center",
+                    "weight": "bold"
+                  },
+
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "margin": "lg",
+                    "contents": [
+                      {
+                        "type": "filler"
+                      },
+                      {
+                        "type": "icon",
+                        "size": "sm",
+                        "margin": "none",
+                        "url": `${doc.data().damageRate[0]}`
+                      },
+                      {
+                        "type": "icon",
+                        "size": "sm",
+                        "url": `${doc.data().damageRate[1]}`
+                      },
+                      {
+                        "type": "icon",
+                        "size": "sm",
+                        "url": `${doc.data().damageRate[2]}`
+                      },
+                      {
+                        "type": "icon",
+                        "size": "sm",
+                        "url": `${doc.data().damageRate[3]}`
+                      },
+                      {
+                        "type": "icon",
+                        "size": "sm",
+                        "url": `${doc.data().damageRate[4]}`
+                      },
+                      {
+                        "type": "filler"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xs",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "size": "sm",
+                        "text": "ระดับความเสียหาย:",
+                        "color": "#000000",
+                        "align": "center",
+                        "wrap": true
+                      },
+                      {
+                        "type": "text",
+                        "size": "sm",
+                        "text": `${doc.data().damage}`,
+                        "wrap": true
+                      }
+                    ]
+                  }
+                  ,
+                  {
+                    "type": "separator",
+                    "margin": "lg"
+
+                  },
+                  {
+                    "type": "text",
+                    "text": "ลักษณะแมลง",
+                    "margin": "lg",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": `${doc.data().Identification['egg']}` + "\n" + `${doc.data().Identification['larva']}` + "\n" + `${doc.data().Identification['adult']}`,
+                    "size": "sm",
+                    "wrap": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "พบ/ระบาด",
+                    "margin": "lg",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": `${doc.data().condition}`,
+                    "size": "sm",
+                    "wrap": true
+                  },
+                  {
+                    "type": "separator",
+                    "margin": "lg"
+                  },
+                  {
+                    "type": "text",
+                    "text": "ความเสียหาย",
+                    "margin": "lg",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": `${doc.data().action}`,
+                    "size": "sm",
+                    "wrap": true
+                  },
+                  {
+                    "type": "separator",
+                    "margin": "lg"
+                  },
+                  {
+                    "type": "text",
+                    "text": "แมลงศัตรูธรรมชาติ",
+                    "margin": "lg",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": `${doc.data().naturalEnermy}`,
+                    "size": "sm",
+                    "wrap": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "เชื้อโรคกำจัด",
+                    "margin": "lg",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": `${doc.data().biologicalControl}`,
+                    "size": "sm",
+                    "wrap": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "สารเคมี",
+                    "margin": "lg",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": `${doc.data().insecticide[0]}` + "\n" + `${doc.data().insecticide[1]}` + "\n" + `${doc.data().insecticide[2]}` + "\n" + `${doc.data().insecticide[3]}`,
+                    "size": "sm",
+                    "wrap": true
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ความเสียหาย",
+                      "text": "ความเสียหายจาก" + `${doc.data().insectName}`
+                    },
+                    "margin": "lg",
+                    "height": "sm",
+                    "style": "secondary"
+                  }
+                ]
+              }
+            }
+          }
+          const payloadMsg = new Payload("LINE", cardMsg, {
+            sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
+        });
+      });
+    }
+
 
     let intentMap = new Map();
+    // App
+    intentMap.set("App Suggestion", app_suggestion);
+
     // knowledge
     intentMap.set("Knowledge", knowledge);
     intentMap.set('Knowledge - Select', knowledge_select);
@@ -3466,7 +3922,6 @@ exports.webhook = functions
     intentMap.set('Carousel - symptom', carousel_symptom);
     intentMap.set('Carousel - protection', carousel_protection);
     intentMap.set('Carousel - more', disease_carousel_more);
-
 
     // Disease Imagemap
     intentMap.set('Disease Imagemap', disease_imagemap);
@@ -3487,6 +3942,11 @@ exports.webhook = functions
 
     // Image Carousel -- See more picture
     intentMap.set('Image Carousel', image_carousel);
+
+    // Pest
+    intentMap.set('Insect', insect);
+    intentMap.set('Insect Carousel', insect_carousel);
+    intentMap.set('Insect Carousel - select', insect_select);
 
     agent.handleRequest(intentMap);
   });

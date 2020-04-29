@@ -41,23 +41,74 @@ exports.webhook = functions
         req.body.originalDetectIntentRequest.payload.data.source.userId;
       userText = req.body.originalDetectIntentRequest.payload.data.message.text;
     }
+
+
+
     const user_province = async agent => {
       let userProvince = req.body.queryResult.parameters.province;
+
+
       return db.collection("User_chatbot").doc(userId).get().then(returnData => {
         if (returnData.exists) {
           return agent.add("มีอะไรให้บอทช่วยคะ")
-        } else {
+        }
+        else {
+          if (userProvince == 'เชียงใหม่' || userProvince == 'เชียงราย' ||
+            userProvince == 'ลำปาง' || userProvince == 'ลำพูน' ||
+            userProvince == 'แม่ฮ่องสอน' || userProvince == 'น่าน' ||
+            userProvince == 'พะเยา' || userProvince == 'แพร่' ||
+            userProvince == 'อุตรดิตถ์' || userProvince == 'ตาก' ||
+            userProvince == 'สุโขทัย' || userProvince == 'พิษณุโลก' ||
+            userProvince == 'พิจิตร' || userProvince == 'กำแพงเพชร' ||
+            userProvince == 'นครสวรรค์' || userProvince == 'อุทัยธานี' ||
+            userProvince == 'เพชรบูรณ์') {
+            userRegion = "ภาคเหนือ"
+          } else if (userProvince == 'อำนาจเจริญ' || userProvince == 'บึงกาฬ' ||
+            userProvince == 'บุรีรัมย์' || userProvince == 'ชัยภูมิ' ||
+            userProvince == 'กาฬสินธุ์' || userProvince == 'ขอนแก่น' ||
+            userProvince == 'เลย' || userProvince == 'มหาสารคาม' ||
+            userProvince == 'มุกดาหาร' || userProvince == 'นครพนม' ||
+            userProvince == 'นครราชสีมา' || userProvince == 'หนองบัวลำภู' ||
+            userProvince == 'หนองคาย' || userProvince == 'ร้อยเอ็ด' ||
+            userProvince == 'สกลนคร' || userProvince == 'ศรีสะเกษ' ||
+            userProvince == 'สุรินทร์' || userProvince == 'อุบลราชธานี' ||
+            userProvince == 'อุดรธานี' || userProvince == 'ยโสธร') {
+            userRegion = "ภาคตะวันออกเฉียงเหนือ"
+          } else if (userProvince == 'อ่างทอง' || userProvince == 'ชัยนาท' ||
+            userProvince == 'พระนครศรีอยุธยา' || userProvince == 'กรุงเทพมหานคร' ||
+            userProvince == 'ลพบุรี' || userProvince == 'นครปฐม' ||
+            userProvince == 'นนทบุรี' || userProvince == 'ปทุมธานี' ||
+            userProvince == 'สมุทรปราการ' || userProvince == 'สมุทรสาคร' ||
+            userProvince == 'สมุทรสงคราม' || userProvince == 'สระบุรี' ||
+            userProvince == 'สิงห์บุรี' || userProvince == 'สุพรรณบุรี' ||
+            userProvince == 'นครนายก' || userProvince == 'ฉะเชิงเทรา' ||
+            userProvince == 'จันทบุรี' || userProvince == 'ชลบุรี' ||
+            userProvince == 'ปราจีนบุรี' || userProvince == 'ระยอง' ||
+            userProvince == 'สระแก้ว' || userProvince == 'ตราด' ||
+            userProvince == 'กาญจนบุรี' || userProvince == 'ราชบุรี' ||
+            userProvince == 'เพชรบุรี' || userProvince == 'ประจวบคีรีขันธ์'
+          ) {
+            userRegion = "ภาคกลาง"
+          } else if (userProvince == 'นครศรีธรรมราช' || userProvince == 'นราธิวาส' ||
+            userProvince == 'ชุมพร' || userProvince == 'ปัตตานี' ||
+            userProvince == 'พัทลุง' || userProvince == 'สงขลา' ||
+            userProvince == 'สุราษฎร์ธานี' || userProvince == 'ยะลา' ||
+            userProvince == 'กระบี่' || userProvince == 'พังงา' ||
+            userProvince == 'ภูเก็ต' || userProvince == 'ระนอง' ||
+            userProvince == 'สตูล' || userProvince == 'ตรัง') {
+            userRegion = "ภาคใต้"
+          }
           return db.collection("User_chatbot").doc(userId).set({
             timestamp: currentDate,
             userId: userId,
             userProvince: userProvince,
+            userRegion: userRegion,
             status: true
           })
         }
       })
     }
     const currentDate = Date.now();
-
     /*const user_province = async agent => {
       let userProvince = req.body.queryResult.parameters.province;
       return db.collection("User_chatbot").doc(userId).set({
@@ -1964,7 +2015,6 @@ exports.webhook = functions
           })
         }
       })
-
     }
 
     const basal_select = async => {
@@ -2437,7 +2487,6 @@ exports.webhook = functions
           });
         }
       })
-
     }
 
     const kernel_select = async => {
@@ -3665,92 +3714,123 @@ exports.webhook = functions
 
     const disease_card = async => {
       const d_name = req.body.queryResult.parameters.disease;
-      return queryDisease = db.collection('Disease')
-        .where('diseaseNameTH', '==', d_name).get()
-        .then(function (querySnapshot) {
-          querySnapshot.forEach(function (doc) {
-            var data = doc.data()
-            //agent.add(dataa.symptom)
-            let buttonMsg = {
-              "type": "flex",
-              "altText": "Flex Message",
-              "contents": {
-                "type": "bubble",
-                "direction": "ltr",
-                "hero": {
-                  "type": "image",
-                  "url": `${data.url}`,
-                  "size": "full",
-                  "aspectRatio": "1.51:1",
-                  "aspectMode": "cover"
-                },
-                "body": {
-                  "type": "box",
-                  "layout": "horizontal",
-                  "contents": [
-                    {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "สาเหตุ",
-                            "text": `${data.forTemplate[0]}`
+      const new_d_name = changeDiseaseName(d_name) //เข้าฟังก์ชั่นเปลี่ยนชื่อเป็นอังกฤษ
+      //เข้า collection User_chatbot เพื่อเอาจังหวัดกับภาคของผู้ใช้
+      return db.collection("User_chatbot").doc(userId).get().then(doc => {
+        if (doc.exists) {
+          const pro_vince = doc.data().userProvince
+          const userRegion = doc.data().userRegion
+          //ดูว่าผู้ใช้อยู่ภาคไหน แล้ว +1 ภาคนั้นใน col diseaseQuery ชื่อโรคที่ผู้ใช้เลือกดู
+          if (userRegion == "ภาคเหนือ") {
+            db.collection("diseaseQuery")
+              .doc(new_d_name).update({
+                north: FieldValue.increment(1) //ส่วน +1 ภาค นับจำนวนครั้งที่ผู้ใช้ดู
+              })
+          } else if (userRegion == "ภาคตะวันออกเฉียงเหนือ") {
+            db.collection("diseaseQuery")
+              .doc(new_d_name).update({
+                northeast: FieldValue.increment(1)
+              })
+          } else if (userRegion == "ภาคกลาง") {
+            db.collection("diseaseQuery")
+              .doc(new_d_name).update({
+                center: FieldValue.increment(1)
+              })
+          } else if (userRegion == "ภาคใต้") {
+            db.collection("diseaseQuery")
+              .doc(new_d_name).update({
+                south: FieldValue.increment(1)
+              })
+          }
+        }
+      }).then(snapshot => {
+        return queryDisease = db.collection('Disease')
+          .where('diseaseNameTH', '==', d_name).get()
+          .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+              var data = doc.data()
+              //agent.add(dataa.symptom)
+              let buttonMsg = {
+                "type": "flex",
+                "altText": "Flex Message",
+                "contents": {
+                  "type": "bubble",
+                  "direction": "ltr",
+                  "hero": {
+                    "type": "image",
+                    "url": `${data.url}`,
+                    "size": "full",
+                    "aspectRatio": "1.51:1",
+                    "aspectMode": "cover"
+                  },
+                  "body": {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
+                      {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "message",
+                              "label": "สาเหตุ",
+                              "text": `${data.forTemplate[0]}`
+                            }
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "message",
+                              "label": "วิธีรักษา",
+                              "text": `${data.forTemplate[2]}`
+                            }
                           }
-                        },
-                        {
-                          "type": "separator"
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "วิธีรักษา",
-                            "text": `${data.forTemplate[2]}`
+                        ]
+                      },
+                      {
+                        "type": "separator"
+                      },
+                      {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "message",
+                              "label": "อาการ",
+                              "text": `${data.forTemplate[1]}`
+                            }
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "message",
+                              "label": "การป้องกัน",
+                              "text": `${data.forTemplate[3]}`
+                            }
                           }
-                        }
-                      ]
-                    },
-                    {
-                      "type": "separator"
-                    },
-                    {
-                      "type": "box",
-                      "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "อาการ",
-                            "text": `${data.forTemplate[1]}`
-                          }
-                        },
-                        {
-                          "type": "separator"
-                        },
-                        {
-                          "type": "button",
-                          "action": {
-                            "type": "message",
-                            "label": "การป้องกัน",
-                            "text": `${data.forTemplate[3]}`
-                          }
-                        }
-                      ]
-                    }
-                  ]
+                        ]
+                      }
+                    ]
+                  }
                 }
               }
-            }
-            const payloadMsg = new Payload("LINE", buttonMsg, {
-              sendAsMessage: true
+              const payloadMsg = new Payload("LINE", buttonMsg, {
+                sendAsMessage: true
+              });
+              return agent.add(payloadMsg);
             });
-            return agent.add(payloadMsg);
           });
-        });
+      })
     }
 
     const disease_cause = async => {
@@ -3797,6 +3877,35 @@ exports.webhook = functions
         });
     }
 
+    function changeDiseaseName(d_name) {
+      if (d_name == 'โรคกาบและใบไหม้') {
+        return 'BandedLeafAndSheathBlight'
+      } else if (d_name == 'โรคต้นเน่าจากเชื้อมาโครโฟมิน่า') {
+        return 'CharcoalRot'
+      } else if (d_name == 'โรคต้นเน่าจากเชื้อฟิวซาเรี่ยม') {
+        return 'FusariumStalkRot'
+      } else if (d_name == 'โรคต้นเน่าจากเชื้อแบคทีเรีย') {
+        return 'BacterialStalkRot'
+      } else if (d_name == 'โรคโคนเน่า') {
+        return 'BasalStemRot'
+      } else if (d_name == 'โรคสมัท') {
+        return 'CommonSmut'
+      } else if (d_name == 'โรคฝัก ต้นและเมล็ดเน่าจากเชื้อดิโพลเดีย') {
+        return 'DiplodiaStalkKernelAndEarRot'
+      } else if (d_name == 'โรคราน้ำค้าง') {
+        return 'DownyMildew'
+      } else if (d_name == 'โรคใบจุด') {
+        return 'LeafSpot'
+      } else if (d_name == 'โรคใบไหม้แผลใหญ่') {
+        return 'NorthenCornLeafBlight'
+      } else if (d_name == 'โรคเมล็ดและฝักเน่าจากเชื้อราเพนิซิลเลียม') {
+        return 'PenicilliumKernelAndEarRot'
+      } else if (d_name == 'โรคใบไหม้แผลเล็ก') {
+        return 'SouthernCornLeafBlight'
+      } else if (d_name == 'โรคราสนิม') {
+        return 'SouthernCornRust'
+      }
+    }
     //------------------------- ดูรูปเพิ่มเติม -----------------------------
     const image_carousel = async => {
       const d_image = req.body.queryResult.parameters.moreimage;

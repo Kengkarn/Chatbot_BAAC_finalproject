@@ -1,6 +1,9 @@
 const functions = require('firebase-functions');
-const request = require("request-promise");
+const request = require('request-promise');
 const config = require("./config.json");
+//const express = require('express')
+//const line = require('@line/bot-sdk');
+//const webhookHandler = require('./handler/webhook');
 
 const { WebhookClient, Payload } = require("dialogflow-fulfillment");
 
@@ -17,7 +20,45 @@ const runtimeOptions = {
   memory: "2GB"
 };
 
+/*const client = new line.Client({
+  channelAccessToken: 'jWS8LPUWM/CRiU8PWKCg2HuR987LCBr4Eu+L2yjk2bO7pc7la6SFnEIiST+SbQncuHWSVuOtu+ftrdXsbrTRrAMSqIWoCR3vKotWguJlCvos/1eK+pK1AGqKmBZoJ3ZAMLVUTjuFlDBSIbfPuaJhCQdB04t89/1O/w1cDnyilFU='
+});*/
+
+//const app = express();
+/*app.post('/webhook', line.middleware(config), (req, res) => {
+  Promise
+    .all(req.body.events.map(handleEvent))
+    .then((result) => res.json(result));
+});*/
+
 const FieldValue = require('firebase-admin').firestore.FieldValue;
+
+
+/*exports.RichMenu = functions.https.onRequest((req, res) => {
+
+  let userText = req.body.originalDetectIntentRequest.payload.data.message.text;
+
+  let richMenuId1 = 'richmenu-f81c3a1cdf42bda9c4ab28902bcccf85';
+  let richMenuId2 = 'richmenu-901142f2a131f87788a03c6424eedd3e';
+
+  let event = req.body.events[0]
+  if (userText === 'หน้าถัดไป' || userText === 'ย้อนกลับ') {
+    switch (event.postback.data) {
+      case 'richmenu1': link(richMenuId1); break
+      case 'richmenu2': link(richMenuId2); break
+    }
+  }
+
+  return res.status(200).send(req.method)
+})
+
+const link = async (richMenuId) => {
+  await request.post({
+    uri: `https://api.line.me/v2/bot/user/richmenu/${richMenuId}`,
+    headers: { Authorization: 'Bearer jWS8LPUWM/CRiU8PWKCg2HuR987LCBr4Eu+L2yjk2bO7pc7la6SFnEIiST+SbQncuHWSVuOtu+ftrdXsbrTRrAMSqIWoCR3vKotWguJlCvos/1eK+pK1AGqKmBZoJ3ZAMLVUTjuFlDBSIbfPuaJhCQdB04t89/1O/w1cDnyilFU=' }
+  });
+}*/
+
 
 //ทำ webhook request url
 exports.webhook = functions
@@ -41,8 +82,6 @@ exports.webhook = functions
         req.body.originalDetectIntentRequest.payload.data.source.userId;
       userText = req.body.originalDetectIntentRequest.payload.data.message.text;
     }
-
-
 
     const user_province = async agent => {
       let userProvince = req.body.queryResult.parameters.province;
@@ -73,7 +112,7 @@ exports.webhook = functions
             userProvince == 'สกลนคร' || userProvince == 'ศรีสะเกษ' ||
             userProvince == 'สุรินทร์' || userProvince == 'อุบลราชธานี' ||
             userProvince == 'อุดรธานี' || userProvince == 'ยโสธร') {
-            userRegion = "ภาคตะวันออกเฉียงเหนือ"
+            userRegion = "ภาคอีสาน"
           } else if (userProvince == 'อ่างทอง' || userProvince == 'ชัยนาท' ||
             userProvince == 'พระนครศรีอยุธยา' || userProvince == 'กรุงเทพมหานคร' ||
             userProvince == 'ลพบุรี' || userProvince == 'นครปฐม' ||
@@ -109,15 +148,6 @@ exports.webhook = functions
       })
     }
     const currentDate = Date.now();
-    /*const user_province = async agent => {
-      let userProvince = req.body.queryResult.parameters.province;
-      return db.collection("User_chatbot").doc(userId).set({
-        timestamp: currentDate,
-        userId: userId,
-        userProvince: userProvince,
-        status: true
-      })
-    }*/
 
     const app_suggestion = async agent => {
       return db.collection('Application').get().then(doc => {
@@ -416,7 +446,39 @@ exports.webhook = functions
 
     // function disease action แรกของเมนู โรคพืช [2]
     const disease = async agent => {
-      const buttonMsg = {
+      const quickReply = {
+        "type": "text",
+        "text": "ต้องการทราบข้อมูลโรคข้าวโพดด้วยวิธีไหนคะ?",
+        "quickReply": {
+          "items": [
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "แสดงโรคทั้งหมด",
+                "text": "แสดงโรคทั้งหมด"
+              }
+            },
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "เลือกอาการ",
+                "text": "เลือกอาการ"
+              }
+            },
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "ระบุอาการ",
+                "text": "ระบุอาการ"
+              }
+            }
+          ]
+        }
+      }
+      /*const buttonMsg = {
         "type": "flex",
         "altText": "Flex Message",
         "contents": {
@@ -486,12 +548,12 @@ exports.webhook = functions
             ]
           }
         }
-      };
+      };*/
 
-      const payloadMsg = new Payload("LINE", buttonMsg, {
+      const payloadMsg = new Payload("LINE", quickReply, {
         sendAsMessage: true
       });
-      return agent.add("ต้องการทราบข้อมูลโรคข้าวโพดด้วยวิธีไหนคะ?"), agent.add(payloadMsg);
+      return agent.add(payloadMsg);
     }
 
     // ส่วน function disease_carousel แสดงโรคทั้งหมดที่มีในระบบ ------ [2.1]
@@ -3718,7 +3780,6 @@ exports.webhook = functions
       //เข้า collection User_chatbot เพื่อเอาจังหวัดกับภาคของผู้ใช้
       return db.collection("User_chatbot").doc(userId).get().then(doc => {
         if (doc.exists) {
-          const pro_vince = doc.data().userProvince
           const userRegion = doc.data().userRegion
           //ดูว่าผู้ใช้อยู่ภาคไหน แล้ว +1 ภาคนั้นใน col diseaseQuery ชื่อโรคที่ผู้ใช้เลือกดู
           if (userRegion == "ภาคเหนือ") {
@@ -3726,7 +3787,11 @@ exports.webhook = functions
               .doc(new_d_name).update({
                 north: FieldValue.increment(1) //ส่วน +1 ภาค นับจำนวนครั้งที่ผู้ใช้ดู
               })
-          } else if (userRegion == "ภาคตะวันออกเฉียงเหนือ") {
+            /*db.collection("diseaseQuery")
+              .doc('North').update({
+                `${d_name}`: FieldValue.increment(1) //ส่วน +1 โรค นับจำนวนครั้งที่ผู้ใช้ดู
+              })*/
+          } else if (userRegion == "ภาคอีสาน") {
             db.collection("diseaseQuery")
               .doc(new_d_name).update({
                 northeast: FieldValue.increment(1)
@@ -3877,35 +3942,7 @@ exports.webhook = functions
         });
     }
 
-    function changeDiseaseName(d_name) {
-      if (d_name == 'โรคกาบและใบไหม้') {
-        return 'BandedLeafAndSheathBlight'
-      } else if (d_name == 'โรคต้นเน่าจากเชื้อมาโครโฟมิน่า') {
-        return 'CharcoalRot'
-      } else if (d_name == 'โรคต้นเน่าจากเชื้อฟิวซาเรี่ยม') {
-        return 'FusariumStalkRot'
-      } else if (d_name == 'โรคต้นเน่าจากเชื้อแบคทีเรีย') {
-        return 'BacterialStalkRot'
-      } else if (d_name == 'โรคโคนเน่า') {
-        return 'BasalStemRot'
-      } else if (d_name == 'โรคสมัท') {
-        return 'CommonSmut'
-      } else if (d_name == 'โรคฝัก ต้นและเมล็ดเน่าจากเชื้อดิโพลเดีย') {
-        return 'DiplodiaStalkKernelAndEarRot'
-      } else if (d_name == 'โรคราน้ำค้าง') {
-        return 'DownyMildew'
-      } else if (d_name == 'โรคใบจุด') {
-        return 'LeafSpot'
-      } else if (d_name == 'โรคใบไหม้แผลใหญ่') {
-        return 'NorthenCornLeafBlight'
-      } else if (d_name == 'โรคเมล็ดและฝักเน่าจากเชื้อราเพนิซิลเลียม') {
-        return 'PenicilliumKernelAndEarRot'
-      } else if (d_name == 'โรคใบไหม้แผลเล็ก') {
-        return 'SouthernCornLeafBlight'
-      } else if (d_name == 'โรคราสนิม') {
-        return 'SouthernCornRust'
-      }
-    }
+
     //------------------------- ดูรูปเพิ่มเติม -----------------------------
     const image_carousel = async => {
       const d_image = req.body.queryResult.parameters.moreimage;
@@ -3983,40 +4020,31 @@ exports.webhook = functions
 
     //---------------------- ส่วนของแมลง ---------------------
     const insect = async => {
-      const buttonMsg = {
-        "type": "flex",
-        "altText": "Flex Message",
-        "contents": {
-          "type": "bubble",
-          "direction": "ltr",
-          "body": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-              {
-                "type": "button",
-                "action": {
-                  "type": "message",
-                  "label": "แสดงแมลงทั้งหมด",
-                  "text": "แสดงแมลงทั้งหมด"
-                }
-              },
-              {
-                "type": "separator"
-              },
-              {
-                "type": "button",
-                "action": {
-                  "type": "message",
-                  "label": "ค้นหาจากอาการ",
-                  "text": "ค้นหาแมลงจากอาการ"
-                }
+      const quickReply = {
+        "type": "text",
+        "text": "อยากรู้ข้อมูลแบบไหนดีคะ",
+        "quickReply": {
+          "items": [
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "แมลงทั้งหมด",
+                "text": "แสดงแมลงทั้งหมด"
               }
-            ]
-          }
+            },
+            {
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "ค้นหาแมลงจากอาการ",
+                "text": "ค้นหาแมลงจากอาการ"
+              }
+            }
+          ]
         }
       }
-      const payloadMsg = new Payload("LINE", buttonMsg, {
+      const payloadMsg = new Payload("LINE", quickReply, {
         sendAsMessage: true
       });
       return agent.add(payloadMsg);
@@ -4090,7 +4118,7 @@ exports.webhook = functions
     }
 
     const insect_select = async => {
-      const insectName = req.body.queryResult.parameters.insect;
+      let insectName = req.body.queryResult.parameters.insect;
       return queryCause = db.collection('Insect')
         .where('insectName', '==', insectName).get()
         .then(function (querySnapshot) {
@@ -4290,12 +4318,903 @@ exports.webhook = functions
         });
     }
 
-    const chartBytext = async => {
-      const increment = firebase.firestore.FieldValue.increment(1);
+    const record = async => {
+      const quickReply = {
+        "type": "text",
+        "text": "ต้องการดูสถิติการค้นหาโรคแบบไหนคะ",
+        "quickReply": {
+          "items": [
+            {
+              "type": "action",
+              "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Icon%2Fmap.png?alt=media&token=67d7f32e-fcc4-4372-9147-8893f53c9cfe",
+              "action": {
+                "type": "message",
+                "label": "จำนวนของแต่ละภาค",
+                "text": "สถิติโรคของแต่ละภาค"
+              }
+            },
+            {
+              "type": "action",
+              "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Icon%2Ffood.png?alt=media&token=9fcfdd60-ae9f-4c1f-8e14-728478a411b5",
+              "action": {
+                "type": "message",
+                "label": "จำนวนแยกตามโรค",
+                "text": "สถิติแยกตามโรค"
+              }
+            }
+          ]
+        }
+      }
+      const payloadMsg = new Payload("LINE", quickReply, {
+        sendAsMessage: true
+      });
+      return agent.add(payloadMsg);
+    }
 
+    const recordByRegion = async => {
+      const buttonMsg = {
+        "type": "flex",
+        "altText": "Flex Message",
+        "contents": {
+          "type": "bubble",
+          "direction": "ltr",
+          "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "เลือกภาคที่ต้องการดูการค้นหา",
+                "align": "center"
+              }
+            ]
+          },
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ภาคเหนือ",
+                      "text": "สถิติโรคภาคเหนือ"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ภาคอีสาน",
+                      "text": "สถิติโรคภาคอีสาน"
+                    },
+                    "height": "sm"
+                  }
+                ]
+              },
+              {
+                "type": "separator"
+              },
+              {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ภาคกลาง",
+                      "text": "สถิติโรคภาคกลาง"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ภาคใต้",
+                      "text": "สถิติโรคภาคใต้"
+                    },
+                    "height": "sm"
+                  }
+                ]
+              }
+            ]
+          },
+          "styles": {
+            "header": {
+              "backgroundColor": "#F2C04E"
+            }
+          }
+        }
+      }
+      const payloadMsg = new Payload("LINE", buttonMsg, {
+        sendAsMessage: true
+      });
+      return agent.add(payloadMsg);
+    }
+
+    const recordByDisease = async => {
+      const carouselMsg = {
+        "type": "flex",
+        "altText": "Flex Message",
+        "contents": {
+          "type": "carousel",
+          "contents": [
+            {
+              "type": "bubble",
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "กดเลือกโรคที่ต้องการดูจำนวนการค้นหา",
+                    "color": "#FFFFFF"
+                  }
+                ]
+              },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ราน้ำค้าง",
+                      "text": "สถิติโรคราน้ำค้าง"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "กาบและใบไหม้",
+                      "text": "สถิติโรคกาบและใบไหม้"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ใบไหม้แผลเล็ก",
+                      "text": "สถิติโรคใบไหม้แผลเล็ก"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ใบไหม้แผลใหญ่",
+                      "text": "สถิติโรคใบไหม้แผลใหญ่"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ราสนิม",
+                      "text": "สถิติโรคราสนิม"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "สมัท (ราเขม่าสีดำ)",
+                      "text": "สถิติโรคสมัท หรือ ราเขม่าสีดำ"
+                    },
+                    "height": "sm"
+                  }
+                ]
+              },
+              "styles": {
+                "header": {
+                  "backgroundColor": "#F2C04E"
+                }
+              }
+            },
+            {
+              "type": "bubble",
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "กดเลือกโรคที่ต้องการดูจำนวนการค้นหา",
+                    "color": "#FFFFFF"
+                  }
+                ]
+              },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ใบจุด",
+                      "text": "สถิติโรคใบจุด"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ต้นเน่าจากแบคทีเรีย",
+                      "text": "สถิติโรคต้นเน่าจากเชื้อแบคทีเรีย"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ต้นเน่าจากเชื้อมาโครโฟมิน่า",
+                      "text": "สถิติโรคต้นเน่าจากเชื้อมาโครโฟมิน่า"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ต้นเน่าจากเชื้อฟิวซาเรี่ยม",
+                      "text": "สถิติโรคต้นเน่าจากเชื้อฟิวซาเรี่ยม"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "เมล็ด&ฝักเน่า(เชื้อราเพนิซิลเลียม)",
+                      "text": "สถิติโรคเมล็ดและฝักเน่าจากเชื้อราเพนิซิลเลียม"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ฝัก&ต้น&เมล็ดเน่า(เชื้อดิโพลเดีย)",
+                      "text": "สถิติโรคฝัก ต้นและเมล็ดเน่าจากเชื้อดิโพลเดีย"
+                    },
+                    "height": "sm"
+                  }
+                ]
+              },
+              "styles": {
+                "header": {
+                  "backgroundColor": "#F2C04E"
+                }
+              }
+            }
+          ]
+        }
+      }
+      const payloadMsg = new Payload("LINE", carouselMsg, {
+        sendAsMessage: true
+      });
+      return agent.add(payloadMsg);
+    }
+
+    const recordDiseaseSelect = async => {
+      let d_record = req.body.queryResult.parameters.disease;
+      const new_d_record = changeDiseaseName(d_record)
+      return db.collection('diseaseQuery').doc(new_d_record).get()
+        .then(doc => {
+          const cardMsg = {
+            "type": "flex",
+            "altText": "Flex Message",
+            "contents": {
+              "type": "bubble",
+              "direction": "ltr",
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "จำนวนค้นหา",
+                    "align": "center"
+                  },
+                  {
+                    "type": "text",
+                    "text": `${doc.data().diseaseNameTH}`,
+                    "margin": "sm",
+                    "size": "xl",
+                    "align": "center",
+                    "weight": "bold",
+                    "wrap": true
+                  },
+                  {
+                    "type": "separator",
+                    "margin": "lg"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xl",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ภาคเหนือ:"
+                      },
+                      {
+                        "type": "filler"
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().north}` + "  ครั้ง"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xs",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ภาคอีสาน:"
+                      },
+                      {
+                        "type": "filler"
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().northeast}` + "  ครั้ง"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xs",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ภาคกลาง:"
+                      },
+                      {
+                        "type": "filler"
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().center}` + "  ครั้ง"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xs",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ภาคใต้:"
+                      },
+                      {
+                        "type": "filler"
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().south}` + "  ครั้ง"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+          const payloadMsg = new Payload("LINE", cardMsg, {
+            sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
+        })
+    }
+
+    const recordRegionSelect = async => {
+      let r_record = req.body.queryResult.parameters.region;
+      const new_r_record = changeRegion(r_record)
+      db.collection('diseaseQuery').get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          const diseases = doc.data().diseaseNameTH
+          if (r_record === "ภาคเหนือ") {
+            const count_r_record = doc.data().north
+            increaseDiseaseName(new_r_record, diseases, count_r_record)
+          } else if (r_record === "ภาคอีสาน") {
+            const count_r_record = doc.data().northeast
+            increaseDiseaseName(new_r_record, diseases,count_r_record)
+          } else if (r_record === "ภาคกลาง") {
+            const count_r_record = doc.data().center
+            increaseDiseaseName(new_r_record, diseases, count_r_record)
+          } else if (r_record === "ภาคใต้") {
+            const count_r_record = doc.data().south
+            increaseDiseaseName(new_r_record, diseases, count_r_record)
+          }
+        })
+      })
+      return db.collection('diseaseQuery').doc(new_r_record).get()
+        .then(doc => {
+          const cardMsg = {
+            "type": "flex",
+            "altText": "Flex Message",
+            "contents": {
+              "type": "bubble",
+              "direction": "ltr",
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "จำนวนค้นหาโรคใน",
+                    "align": "center"
+                  },
+                  {
+                    "type": "text",
+                    "text": r_record,
+                    "margin": "sm",
+                    "size": "xl",
+                    "align": "center",
+                    "weight": "bold",
+                    "wrap": true
+                  },
+                  {
+                    "type": "separator",
+                    "margin": "lg"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xl",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ต้นเน่าจากเชื้อแบคทีเรีย:",
+                        "wrap": true
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().BacterialStalkRot}` + "  ครั้ง",
+                        "align": "end",
+                        "gravity": "center"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xs",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "กาบและใบไหม้:",
+                        "wrap": true
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().BandedLeafAndSheathBlight}` + "  ครั้ง",
+                        "align": "end",
+                        "gravity": "center"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xs",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "โคนเน่า:",
+                        "wrap": true
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().BasalStemRot}` + "  ครั้ง",
+                        "align": "end",
+                        "gravity": "center"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xs",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ต้นเน่าจากเชื้อมาโครโฟมิน่า:",
+                        "wrap": true
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().CharcoalRot}` + "  ครั้ง",
+                        "align": "end",
+                        "gravity": "center"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xs",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "สมัท หรือ ราเขม่าสีดำ:",
+                        "wrap": true
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().CommonSmut}` + "  ครั้ง",
+                        "align": "end",
+                        "gravity": "center"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xs",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ฝัก ต้นและเมล็ดเน่าจากเชื้อดิโพลเดีย:",
+                        "wrap": true
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().DiplodiaStalkKernelAndEarRot}` + "  ครั้ง",
+                        "align": "end",
+                        "gravity": "center"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xs",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ราน้ำค้าง:",
+                        "wrap": true
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().DownyMildew}` + "  ครั้ง",
+                        "align": "end",
+                        "gravity": "center"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xs",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ต้นเน่าจากเชื้อฟิวซาเรี่ยม:",
+                        "wrap": true
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().FusariumStalkRot}` + "  ครั้ง",
+                        "align": "end",
+                        "gravity": "center"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xs",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ใบจุด:",
+                        "wrap": true
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().LeafSpot}` + "  ครั้ง",
+                        "align": "end",
+                        "gravity": "center"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xs",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ใบไหม้แผลใหญ่:",
+                        "wrap": true
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().NorthenCornLeafBlight}` + "  ครั้ง",
+                        "align": "end",
+                        "gravity": "center"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xs",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "เมล็ดและฝักเน่าจากเชื้อราเพนิซิลเลียม:",
+                        "wrap": true
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().PenicilliumKernelAndEarRot}` + "  ครั้ง",
+                        "align": "end",
+                        "gravity": "center"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xs",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ใบไหม้แผลเล็ก:",
+                        "wrap": true
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().SouthernCornLeafBlight}` + "  ครั้ง",
+                        "align": "end",
+                        "gravity": "center"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xs",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ราสนิม:",
+                        "wrap": true
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().SouthernCornRust}` + "  ครั้ง",
+                        "align": "end",
+                        "gravity": "center"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+          const payloadMsg = new Payload("LINE", cardMsg, {
+            sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
+        })
+    }
+
+    //---------------------- ส่วนฟังก์ชันที่โยนมาจากฟังก์ชันอื่น ---------------------
+
+    //เปลี่ยนชื่อโรค TH -> ENG
+    function changeDiseaseName(d_name) {
+      if (d_name === "โรคกาบและใบไหม้") {
+        return "BandedLeafAndSheathBlight"
+      } else if (d_name === "โรคต้นเน่าจากเชื้อมาโครโฟมิน่า") {
+        return "CharcoalRot"
+      } else if (d_name === "โรคต้นเน่าจากเชื้อฟิวซาเรี่ยม") {
+        return "FusariumStalkRot"
+      } else if (d_name === "โรคต้นเน่าจากเชื้อแบคทีเรีย") {
+        return "BacterialStalkRot"
+      } else if (d_name === "โรคโคนเน่า") {
+        return "BasalStemRot"
+      } else if (d_name === "โรคสมัท หรือ ราเขม่าสีดำ") {
+        return "CommonSmut"
+      } else if (d_name === "โรคฝัก ต้นและเมล็ดเน่าจากเชื้อดิโพลเดีย") {
+        return "DiplodiaStalkKernelAndEarRot"
+      } else if (d_name === "โรคราน้ำค้าง") {
+        return "DownyMildew"
+      } else if (d_name === 'โรคใบจุด') {
+        return "LeafSpot"
+      } else if (d_name === "โรคใบไหม้แผลใหญ่") {
+        return "NorthenCornLeafBlight"
+      } else if (d_name === "โรคเมล็ดและฝักเน่าจากเชื้อราเพนิซิลเลียม") {
+        return "PenicilliumKernelAndEarRot"
+      } else if (d_name === "โรคใบไหม้แผลเล็ก") {
+        return "SouthernCornLeafBlight"
+      } else if (d_name === "โรคราสนิม") {
+        return "SouthernCornRust"
+      }
+    }
+
+    function changeRegion(r_name) {
+      if (r_name === "ภาคเหนือ") {
+        return "North"
+      } else if (r_name === "ภาคอีสาน") {
+        return "Northeast"
+      } else if (r_name === "ภาคกลาง") {
+        return "Center"
+      } else if (r_name === "ภาคใต้") {
+        return "South"
+      }
+    }
+
+    function increaseDiseaseName(r_name, d_name, count) {
+      if (d_name === "โรคกาบและใบไหม้") {
+        return db.collection("diseaseQuery")
+          .doc(r_name).update({
+            BandedLeafAndSheathBlight: count.toString()
+          })
+      } else if (d_name === "โรคต้นเน่าจากเชื้อมาโครโฟมิน่า") {
+        return db.collection("diseaseQuery")
+          .doc(r_name).update({
+            CharcoalRot: count.toString()
+          })
+      } else if (d_name === "โรคต้นเน่าจากเชื้อฟิวซาเรี่ยม") {
+        return db.collection("diseaseQuery")
+          .doc(r_name).update({
+            FusariumStalkRot: count.toString()
+          })
+      } else if (d_name === "โรคต้นเน่าจากเชื้อแบคทีเรีย") {
+        return db.collection("diseaseQuery")
+          .doc(r_name).update({
+            BacterialStalkRot: count.toString()
+          })
+      } else if (d_name === "โรคโคนเน่า") {
+        return db.collection("diseaseQuery")
+          .doc(r_name).update({
+            BasalStemRot: count.toString()
+          })
+      } else if (d_name === "โรคสมัท หรือ ราเขม่าสีดำ") {
+        return db.collection("diseaseQuery")
+          .doc(r_name).update({
+            CommonSmut: count.toString()
+          })
+      } else if (d_name === "โรคฝัก ต้นและเมล็ดเน่าจากเชื้อดิโพลเดีย") {
+        return db.collection("diseaseQuery")
+          .doc(r_name).update({
+            DiplodiaStalkKernelAndEarRot: count.toString()
+          })
+      } else if (d_name === "โรคราน้ำค้าง") {
+        return db.collection("diseaseQuery")
+          .doc(r_name).update({
+            DownyMildew: count.toString()
+          })
+      } else if (d_name === 'โรคใบจุด') {
+        return db.collection("diseaseQuery")
+          .doc(r_name).update({
+            LeafSpot: count.toString()
+          })
+      } else if (d_name === "โรคใบไหม้แผลใหญ่") {
+        return db.collection("diseaseQuery")
+          .doc(r_name).update({
+            NorthenCornLeafBlight: count.toString()
+          })
+      } else if (d_name === "โรคเมล็ดและฝักเน่าจากเชื้อราเพนิซิลเลียม") {
+        return db.collection("diseaseQuery")
+          .doc(r_name).update({
+            PenicilliumKernelAndEarRot: count.toString()
+          })
+      } else if (d_name === "โรคใบไหม้แผลเล็ก") {
+        return db.collection("diseaseQuery")
+          .doc(r_name).update({
+            SouthernCornLeafBlight: count.toString()
+          })
+      } else if (d_name === "โรคราสนิม") {
+        return db.collection("diseaseQuery")
+          .doc(r_name).update({
+            SouthernCornRust: count.toString()
+          })
+      }
     }
 
     let intentMap = new Map();
+    // next page
+    //intentMap.set("Next page", nextPage);
+
     // province
     intentMap.set("User province", user_province);
 
@@ -4345,7 +5264,11 @@ exports.webhook = functions
     intentMap.set('Insect Carousel - select', insect_select);
 
     // Chart
-    intentMap.set('Chart', chartBytext);
+    intentMap.set('Record', record);
+    intentMap.set('Record - byRegion', recordByRegion);
+    intentMap.set('Record - byDisease', recordByDisease);
+    intentMap.set('Record - select disease', recordDiseaseSelect);
+    intentMap.set('Record - select region', recordRegionSelect);
 
     agent.handleRequest(intentMap);
   });

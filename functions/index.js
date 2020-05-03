@@ -309,6 +309,114 @@ exports.webhook = functions
     // ทำ function knowledge เพื่อแสดงผลบางอย่างกลับไปที่หน้าจอของ bot ------ [1]
     const knowledge = async agent => {
       // เพิ่ม flex message แสดงความรู้ทั่วไป
+      const buttonMsg = {
+        "type": "flex",
+        "altText": "Flex Message",
+        "contents": {
+          "type": "bubble",
+          "direction": "ltr",
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "ความรู้ทั่วไปของข้าวโพด",
+                "size": "lg",
+                "align": "center",
+                "weight": "bold"
+              },
+              {
+                "type": "separator",
+                "margin": "sm"
+              },
+              {
+                "type": "button",
+                "action": {
+                  "type": "message",
+                  "label": "การปลูก",
+                  "text": "การปลูก"
+                },
+                "color": "#D2AE83",
+                "margin": "xl",
+                "height": "sm",
+                "style": "secondary"
+              },
+              {
+                "type": "button",
+                "action": {
+                  "type": "message",
+                  "label": "ปุ๋ย",
+                  "text": "ปุ๋ย"
+                },
+                "color": "#D2AE83",
+                "margin": "sm",
+                "height": "sm",
+                "style": "secondary"
+              },
+              {
+                "type": "button",
+                "action": {
+                  "type": "message",
+                  "label": "อายุข้าวโพด",
+                  "text": "อายุข้าวโพด"
+                },
+                "color": "#D2AE83",
+                "margin": "sm",
+                "height": "sm",
+                "style": "secondary"
+              },
+              {
+                "type": "button",
+                "action": {
+                  "type": "message",
+                  "label": "ปัจจัยการปลูก",
+                  "text": "ปัจจัยการปลูก"
+                },
+                "color": "#D2AE83",
+                "margin": "sm",
+                "height": "sm",
+                "style": "secondary"
+              },
+              {
+                "type": "button",
+                "action": {
+                  "type": "message",
+                  "label": "การปรับปรุงดิน",
+                  "text": "ปรับปรุงดิน"
+                },
+                "color": "#D8C9BA",
+                "margin": "sm",
+                "height": "sm",
+                "style": "secondary"
+              },
+              {
+                "type": "button",
+                "action": {
+                  "type": "message",
+                  "label": "ความเป็นกรดด่างในดิน",
+                  "text": "ค่า ph ในดิน"
+                },
+                "color": "#D8C9BA",
+                "margin": "sm",
+                "height": "sm",
+                "style": "secondary"
+              },
+              {
+                "type": "spacer"
+              }
+            ]
+          }
+        }
+      }
+      const payloadMsg = new Payload("LINE", buttonMsg, {
+        sendAsMessage: true
+      });
+      return agent.add(payloadMsg);
+    };
+
+    const knowledgePlant = async agent => {
+      // เพิ่ม flex message แสดงความรู้ทั่วไป
       const carouselMsg = {
         "type": "template",
         "altText": "เลือกประเภทข้าวโพด",
@@ -392,7 +500,7 @@ exports.webhook = functions
     };
 
     // แสดงรายละเอียดแต่ละหัวข้อที่ผู้ใช้เลือก [1.1]
-    const knowledge_select = async => {
+    const knowledge_plant_select = async => {
       let knowledge_s = req.body.queryResult.parameters.knowledge_select;
       if (knowledge_s === "การเลือกพื้นที่ข้าวโพดเลี้ยงสัตว์") {
         return db.collection('Knowledge').doc('Maize corn').get().then(doc => {
@@ -441,6 +549,832 @@ exports.webhook = functions
       }
     }
 
+    const knowledgeFert = async => {
+      const cardMsg = {
+        "type": "flex",
+        "altText": "Flex Message",
+        "contents": {
+          "type": "bubble",
+          "direction": "ltr",
+          "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "เรื่องของปุ๋ย",
+                "size": "lg",
+                "align": "center",
+                "weight": "bold"
+              }
+            ]
+          },
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "margin": "md",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "ปุ๋ยรองพื้นก่อนปลูก",
+                    "align": "start",
+                    "weight": "bold",
+                    "color": "#A07A4D"
+                  },
+                  {
+                    "type": "text",
+                    "text": "- สูตรดั้งเดิม (นิยม)",
+                    "margin": "xs",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": "16-20-0",
+                    "color": "#696969"
+                  },
+                  {
+                    "type": "text",
+                    "text": "- สูตรที่ใช้ดีในปัจจุบัน (มี K)",
+                    "margin": "sm",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": "15-15-15",
+                    "color": "#696969"
+                  },
+                  {
+                    "type": "text",
+                    "text": "18-8-8",
+                    "color": "#696969"
+                  },
+                  {
+                    "type": "text",
+                    "text": "16-16-8",
+                    "color": "#696969"
+                  },
+                  {
+                    "type": "text",
+                    "text": "16-8-8",
+                    "color": "#696969"
+                  },
+                  {
+                    "type": "text",
+                    "text": "- สูตรที่นักวิชาการแนะนำ",
+                    "margin": "sm",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": "18-46-0   1 ส่วน",
+                    "color": "#696969"
+                  },
+                  {
+                    "type": "text",
+                    "text": "0-0-60   1 ส่วน",
+                    "color": "#696969"
+                  }
+                ]
+              },
+              {
+                "type": "separator",
+                "margin": "md",
+                "color": "#D2AE83"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "margin": "lg",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "ปุ๋ยแต่งหน้า",
+                    "weight": "bold",
+                    "color": "#A07A4D"
+                  },
+                  {
+                    "type": "text",
+                    "text": "- รอบสอง (อายุ 25-30 วัน)",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": "ใส่ยูเรีย 15-25 กิโลกรัม/ไร่",
+                    "color": "#696969"
+                  },
+                  {
+                    "type": "text",
+                    "text": "- รอบสอง (อายุ 40-45 วัน)",
+                    "margin": "sm",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": "ใส่ยูเรีย 15-25 กิโลกรัม/ไร่",
+                    "color": "#696969"
+                  },
+                  {
+                    "type": "text",
+                    "text": "(ถ้าไม่มีอาการใบล่างเหลือง ไม่ต้องใส่)",
+                    "margin": "xs",
+                    "size": "sm",
+                    "color": "#696969",
+                    "wrap": true
+                  }
+                ]
+              }
+            ]
+          },
+          "styles": {
+            "header": {
+              "backgroundColor": "#D2AE83"
+            }
+          }
+        }
+      }
+      const payloadMsg = new Payload("LINE", cardMsg, {
+        sendAsMessage: true
+      });
+      return agent.add(payloadMsg);
+    }
+
+    const knowledgeAge = async => {
+      const carouselMsg = {
+        "type": "flex",
+        "altText": "Flex Message",
+        "contents": {
+          "type": "carousel",
+          "contents": [
+            {
+              "type": "bubble",
+              "direction": "ltr",
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "เตรียมดินก่อนปลูก",
+                    "size": "lg",
+                    "align": "center",
+                    "weight": "bold"
+                  }
+                ]
+              },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "margin": "none",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "• ไถแปรด้วยผาน 3",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": "• ไถพรวนด้วยผาน 7",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": "• รองพื้นด้วยปุ๋ยสูตร",
+                    "color": "#000000",
+                    "wrap": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "    15-15-15 อัตรา 30-50 กก./ไร่",
+                    "align": "center"
+                  },
+                  {
+                    "type": "text",
+                    "text": "   8-24-24 อัตรา 20-30 กก./ไร่",
+                    "align": "center"
+                  }
+                ]
+              },
+              "footer": {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "   ขอบคุณข้อมูลจาก: ดร.ทวีศักดิ์ ภู่หลำ",
+                    "margin": "xl",
+                    "size": "xxs",
+                    "color": "#C1C1C1"
+                  }
+                ]
+              },
+              "styles": {
+                "header": {
+                  "backgroundColor": "#D2AE83"
+                }
+              }
+            },
+            {
+              "type": "bubble",
+              "direction": "ltr",
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "วันปลูก",
+                    "size": "lg",
+                    "align": "center",
+                    "weight": "bold"
+                  }
+                ]
+              },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "margin": "none",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "• ปลูกระยะห่างระหว่างแถว 75 ซม.",
+                    "margin": "lg",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": "• ระยะห่างระหว่างต้น 20-25 ซม.",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": "• พ่นสารกำจัดของวัชพืช (คุมหรือฆ่า) ทันที หรือหลังปลูกไม่เกิน 2 วัน ในขณะดินมีความชื้น",
+                    "color": "#000000",
+                    "wrap": true
+                  }
+                ]
+              },
+              "footer": {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "   ขอบคุณข้อมูลจาก: ดร.ทวีศักดิ์ ภู่หลำ",
+                    "margin": "xl",
+                    "size": "xxs",
+                    "color": "#C1C1C1"
+                  }
+                ]
+              },
+              "styles": {
+                "header": {
+                  "backgroundColor": "#D2AE83"
+                }
+              }
+            },
+            {
+              "type": "bubble",
+              "direction": "ltr",
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "อายุ 7-10 วัน",
+                    "size": "lg",
+                    "align": "center",
+                    "weight": "bold"
+                  }
+                ]
+              },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "margin": "none",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "• ตรวจดูการระบาดของแมลง",
+                    "margin": "lg",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": "   โดยเฉพาะเพลี้ยไฟ หากพบการระบาดให้กำจัดตามคำแนะนำของกรมวิชาการเกษตร",
+                    "wrap": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "   (สามารถดูวิธีการได้ในเมนู ความผิดปกติ -> แมลง)",
+                    "wrap": true
+                  }
+                ]
+              },
+              "footer": {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "   ขอบคุณข้อมูลจาก: ดร.ทวีศักดิ์ ภู่หลำ",
+                    "margin": "xl",
+                    "size": "xxs",
+                    "color": "#C1C1C1"
+                  }
+                ]
+              },
+              "styles": {
+                "header": {
+                  "backgroundColor": "#D2AE83"
+                }
+              }
+            },
+            {
+              "type": "bubble",
+              "direction": "ltr",
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "อายุ 25-30 วัน",
+                    "size": "lg",
+                    "align": "center",
+                    "weight": "bold"
+                  }
+                ]
+              },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "margin": "none",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "• กำจัดวัชพืชในแปลง (ทำรุ่น)",
+                    "margin": "lg",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": "• ใส่ปุ๋ย 46-0-0 อัตรา 10-15 กก./ไร่",
+                    "color": "#000000"
+                  }
+                ]
+              },
+              "footer": {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "   ขอบคุณข้อมูลจาก: ดร.ทวีศักดิ์ ภู่หลำ",
+                    "margin": "xl",
+                    "size": "xxs",
+                    "color": "#C1C1C1"
+                  }
+                ]
+              },
+              "styles": {
+                "header": {
+                  "backgroundColor": "#D2AE83"
+                }
+              }
+            },
+            {
+              "type": "bubble",
+              "direction": "ltr",
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "อายุ 45-50 วัน",
+                    "size": "lg",
+                    "align": "center",
+                    "weight": "bold"
+                  }
+                ]
+              },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "margin": "none",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "• ตรวจดูการระบาดของแมลง (อีกครั้ง)",
+                    "margin": "lg",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": "   โดยเฉพาะ หนอนเจาะลำต้น, เพลี้ยอ่อน-เพลี้ยไฟ หากพบการระบาดให้กำจัดตามคำแนะนำของกรมวิชาการเกษตร",
+                    "wrap": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "   (สามารถดูวิธีการได้ในเมนู ความผิดปกติ -> แมลง)",
+                    "wrap": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "• ให้ปุ๋ย 46-0-0 อัตรา 10-15 กก./ไร่",
+                    "color": "#000000",
+                    "wrap": true
+                  }
+                ]
+              },
+              "footer": {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "   ขอบคุณข้อมูลจาก: ดร.ทวีศักดิ์ ภู่หลำ",
+                    "margin": "xl",
+                    "size": "xxs",
+                    "color": "#C1C1C1"
+                  }
+                ]
+              },
+              "styles": {
+                "header": {
+                  "backgroundColor": "#D2AE83"
+                }
+              }
+            },
+            {
+              "type": "bubble",
+              "direction": "ltr",
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "อายุ 80 วันขึ้นไป",
+                    "size": "lg",
+                    "align": "center",
+                    "weight": "bold"
+                  }
+                ]
+              },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "margin": "none",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "• ตรวจดูสภาพแปลงปลูก",
+                    "margin": "lg",
+                    "color": "#000000"
+                  }
+                ]
+              },
+              "footer": {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "   ขอบคุณข้อมูลจาก: ดร.ทวีศักดิ์ ภู่หลำ",
+                    "margin": "xl",
+                    "size": "xxs",
+                    "color": "#C1C1C1"
+                  }
+                ]
+              },
+              "styles": {
+                "header": {
+                  "backgroundColor": "#D2AE83"
+                }
+              }
+            },
+            {
+              "type": "bubble",
+              "direction": "ltr",
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "อายุ 90 วันขึ้นไป",
+                    "size": "lg",
+                    "align": "center",
+                    "weight": "bold"
+                  }
+                ]
+              },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "margin": "none",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "• ตรวจดูความแก่อ่อนของเมล็ดข้าวโพด",
+                    "margin": "lg",
+                    "color": "#000000",
+                    "wrap": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "   เพื่อกำหนดวันเก็บเกี่ยว"
+                  }
+                ]
+              },
+              "footer": {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "   ขอบคุณข้อมูลจาก: ดร.ทวีศักดิ์ ภู่หลำ",
+                    "margin": "xl",
+                    "size": "xxs",
+                    "color": "#C1C1C1"
+                  }
+                ]
+              },
+              "styles": {
+                "header": {
+                  "backgroundColor": "#D2AE83"
+                }
+              }
+            },
+            {
+              "type": "bubble",
+              "direction": "ltr",
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "หลังเก็บเกี่ยว",
+                    "size": "lg",
+                    "align": "center",
+                    "weight": "bold"
+                  }
+                ]
+              },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "margin": "none",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "• ไถกลบต้นลงดิน",
+                    "margin": "lg",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": "   เพื่อเพิ่มอินทรีย์วัตถุให้ดิน"
+                  },
+                  {
+                    "type": "text",
+                    "text": "   สำหรับการปลูกครั้งต่อไป"
+                  }
+                ]
+              },
+              "footer": {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "   ขอบคุณข้อมูลจาก: ดร.ทวีศักดิ์ ภู่หลำ",
+                    "margin": "xl",
+                    "size": "xxs",
+                    "color": "#C1C1C1"
+                  }
+                ]
+              },
+              "styles": {
+                "header": {
+                  "backgroundColor": "#D2AE83"
+                }
+              }
+            }
+          ]
+        }
+      }
+      const payloadMsg = new Payload("LINE", carouselMsg, {
+        sendAsMessage: true
+      });
+      return agent.add(payloadMsg);
+    }
+
+    const knowledgeFactor = async => {
+      const cardMsg = {
+        "type": "flex",
+        "altText": "Flex Message",
+        "contents": {
+          "type": "bubble",
+          "direction": "ltr",
+          "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "ปัจจัยการปลูก",
+                "size": "lg",
+                "align": "center",
+                "weight": "bold"
+              }
+            ]
+          },
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "margin": "none",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "margin": "lg",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "ข้อ 1 : พันธุ์ดี",
+                    "align": "start",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": "• พันธุ์ที่ดี ปลูกง่าย",
+                    "margin": "sm",
+                    "align": "start",
+                    "color": "#696969"
+                  },
+                  {
+                    "type": "text",
+                    "text": "• เหมาะกับทุกพื้นที่และทุกฤดูกาล",
+                    "color": "#696969"
+                  }
+                ]
+              },
+              {
+                "type": "separator",
+                "margin": "lg",
+                "color": "#D2AE83"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "margin": "lg",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "ข้อ 2 : ดินดี",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": "• ไม่เปรี้ยว - ไม่เค็ม",
+                    "margin": "sm",
+                    "color": "#696969"
+                  },
+                  {
+                    "type": "text",
+                    "text": "• ไม่เป็นกรด-ด่างมากเกินไป",
+                    "color": "#696969"
+                  },
+                  {
+                    "type": "text",
+                    "text": "• และเกษตรกรต้องมีการปรับปรุงดินอย่างถูกวิธีด้วย",
+                    "color": "#696969",
+                    "wrap": true
+                  }
+                ]
+              },
+              {
+                "type": "separator",
+                "margin": "lg",
+                "color": "#D2AE83"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "margin": "lg",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "ข้อ 3 : การดูแลที่ดี",
+                    "color": "#000000"
+                  },
+                  {
+                    "type": "text",
+                    "text": "• ใส่ปุ๋ยถูกสูตร ถูกเวลา และถูกวิธี",
+                    "margin": "sm",
+                    "color": "#696969"
+                  },
+                  {
+                    "type": "text",
+                    "text": "• ใส่สารเคมีตามคำแนะนำของกรมวิชาการเกษตร",
+                    "color": "#696969",
+                    "wrap": true
+                  }
+                ]
+              }
+            ]
+          },
+          "styles": {
+            "header": {
+              "backgroundColor": "#D2AE83"
+            }
+          }
+        }
+      }
+      const payloadMsg = new Payload("LINE", cardMsg, {
+        sendAsMessage: true
+      });
+      return agent.add(payloadMsg);
+    }
+
+
+
+    //-----------------------------------ส่วนของเมนู ความผิดปกติ-----------------------------------------//
+    const abnormality = async agent => {
+      const imagemap = {
+        "type": "flex",
+        "altText": "Flex Message",
+        "contents": {
+          "type": "bubble",
+          "direction": "ltr",
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "ความผิดปกติของข้าวโพด",
+                "size": "lg",
+                "align": "center",
+                "weight": "bold"
+              },
+              {
+                "type": "separator",
+                "margin": "sm"
+              },
+              {
+                "type": "button",
+                "action": {
+                  "type": "message",
+                  "label": "โรคข้าวโพด",
+                  "text": "โรคข้าวโพด"
+                },
+                "color": "#9AA8A0",
+                "margin": "xl",
+                "height": "sm",
+                "style": "secondary"
+              },
+              {
+                "type": "button",
+                "action": {
+                  "type": "message",
+                  "label": "แมลง",
+                  "text": "แมลงทำลายพืช"
+                },
+                "color": "#D2AE83",
+                "margin": "sm",
+                "height": "sm",
+                "style": "secondary"
+              },
+              {
+                "type": "button",
+                "action": {
+                  "type": "message",
+                  "label": "สถิติค้นหาโรค",
+                  "text": "ดูสถิติค้นหาโรค"
+                },
+                "color": "#D8C9BA",
+                "margin": "sm",
+                "height": "sm",
+                "style": "secondary"
+              }
+            ]
+          }
+        }
+      }
+      const payloadMsg = new Payload("LINE", imagemap, {
+        sendAsMessage: true
+      })
+      return agent.add(payloadMsg);
+    }
 
     //-----------------------------------ส่วนของเมนู โรคพืช-----------------------------------------//
 
@@ -1203,7 +2137,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "มีจุด",
                         "text": "ฝักมีจุด"
-                      }
+                      },
+                      "height": "sm"
                     },
                     {
                       "type": "separator"
@@ -1212,9 +2147,10 @@ exports.webhook = functions
                       "type": "button",
                       "action": {
                         "type": "message",
-                        "label": "มีแผล",
+                        "label": "แผล",
                         "text": "ฝักมีแผล"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 },
@@ -1231,7 +2167,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "ซีดเหลือง",
                         "text": "ฝักซีดเหลือง"
-                      }
+                      },
+                      "height": "sm"
                     },
                     {
                       "type": "separator"
@@ -1242,7 +2179,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "มีราเขียว",
                         "text": "ฝักมีราเขียว"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 },
@@ -1259,7 +2197,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "ฝักเน่า",
                         "text": "ฝักเน่า"
-                      }
+                      },
+                      "height": "sm"
                     },
                     {
                       "type": "separator"
@@ -1270,7 +2209,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "มีปม",
                         "text": "ฝักมีปม"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 }
@@ -1305,7 +2245,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "แผลช้ำ",
                         "text": "โคนต้นมีแผลช้ำ"
-                      }
+                      },
+                      "height": "sm"
                     },
                     {
                       "type": "separator"
@@ -1315,8 +2256,9 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "โคนต้นแตก",
-                        "text": "โคนต้นแตก"
-                      }
+                        "text": "โคนต้นมีน้ำเมือก"
+                      },
+                      "height": "sm"
                     }
                   ]
                 },
@@ -1332,8 +2274,9 @@ exports.webhook = functions
                       "action": {
                         "type": "message",
                         "label": "มีน้ำเมือก",
-                        "text": "โคนต้นมีน้ำเมือก"
-                      }
+                        "text": "มีน้ำเมือก"
+                      },
+                      "height": "sm"
                     },
                     {
                       "type": "separator"
@@ -1344,7 +2287,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "โคนหักล้ม",
                         "text": "โคนหักล้ม"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 },
@@ -1361,7 +2305,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "มีกลิ่นเหม็น",
                         "text": "โคนต้นมีกลิ่นเหม็น"
-                      }
+                      },
+                      "height": "sm"
                     },
                     {
                       "type": "separator"
@@ -1372,7 +2317,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "ซีดเหลือง",
                         "text": "โคนต้นซีดเหลือง"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 },
@@ -1380,18 +2326,13 @@ exports.webhook = functions
                   "type": "separator"
                 },
                 {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "message",
-                        "label": "มีราขาว",
-                        "text": "โคนต้นมีราขาว"
-                      }
-                    }
-                  ]
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "มีราขาว",
+                    "text": "โคนต้นมีราขาว"
+                  },
+                  "height": "sm"
                 }
               ]
             }
@@ -1424,7 +2365,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "มีจุด",
                         "text": "กาบใบมีจุด"
-                      }
+                      },
+                      "height": "sm"
                     },
                     {
                       "type": "separator"
@@ -1435,7 +2377,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "มีแผล",
                         "text": "กาบใบมีแผล"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 },
@@ -1452,7 +2395,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "ซีดเหลือง",
                         "text": "กาบใบซีดเหลือง"
-                      }
+                      },
+                      "height": "sm"
                     },
                     {
                       "type": "separator"
@@ -1463,7 +2407,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "แห้ง",
                         "text": "กาบใบแห้ง"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 }
@@ -1498,7 +2443,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "เมล็ดมีรอยขีดสีขาว",
                         "text": "เมล็ดมีรอยขีดสีขาว"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 },
@@ -1515,7 +2461,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "มีแผล",
                         "text": "เมล็ดมีแผล"
-                      }
+                      },
+                      "height": "sm"
                     },
                     {
                       "type": "separator"
@@ -1526,7 +2473,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "เมล็ดดำ",
                         "text": "เมล็ดดำ"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 },
@@ -1543,7 +2491,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "ไม่มีเมล็ด",
                         "text": "ไม่มีเมล็ด"
-                      }
+                      },
+                      "height": "sm"
                     },
                     {
                       "type": "separator"
@@ -1554,7 +2503,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "เมล็ดน้อย",
                         "text": "เมล็ดน้อย"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 },
@@ -1571,7 +2521,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "เมล็ดลีบ",
                         "text": "เมล็ดลีบ"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 }
@@ -1606,7 +2557,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "มีจุด",
                         "text": "ลำต้นมีจุด"
-                      }
+                      },
+                      "height": "sm"
                     },
                     {
                       "type": "separator"
@@ -1617,7 +2569,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "ต้นเน่า",
                         "text": "ลำต้นเน่า"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 },
@@ -1634,7 +2587,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "เหี่ยวแห้ง",
                         "text": "ลำต้นเหี่ยวแห้ง"
-                      }
+                      },
+                      "height": "sm"
                     },
                     {
                       "type": "separator"
@@ -1645,7 +2599,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "มีแผล",
                         "text": "ลำต้นมีแผล"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 },
@@ -1662,7 +2617,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "ลำต้นแตก/ฉีก",
                         "text": "ลำต้นแตก"
-                      }
+                      },
+                      "height": "sm"
                     },
                     {
                       "type": "separator"
@@ -1673,7 +2629,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "หักล้ม",
                         "text": "ลำต้นหักล้ม"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 },
@@ -1690,7 +2647,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "กลวงเป็นโพรง",
                         "text": "กลวงเป็นโพรง"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 }
@@ -1725,7 +2683,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "ใบไหม้",
                         "text": "ใบไหม้"
-                      }
+                      },
+                      "height": "sm"
                     },
                     {
                       "type": "separator"
@@ -1736,7 +2695,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "มีฝุ่นขาว",
                         "text": "ใบมีฝุ่นขาว"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 },
@@ -1753,7 +2713,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "แผลฉ่ำน้ำ",
                         "text": "ใบมีแผลฉ่ำน้ำ"
-                      }
+                      },
+                      "height": "sm"
                     },
                     {
                       "type": "separator"
@@ -1764,7 +2725,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "ใบแห้ง",
                         "text": "ใบแห้ง"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 },
@@ -1781,7 +2743,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "มีปม",
                         "text": "ใบมีปม"
-                      }
+                      },
+                      "height": "sm"
                     },
                     {
                       "type": "separator"
@@ -1792,7 +2755,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "มีจุด",
                         "text": "ใบมีจุด"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 },
@@ -1809,7 +2773,8 @@ exports.webhook = functions
                         "type": "message",
                         "label": "มีแผลตามทางยาว",
                         "text": "ใบมีแผลตามทางยาว"
-                      }
+                      },
+                      "height": "sm"
                     }
                   ]
                 }
@@ -3787,10 +4752,6 @@ exports.webhook = functions
               .doc(new_d_name).update({
                 north: FieldValue.increment(1) //ส่วน +1 ภาค นับจำนวนครั้งที่ผู้ใช้ดู
               })
-            /*db.collection("diseaseQuery")
-              .doc('North').update({
-                `${d_name}`: FieldValue.increment(1) //ส่วน +1 โรค นับจำนวนครั้งที่ผู้ใช้ดู
-              })*/
           } else if (userRegion == "ภาคอีสาน") {
             db.collection("diseaseQuery")
               .doc(new_d_name).update({
@@ -3842,7 +4803,8 @@ exports.webhook = functions
                               "type": "message",
                               "label": "สาเหตุ",
                               "text": `${data.forTemplate[0]}`
-                            }
+                            },
+                            "margin": "sm"
                           },
                           {
                             "type": "separator"
@@ -3853,7 +4815,8 @@ exports.webhook = functions
                               "type": "message",
                               "label": "วิธีรักษา",
                               "text": `${data.forTemplate[2]}`
-                            }
+                            },
+                            "margin": "sm"
                           }
                         ]
                       },
@@ -3870,7 +4833,8 @@ exports.webhook = functions
                               "type": "message",
                               "label": "อาการ",
                               "text": `${data.forTemplate[1]}`
-                            }
+                            },
+                            "margin": "sm"
                           },
                           {
                             "type": "separator"
@@ -3881,7 +4845,8 @@ exports.webhook = functions
                               "type": "message",
                               "label": "การป้องกัน",
                               "text": `${data.forTemplate[3]}`
-                            }
+                            },
+                            "margin": "sm"
                           }
                         ]
                       }
@@ -3943,8 +4908,8 @@ exports.webhook = functions
     }
 
 
-    //------------------------- ดูรูปเพิ่มเติม -----------------------------
-    const image_carousel = async => {
+    //----------------------- ดูรูปโรคเพิ่มเติม --------------------------//
+    const image_disease_carousel = async => {
       const d_image = req.body.queryResult.parameters.moreimage;
       return queryCause = db.collection('Disease')
         .where('forTemplate', 'array-contains', d_image).get()
@@ -4032,7 +4997,7 @@ exports.webhook = functions
                 "label": "แมลงทั้งหมด",
                 "text": "แสดงแมลงทั้งหมด"
               }
-            },
+            }/*,
             {
               "type": "action",
               "action": {
@@ -4040,7 +5005,7 @@ exports.webhook = functions
                 "label": "ค้นหาแมลงจากอาการ",
                 "text": "ค้นหาแมลงจากอาการ"
               }
-            }
+            }*/
           ]
         }
       }
@@ -4051,8 +5016,6 @@ exports.webhook = functions
     }
 
     const insect_carousel = async => {
-      /*const snapshot = await db.collection('Insect').get()
-        .then(doc => {*/
       const carouselMsg = {
         "type": "template",
         "altText": "this is a image carousel template",
@@ -4100,6 +5063,14 @@ exports.webhook = functions
               }
             },
             {
+              "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FCornThrip%2FcornThrip13.jpg?alt=media&token=97970450-79b5-4c3b-8ba5-a11f377e4f19",
+              "action": {
+                "type": "message",
+                "label": "เพลี้ยไฟ",
+                "text": "เพลี้ยไฟข้าวโพด"
+              }
+            },
+            {
               "imageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Insect%2FRiceLeafFolder%2FRiceLeafFolder8sq.jpg?alt=media&token=22f660e1-2022-4dbb-9a66-ccd7803b280d",
               "action": {
                 "type": "message",
@@ -4114,7 +5085,6 @@ exports.webhook = functions
         sendAsMessage: true
       });
       return agent.add(payloadMsg);
-      //});
     }
 
     const insect_select = async => {
@@ -4302,6 +5272,7 @@ exports.webhook = functions
                         "label": "ความเสียหาย",
                         "text": "ความเสียหายจาก" + `${doc.data().insectName}`
                       },
+                      "color": "#D2AE83",
                       "margin": "lg",
                       "height": "sm",
                       "style": "secondary"
@@ -4317,6 +5288,82 @@ exports.webhook = functions
           });
         });
     }
+
+    const image_insect_carousel = async => {
+      const i_name = req.body.queryResult.parameters.insect;
+      return queryCause = db.collection('Insect')
+        .where('insectName', '==', i_name).get()
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            var image = doc.data()
+            let buttonMsg = {
+              "type": "flex",
+              "altText": "Flex Message",
+              "contents": {
+                "type": "carousel",
+                "contents": [
+                  {
+                    "type": "bubble",
+                    "direction": "ltr",
+                    "hero": {
+                      "type": "image",
+                      "url": `${image.damageOnLeaf[0]}`,
+                      "size": "full",
+                      "aspectMode": "cover"
+                    }
+                  },
+                  {
+                    "type": "bubble",
+                    "direction": "ltr",
+                    "hero": {
+                      "type": "image",
+                      "url": `${image.damageOnLeaf[1]}`,
+                      "size": "full",
+                      "aspectMode": "cover"
+                    }
+                  },
+                  {
+                    "type": "bubble",
+                    "direction": "ltr",
+                    "hero": {
+                      "type": "image",
+                      "url": `${image.damageOnLeaf[2]}`,
+                      "size": "full",
+                      "aspectMode": "cover"
+                    }
+                  },
+                  {
+                    "type": "bubble",
+                    "direction": "ltr",
+                    "hero": {
+                      "type": "image",
+                      "url": `${image.damageOnLeaf[3]}`,
+                      "size": "full",
+                      "aspectMode": "cover"
+                    }
+                  },
+                  {
+                    "type": "bubble",
+                    "direction": "ltr",
+                    "hero": {
+                      "type": "image",
+                      "url": `${image.damageOnLeaf[4]}`,
+                      "size": "full",
+                      "aspectMode": "cover"
+                    }
+                  }
+                ]
+              }
+            }
+            const payloadMsg = new Payload("LINE", buttonMsg, {
+              sendAsMessage: true
+            });
+            return agent.add(payloadMsg);
+          });
+        });
+    }
+
+    //---------------------------ส่วนการดูจำนวนค้นหา---------------------//
 
     const record = async => {
       const quickReply = {
@@ -4365,7 +5412,8 @@ exports.webhook = functions
               {
                 "type": "text",
                 "text": "เลือกภาคที่ต้องการดูการค้นหา",
-                "align": "center"
+                "align": "center",
+                "weight": "bold"
               }
             ]
           },
@@ -4384,10 +5432,12 @@ exports.webhook = functions
                       "label": "ภาคเหนือ",
                       "text": "สถิติโรคภาคเหนือ"
                     },
+                    "color": "#342F2A",
                     "height": "sm"
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA"
                   },
                   {
                     "type": "button",
@@ -4396,12 +5446,14 @@ exports.webhook = functions
                       "label": "ภาคอีสาน",
                       "text": "สถิติโรคภาคอีสาน"
                     },
+                    "color": "#342F2A",
                     "height": "sm"
                   }
                 ]
               },
               {
-                "type": "separator"
+                "type": "separator",
+                "color": "#D8C9BA"
               },
               {
                 "type": "box",
@@ -4414,10 +5466,12 @@ exports.webhook = functions
                       "label": "ภาคกลาง",
                       "text": "สถิติโรคภาคกลาง"
                     },
+                    "color": "#342F2A",
                     "height": "sm"
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA"
                   },
                   {
                     "type": "button",
@@ -4426,6 +5480,7 @@ exports.webhook = functions
                       "label": "ภาคใต้",
                       "text": "สถิติโรคภาคใต้"
                     },
+                    "color": "#342F2A",
                     "height": "sm"
                   }
                 ]
@@ -4434,7 +5489,7 @@ exports.webhook = functions
           },
           "styles": {
             "header": {
-              "backgroundColor": "#F2C04E"
+              "backgroundColor": "#D8C9BA"
             }
           }
         }
@@ -4460,8 +5515,9 @@ exports.webhook = functions
                 "contents": [
                   {
                     "type": "text",
-                    "text": "กดเลือกโรคที่ต้องการดูจำนวนการค้นหา",
-                    "color": "#FFFFFF"
+                    "text": "เลือกโรคที่ต้องการดูจำนวนการค้นหา",
+                    "align": "center",
+                    "weight": "bold"
                   }
                 ]
               },
@@ -4476,10 +5532,12 @@ exports.webhook = functions
                       "label": "ราน้ำค้าง",
                       "text": "สถิติโรคราน้ำค้าง"
                     },
+                    "color": "#342F2A",
                     "height": "sm"
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA"
                   },
                   {
                     "type": "button",
@@ -4488,10 +5546,12 @@ exports.webhook = functions
                       "label": "กาบและใบไหม้",
                       "text": "สถิติโรคกาบและใบไหม้"
                     },
+                    "color": "#342F2A",
                     "height": "sm"
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA"
                   },
                   {
                     "type": "button",
@@ -4500,10 +5560,12 @@ exports.webhook = functions
                       "label": "ใบไหม้แผลเล็ก",
                       "text": "สถิติโรคใบไหม้แผลเล็ก"
                     },
+                    "color": "#342F2A",
                     "height": "sm"
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA"
                   },
                   {
                     "type": "button",
@@ -4512,10 +5574,12 @@ exports.webhook = functions
                       "label": "ใบไหม้แผลใหญ่",
                       "text": "สถิติโรคใบไหม้แผลใหญ่"
                     },
+                    "color": "#342F2A",
                     "height": "sm"
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA"
                   },
                   {
                     "type": "button",
@@ -4524,10 +5588,12 @@ exports.webhook = functions
                       "label": "ราสนิม",
                       "text": "สถิติโรคราสนิม"
                     },
+                    "color": "#342F2A",
                     "height": "sm"
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA"
                   },
                   {
                     "type": "button",
@@ -4536,13 +5602,14 @@ exports.webhook = functions
                       "label": "สมัท (ราเขม่าสีดำ)",
                       "text": "สถิติโรคสมัท หรือ ราเขม่าสีดำ"
                     },
+                    "color": "#342F2A",
                     "height": "sm"
                   }
                 ]
               },
               "styles": {
                 "header": {
-                  "backgroundColor": "#F2C04E"
+                  "backgroundColor": "#D8C9BA"
                 }
               }
             },
@@ -4554,8 +5621,9 @@ exports.webhook = functions
                 "contents": [
                   {
                     "type": "text",
-                    "text": "กดเลือกโรคที่ต้องการดูจำนวนการค้นหา",
-                    "color": "#FFFFFF"
+                    "text": "เลือกโรคที่ต้องการดูจำนวนการค้นหา",
+                    "align": "center",
+                    "weight": "bold"
                   }
                 ]
               },
@@ -4570,10 +5638,12 @@ exports.webhook = functions
                       "label": "ใบจุด",
                       "text": "สถิติโรคใบจุด"
                     },
+                    "color": "#342F2A",
                     "height": "sm"
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA"
                   },
                   {
                     "type": "button",
@@ -4582,10 +5652,12 @@ exports.webhook = functions
                       "label": "ต้นเน่าจากแบคทีเรีย",
                       "text": "สถิติโรคต้นเน่าจากเชื้อแบคทีเรีย"
                     },
+                    "color": "#342F2A",
                     "height": "sm"
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA"
                   },
                   {
                     "type": "button",
@@ -4594,10 +5666,12 @@ exports.webhook = functions
                       "label": "ต้นเน่าจากเชื้อมาโครโฟมิน่า",
                       "text": "สถิติโรคต้นเน่าจากเชื้อมาโครโฟมิน่า"
                     },
+                    "color": "#342F2A",
                     "height": "sm"
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA"
                   },
                   {
                     "type": "button",
@@ -4606,10 +5680,12 @@ exports.webhook = functions
                       "label": "ต้นเน่าจากเชื้อฟิวซาเรี่ยม",
                       "text": "สถิติโรคต้นเน่าจากเชื้อฟิวซาเรี่ยม"
                     },
+                    "color": "#342F2A",
                     "height": "sm"
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA"
                   },
                   {
                     "type": "button",
@@ -4618,10 +5694,12 @@ exports.webhook = functions
                       "label": "เมล็ด&ฝักเน่า(เชื้อราเพนิซิลเลียม)",
                       "text": "สถิติโรคเมล็ดและฝักเน่าจากเชื้อราเพนิซิลเลียม"
                     },
+                    "color": "#342F2A",
                     "height": "sm"
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA"
                   },
                   {
                     "type": "button",
@@ -4630,13 +5708,14 @@ exports.webhook = functions
                       "label": "ฝัก&ต้น&เมล็ดเน่า(เชื้อดิโพลเดีย)",
                       "text": "สถิติโรคฝัก ต้นและเมล็ดเน่าจากเชื้อดิโพลเดีย"
                     },
+                    "color": "#342F2A",
                     "height": "sm"
                   }
                 ]
               },
               "styles": {
                 "header": {
-                  "backgroundColor": "#F2C04E"
+                  "backgroundColor": "#D8C9BA"
                 }
               }
             }
@@ -4676,11 +5755,13 @@ exports.webhook = functions
                     "size": "xl",
                     "align": "center",
                     "weight": "bold",
+                    "color": "#75604A",
                     "wrap": true
                   },
                   {
                     "type": "separator",
-                    "margin": "lg"
+                    "margin": "lg",
+                    "color": "#D8C9BA"
                   },
                   {
                     "type": "box",
@@ -4696,14 +5777,15 @@ exports.webhook = functions
                       },
                       {
                         "type": "text",
-                        "text": `${doc.data().north}` + "  ครั้ง"
+                        "text": `${doc.data().north}` + "  ครั้ง",
+                        "align": "end"
                       }
                     ]
                   },
                   {
                     "type": "box",
                     "layout": "horizontal",
-                    "margin": "xs",
+                    "margin": "sm",
                     "contents": [
                       {
                         "type": "text",
@@ -4714,14 +5796,15 @@ exports.webhook = functions
                       },
                       {
                         "type": "text",
-                        "text": `${doc.data().northeast}` + "  ครั้ง"
+                        "text": `${doc.data().northeast}` + "  ครั้ง",
+                        "align": "end"
                       }
                     ]
                   },
                   {
                     "type": "box",
                     "layout": "horizontal",
-                    "margin": "xs",
+                    "margin": "sm",
                     "contents": [
                       {
                         "type": "text",
@@ -4732,14 +5815,15 @@ exports.webhook = functions
                       },
                       {
                         "type": "text",
-                        "text": `${doc.data().center}` + "  ครั้ง"
+                        "text": `${doc.data().center}` + "  ครั้ง",
+                        "align": "end"
                       }
                     ]
                   },
                   {
                     "type": "box",
                     "layout": "horizontal",
-                    "margin": "xs",
+                    "margin": "sm",
                     "contents": [
                       {
                         "type": "text",
@@ -4750,7 +5834,8 @@ exports.webhook = functions
                       },
                       {
                         "type": "text",
-                        "text": `${doc.data().south}` + "  ครั้ง"
+                        "text": `${doc.data().south}` + "  ครั้ง",
+                        "align": "end"
                       }
                     ]
                   }
@@ -4776,7 +5861,7 @@ exports.webhook = functions
             increaseDiseaseName(new_r_record, diseases, count_r_record)
           } else if (r_record === "ภาคอีสาน") {
             const count_r_record = doc.data().northeast
-            increaseDiseaseName(new_r_record, diseases,count_r_record)
+            increaseDiseaseName(new_r_record, diseases, count_r_record)
           } else if (r_record === "ภาคกลาง") {
             const count_r_record = doc.data().center
             increaseDiseaseName(new_r_record, diseases, count_r_record)
@@ -4810,11 +5895,13 @@ exports.webhook = functions
                     "size": "xl",
                     "align": "center",
                     "weight": "bold",
+                    "color": "#75604A",
                     "wrap": true
                   },
                   {
                     "type": "separator",
-                    "margin": "lg"
+                    "margin": "lg",
+                    "color": "#D8C9BA"
                   },
                   {
                     "type": "box",
@@ -4835,12 +5922,14 @@ exports.webhook = functions
                     ]
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA",
+                    "margin": "sm"
                   },
                   {
                     "type": "box",
                     "layout": "horizontal",
-                    "margin": "xs",
+                    "margin": "sm",
                     "contents": [
                       {
                         "type": "text",
@@ -4856,12 +5945,14 @@ exports.webhook = functions
                     ]
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA",
+                    "margin": "sm"
                   },
                   {
                     "type": "box",
                     "layout": "horizontal",
-                    "margin": "xs",
+                    "margin": "sm",
                     "contents": [
                       {
                         "type": "text",
@@ -4877,12 +5968,14 @@ exports.webhook = functions
                     ]
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA",
+                    "margin": "sm"
                   },
                   {
                     "type": "box",
                     "layout": "horizontal",
-                    "margin": "xs",
+                    "margin": "sm",
                     "contents": [
                       {
                         "type": "text",
@@ -4898,12 +5991,14 @@ exports.webhook = functions
                     ]
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA",
+                    "margin": "sm"
                   },
                   {
                     "type": "box",
                     "layout": "horizontal",
-                    "margin": "xs",
+                    "margin": "sm",
                     "contents": [
                       {
                         "type": "text",
@@ -4919,12 +6014,14 @@ exports.webhook = functions
                     ]
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA",
+                    "margin": "sm"
                   },
                   {
                     "type": "box",
                     "layout": "horizontal",
-                    "margin": "xs",
+                    "margin": "sm",
                     "contents": [
                       {
                         "type": "text",
@@ -4940,12 +6037,14 @@ exports.webhook = functions
                     ]
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA",
+                    "margin": "sm"
                   },
                   {
                     "type": "box",
                     "layout": "horizontal",
-                    "margin": "xs",
+                    "margin": "sm",
                     "contents": [
                       {
                         "type": "text",
@@ -4961,12 +6060,14 @@ exports.webhook = functions
                     ]
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA",
+                    "margin": "sm"
                   },
                   {
                     "type": "box",
                     "layout": "horizontal",
-                    "margin": "xs",
+                    "margin": "sm",
                     "contents": [
                       {
                         "type": "text",
@@ -4982,12 +6083,14 @@ exports.webhook = functions
                     ]
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA",
+                    "margin": "sm"
                   },
                   {
                     "type": "box",
                     "layout": "horizontal",
-                    "margin": "xs",
+                    "margin": "sm",
                     "contents": [
                       {
                         "type": "text",
@@ -5003,12 +6106,14 @@ exports.webhook = functions
                     ]
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA",
+                    "margin": "sm"
                   },
                   {
                     "type": "box",
                     "layout": "horizontal",
-                    "margin": "xs",
+                    "margin": "sm",
                     "contents": [
                       {
                         "type": "text",
@@ -5024,12 +6129,14 @@ exports.webhook = functions
                     ]
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA",
+                    "margin": "sm"
                   },
                   {
                     "type": "box",
                     "layout": "horizontal",
-                    "margin": "xs",
+                    "margin": "sm",
                     "contents": [
                       {
                         "type": "text",
@@ -5045,12 +6152,14 @@ exports.webhook = functions
                     ]
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA",
+                    "margin": "sm"
                   },
                   {
                     "type": "box",
                     "layout": "horizontal",
-                    "margin": "xs",
+                    "margin": "sm",
                     "contents": [
                       {
                         "type": "text",
@@ -5066,12 +6175,14 @@ exports.webhook = functions
                     ]
                   },
                   {
-                    "type": "separator"
+                    "type": "separator",
+                    "color": "#D8C9BA",
+                    "margin": "sm"
                   },
                   {
                     "type": "box",
                     "layout": "horizontal",
-                    "margin": "xs",
+                    "margin": "sm",
                     "contents": [
                       {
                         "type": "text",
@@ -5117,7 +6228,7 @@ exports.webhook = functions
         return "DiplodiaStalkKernelAndEarRot"
       } else if (d_name === "โรคราน้ำค้าง") {
         return "DownyMildew"
-      } else if (d_name === 'โรคใบจุด') {
+      } else if (d_name === "โรคใบจุด") {
         return "LeafSpot"
       } else if (d_name === "โรคใบไหม้แผลใหญ่") {
         return "NorthenCornLeafBlight"
@@ -5214,6 +6325,7 @@ exports.webhook = functions
     let intentMap = new Map();
     // next page
     //intentMap.set("Next page", nextPage);
+    intentMap.set("Abnormality", abnormality);
 
     // province
     intentMap.set("User province", user_province);
@@ -5223,7 +6335,11 @@ exports.webhook = functions
 
     // knowledge
     intentMap.set("Knowledge", knowledge);
-    intentMap.set('Knowledge - Select', knowledge_select);
+    intentMap.set('Knowledge - plant', knowledgePlant);
+    intentMap.set('Knowledge - Plant select', knowledge_plant_select);
+    intentMap.set('Knowledge - Fertilizer', knowledgeFert);
+    intentMap.set('Knowledge - Age of corn', knowledgeAge);
+    intentMap.set('Knowledge - Factor', knowledgeFactor);
 
     // Disease
     intentMap.set('Disease', disease);
@@ -5255,13 +6371,16 @@ exports.webhook = functions
     intentMap.set('Disease card - treatment', disease_treatment);
     intentMap.set('Disease card - protection', disease_protection);
 
-    // Image Carousel -- See more picture
-    intentMap.set('Image Carousel', image_carousel);
+    // Disease Image Carousel -- See more picture
+    intentMap.set('Image Disease Carousel', image_disease_carousel);
 
     // Pest
     intentMap.set('Insect', insect);
     intentMap.set('Insect Carousel', insect_carousel);
     intentMap.set('Insect Carousel - select', insect_select);
+
+    // Insect Image Carousel -- See more picture
+    intentMap.set('Image Insect Carousel', image_insect_carousel);
 
     // Chart
     intentMap.set('Record', record);

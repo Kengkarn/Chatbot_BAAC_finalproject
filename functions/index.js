@@ -85,11 +85,9 @@ exports.webhook = functions
 
     const user_province = async agent => {
       let userProvince = req.body.queryResult.parameters.province;
-
-
       return db.collection("User_chatbot").doc(userId).get().then(returnData => {
         if (returnData.exists) {
-          return agent.add("มีอะไรให้บอทช่วยคะ")
+          return null
         }
         else {
           if (userProvince == 'เชียงใหม่' || userProvince == 'เชียงราย' ||
@@ -145,6 +143,8 @@ exports.webhook = functions
             status: true
           })
         }
+      }).then(doc => {
+        return agent.add("บันทึกข้อมูลเรียบร้อยค่ะ")
       })
     }
     const currentDate = Date.now();
@@ -178,7 +178,7 @@ exports.webhook = functions
               {
                 "thumbnailImageUrl": "https://firebasestorage.googleapis.com/v0/b/chatbot-baac-cdplft.appspot.com/o/Application%2Fapp_farmai.jpg?alt=media&token=7a2a7296-655c-4e26-9e1b-edb1c4442b52",
                 "title": "FarmAI - ฟาร์มเอไอ",
-                "text": "แอปพลิเคชั่นเพื่อการทำเกษตรกรอย่างแม่นยำและยั่งยืน เสหมือนมีพี่เลี้ยง",
+                "text": "แอปพลิเคชั่นเพื่อการทำเกษตรกรอย่างแม่นยำและยั่งยืน เสมือนมีพี่เลี้ยง",
                 "actions": [
                   {
                     "type": "uri",
@@ -1306,6 +1306,402 @@ exports.webhook = functions
     }
 
 
+//-----------------------------------ส่วนของเมนู ราคา-----------------------------------------//
+    
+    // เลือกประเภทข้าวโพด
+    const price = async agent => {
+      const buttonMsg = {
+        "type": "flex",
+        "altText": "Flex Message",
+        "contents": {
+          "type": "bubble",
+          "direction": "ltr",
+          "header": {
+            "type": "box",
+            "layout": "baseline",
+            "contents": [
+              {
+                "type": "text",
+                "text": "ชนิดของข้าวโพด",
+                "size": "md",
+                "align": "center",
+                "gravity": "center",
+                "color": "#000000"
+              }
+            ]
+          },
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "md",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ข้าวโพดเลี้ยงสัตว์",
+                      "text": "ราคาข้าวโพดเลี้ยงสัตว์"
+                    },
+                    "height": "sm",
+                    "gravity": "center"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ข้าวโพดหวาน",
+                      "text": "ราคาข้าวโพดหวาน"
+                    },
+                    "height": "sm",
+                    "gravity": "center"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ข้าวโพดฝักอ่อน",
+                      "text": "ราคาข้าวโพดฝักอ่อน"
+                    },
+                    "height": "sm",
+                    "gravity": "center"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+      const payloadMsg = new Payload("LINE", buttonMsg, {
+        sendAsMessage: true
+      });
+      return agent.add(payloadMsg);
+    }
+
+    // เลือกจังหวัด
+    const selectCornType = async agent => {
+      let cornType = req.body.queryResult.parameters.CornType;
+      if (cornType == "ข้าวโพดเลี้ยงสัตว์"){
+        const buttonMsg = {
+          "type": "flex",
+          "altText": "Flex Message",
+          "contents": {
+            "type": "bubble",
+            "direction": "ltr",
+            "header": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "เลือกจังหวัด",
+                  "align": "center"
+                }
+              ]
+            },
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "เพชรบูรณ์",
+                    "text": "เพชรบูรณ์"
+                  },
+                  "height": "sm"
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "น่าน",
+                    "text": "ตาก"
+                  },
+                  "height": "sm"
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "ตาก",
+                    "text": "ตาก"
+                  },
+                  "height": "sm"
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "นครราชสีมา",
+                    "text": "นครราชสีมา"
+                  },
+                  "height": "sm"
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "ชัยภูมิ",
+                    "text": "ชัยภูมิ"
+                  },
+                  "height": "sm"
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "ลพบุรี",
+                    "text": "ลพบุรี"
+                  },
+                  "height": "sm"
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "จังหวัดอื่นๆ",
+                    "text": "จังหวัดอื่นๆ"
+                  }
+                }
+              ]
+            }
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        })
+        return agent.add(payloadMsg);
+      }
+      else if (cornType == "ข้าวโพดหวาน"){
+        const buttonMsg = {
+          "type": "flex",
+          "altText": "Flex Message",
+          "contents": {
+            "type": "bubble",
+            "direction": "ltr",
+            "header": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "เลือกจังหวัด",
+                  "align": "center"
+                }
+              ]
+            },
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "เชียงใหม่",
+                    "text": "เชียงใหม่"
+                  },
+                  "height": "sm"
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "เชียงราย",
+                    "text": "เชียงราย"
+                  },
+                  "height": "sm"
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "หนองคาย",
+                    "text": "หนองคาย"
+                  },
+                  "height": "sm"
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "นครราชสีมา",
+                    "text": "นครราชสีมา"
+                  },
+                  "height": "sm"
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "กาญจนบุรี",
+                    "text": "กาญจนบุรี"
+                  },
+                  "height": "sm"
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "ปทุมธานี",
+                    "text": "ปทุมธานี"
+                  },
+                  "height": "sm"
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "สุราษฎฺ์ธานี",
+                    "text": "สุราษฎฺ์ธานี"
+                    
+                  }
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "จังหวัดอื่นๆ",
+                    "text": "จังหวัดอื่นๆ"
+                  },
+                  "height": "sm"
+                }
+              ]
+            }
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+          sendAsMessage: true
+        })
+        return agent.add(payloadMsg);
+      }
+      else if (cornType == "ข้าวโพดฝักอ่อน"){
+        const buttonMsg = {
+          "type": "flex",
+          "altText": "Flex Message",
+          "contents": {
+            "type": "bubble",
+            "direction": "ltr",
+            "header": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "เลือกจังหวัด",
+                  "align": "center"
+                }
+              ]
+            },
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "เชียงราย",
+                    "text": "เชียงราย"
+                  },
+                  "height": "sm"
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "นครราชสีมา",
+                    "text": "นครราชสีมา"
+                  },
+                  "height": "sm"
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "กาญจนบุรี",
+                    "text": "กาญจนบุรี"
+                  },
+                  "height": "sm"
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "จังหวัดอื่นๆ",
+                    "text": "จังหวัดอื่นๆ"
+                  }
+                }
+              ]
+            }
+          }
+        }
+        const payloadMsg = new Payload("LINE", buttonMsg, {
+        sendAsMessage: true
+      })
+      return agent.add(payloadMsg);
+      }
+    }
+
 
     //-----------------------------------ส่วนของเมนู ความผิดปกติ-----------------------------------------//
     const abnormality = async agent => {
@@ -1412,78 +1808,6 @@ exports.webhook = functions
           ]
         }
       }
-      /*const buttonMsg = {
-        "type": "flex",
-        "altText": "Flex Message",
-        "contents": {
-          "type": "bubble",
-          "direction": "ltr",
-          "header": {
-            "type": "box",
-            "layout": "baseline",
-            "contents": [
-              {
-                "type": "text",
-                "text": "กรุณาเลือก",
-                "size": "md",
-                "align": "center",
-                "gravity": "center",
-                "color": "#000000"
-              }
-            ]
-          },
-          "footer": {
-            "type": "box",
-            "layout": "vertical",
-            "spacing": "md",
-            "contents": [
-              {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                  {
-                    "type": "button",
-                    "action": {
-                      "type": "message",
-                      "label": "แสดงโรคทั้งหมด",
-                      "text": "แสดงโรคทั้งหมด"
-                    },
-                    "height": "sm",
-                    "gravity": "center"
-                  },
-                  {
-                    "type": "separator"
-                  },
-                  {
-                    "type": "button",
-                    "action": {
-                      "type": "message",
-                      "label": "เลือกอาการ",
-                      "text": "เลือกอาการ"
-                    },
-                    "height": "sm",
-                    "gravity": "center"
-                  },
-                  {
-                    "type": "separator"
-                  },
-                  {
-                    "type": "button",
-                    "action": {
-                      "type": "message",
-                      "label": "ระบุอาการ",
-                      "text": "ระบุอาการ"
-                    },
-                    "height": "sm",
-                    "gravity": "center"
-                  }
-                ]
-              }
-            ]
-          }
-        }
-      };*/
-
       const payloadMsg = new Payload("LINE", quickReply, {
         sendAsMessage: true
       });
@@ -6388,6 +6712,10 @@ exports.webhook = functions
     intentMap.set('Record - byDisease', recordByDisease);
     intentMap.set('Record - select disease', recordDiseaseSelect);
     intentMap.set('Record - select region', recordRegionSelect);
+
+    //Price
+    intentMap.set('LIFF Price', price);
+    intentMap.set('Price - Select corn type', selectCornType);
 
     agent.handleRequest(intentMap);
   });

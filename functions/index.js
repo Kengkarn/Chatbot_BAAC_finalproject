@@ -90,51 +90,7 @@ exports.webhook = functions
           return null
         }
         else {
-          if (userProvince == 'เชียงใหม่' || userProvince == 'เชียงราย' ||
-            userProvince == 'ลำปาง' || userProvince == 'ลำพูน' ||
-            userProvince == 'แม่ฮ่องสอน' || userProvince == 'น่าน' ||
-            userProvince == 'พะเยา' || userProvince == 'แพร่' ||
-            userProvince == 'อุตรดิตถ์' || userProvince == 'ตาก' ||
-            userProvince == 'สุโขทัย' || userProvince == 'พิษณุโลก' ||
-            userProvince == 'พิจิตร' || userProvince == 'กำแพงเพชร' ||
-            userProvince == 'นครสวรรค์' || userProvince == 'อุทัยธานี' ||
-            userProvince == 'เพชรบูรณ์') {
-            userRegion = "ภาคเหนือ"
-          } else if (userProvince == 'อำนาจเจริญ' || userProvince == 'บึงกาฬ' ||
-            userProvince == 'บุรีรัมย์' || userProvince == 'ชัยภูมิ' ||
-            userProvince == 'กาฬสินธุ์' || userProvince == 'ขอนแก่น' ||
-            userProvince == 'เลย' || userProvince == 'มหาสารคาม' ||
-            userProvince == 'มุกดาหาร' || userProvince == 'นครพนม' ||
-            userProvince == 'นครราชสีมา' || userProvince == 'หนองบัวลำภู' ||
-            userProvince == 'หนองคาย' || userProvince == 'ร้อยเอ็ด' ||
-            userProvince == 'สกลนคร' || userProvince == 'ศรีสะเกษ' ||
-            userProvince == 'สุรินทร์' || userProvince == 'อุบลราชธานี' ||
-            userProvince == 'อุดรธานี' || userProvince == 'ยโสธร') {
-            userRegion = "ภาคอีสาน"
-          } else if (userProvince == 'อ่างทอง' || userProvince == 'ชัยนาท' ||
-            userProvince == 'พระนครศรีอยุธยา' || userProvince == 'กรุงเทพมหานคร' ||
-            userProvince == 'ลพบุรี' || userProvince == 'นครปฐม' ||
-            userProvince == 'นนทบุรี' || userProvince == 'ปทุมธานี' ||
-            userProvince == 'สมุทรปราการ' || userProvince == 'สมุทรสาคร' ||
-            userProvince == 'สมุทรสงคราม' || userProvince == 'สระบุรี' ||
-            userProvince == 'สิงห์บุรี' || userProvince == 'สุพรรณบุรี' ||
-            userProvince == 'นครนายก' || userProvince == 'ฉะเชิงเทรา' ||
-            userProvince == 'จันทบุรี' || userProvince == 'ชลบุรี' ||
-            userProvince == 'ปราจีนบุรี' || userProvince == 'ระยอง' ||
-            userProvince == 'สระแก้ว' || userProvince == 'ตราด' ||
-            userProvince == 'กาญจนบุรี' || userProvince == 'ราชบุรี' ||
-            userProvince == 'เพชรบุรี' || userProvince == 'ประจวบคีรีขันธ์'
-          ) {
-            userRegion = "ภาคกลาง"
-          } else if (userProvince == 'นครศรีธรรมราช' || userProvince == 'นราธิวาส' ||
-            userProvince == 'ชุมพร' || userProvince == 'ปัตตานี' ||
-            userProvince == 'พัทลุง' || userProvince == 'สงขลา' ||
-            userProvince == 'สุราษฎร์ธานี' || userProvince == 'ยะลา' ||
-            userProvince == 'กระบี่' || userProvince == 'พังงา' ||
-            userProvince == 'ภูเก็ต' || userProvince == 'ระนอง' ||
-            userProvince == 'สตูล' || userProvince == 'ตรัง') {
-            userRegion = "ภาคใต้"
-          }
+          const userRegion = thaiRegion(userProvince)
           return db.collection("User_chatbot").doc(userId).set({
             timestamp: currentDate,
             userId: userId,
@@ -1306,36 +1262,31 @@ exports.webhook = functions
     }
 
 
-//-----------------------------------ส่วนของเมนู ราคา-----------------------------------------//
-    
+    //-----------------------------------ส่วนของเมนู ราคา-----------------------------------------//
+
     // เลือกประเภทข้าวโพด
     const price = async agent => {
-      const buttonMsg = {
+      const carouselMsg = {
         "type": "flex",
         "altText": "Flex Message",
         "contents": {
-          "type": "bubble",
-          "direction": "ltr",
-          "header": {
-            "type": "box",
-            "layout": "baseline",
-            "contents": [
-              {
-                "type": "text",
-                "text": "ชนิดของข้าวโพด",
-                "size": "md",
-                "align": "center",
-                "gravity": "center",
-                "color": "#000000"
-              }
-            ]
-          },
-          "footer": {
-            "type": "box",
-            "layout": "vertical",
-            "spacing": "md",
-            "contents": [
-              {
+          "type": "carousel",
+          "contents": [
+            {
+              "type": "bubble",
+              "direction": "ltr",
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "ภาคเหนือ",
+                    "align": "center"
+                  }
+                ]
+              },
+              "body": {
                 "type": "box",
                 "layout": "vertical",
                 "contents": [
@@ -1343,11 +1294,10 @@ exports.webhook = functions
                     "type": "button",
                     "action": {
                       "type": "message",
-                      "label": "ข้าวโพดเลี้ยงสัตว์",
-                      "text": "ราคาข้าวโพดเลี้ยงสัตว์"
+                      "label": "เพชรบูรณ์",
+                      "text": "ราคาจังหวัดเพชรบูรณ์"
                     },
-                    "height": "sm",
-                    "gravity": "center"
+                    "height": "sm"
                   },
                   {
                     "type": "separator"
@@ -1356,11 +1306,10 @@ exports.webhook = functions
                     "type": "button",
                     "action": {
                       "type": "message",
-                      "label": "ข้าวโพดหวาน",
-                      "text": "ราคาข้าวโพดหวาน"
+                      "label": "น่าน",
+                      "text": "ราคาจังหวัดน่าน"
                     },
-                    "height": "sm",
-                    "gravity": "center"
+                    "height": "sm"
                   },
                   {
                     "type": "separator"
@@ -1369,337 +1318,677 @@ exports.webhook = functions
                     "type": "button",
                     "action": {
                       "type": "message",
-                      "label": "ข้าวโพดฝักอ่อน",
-                      "text": "ราคาข้าวโพดฝักอ่อน"
+                      "label": "ตาก",
+                      "text": "ราคาจังหวัดตาก"
                     },
-                    "height": "sm",
-                    "gravity": "center"
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "เชียงราย",
+                      "text": "ราคาจังหวัดเชียงราย"
+                    }
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "เชียงใหม่",
+                      "text": "ราคาจังหวัดเชียงใหม่"
+                    }
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "จังหวัดอื่นๆ",
+                      "text": "จังหวัดอื่นๆ"
+                    }
                   }
                 ]
               }
-            ]
-          }
+            },
+            {
+              "type": "bubble",
+              "direction": "ltr",
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "ภาคกลาง",
+                    "align": "center"
+                  }
+                ]
+              },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ลพบุรี",
+                      "text": "ราคาจังหวัดลพบุรี"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "สระบุรี",
+                      "text": "ราคาจังหวัดสระบุรี"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "สระแก้ว",
+                      "text": "ราคาจังหวัดสระแก้ว"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "กาญจนบุรี",
+                      "text": "ราคาจังหวัดกาญจนบุรี"
+                    }
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ปทุมธานี",
+                      "text": "ราคาจังหวัดปทุมธานี"
+                    }
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "จังหวัดอื่นๆ",
+                      "text": "จังหวัดอื่นๆ"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "bubble",
+              "direction": "ltr",
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "ภาคอีสาน",
+                    "align": "center"
+                  }
+                ]
+              },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "นครราชสีมา",
+                      "text": "ราคาจังหวัดนครราชสีมา"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ชัยภูมิ",
+                      "text": "ราคาจังหวัดชัยภูมิ"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "อุบลราชธานี",
+                      "text": "ราคาจังหวัดอุบลราชธานี"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "หนองคาย",
+                      "text": "ราคาจังหวัดหนองคาย"
+                    }
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "นครพนม",
+                      "text": "ราคาจังหวัดนครพนม"
+                    }
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "จังหวัดอื่นๆ",
+                      "text": "จังหวัดอื่นๆ"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "bubble",
+              "direction": "ltr",
+              "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "ภาคใต้",
+                    "align": "center"
+                  }
+                ]
+              },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "สุราษฎฺ์ธานี",
+                      "text": "ราคาจังหวัดสุราษฎฺ์ธานี"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ตรัง",
+                      "text": "ราคาจังหวัดตรัง"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "สงขลา",
+                      "text": "ราคาจังหวัดสงขลา"
+                    },
+                    "height": "sm"
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "กระบี่",
+                      "text": "ราคาจังหวัดกระบี่"
+                    }
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "ชุมพร",
+                      "text": "ราคาจังหวัดชุมพร"
+                    }
+                  },
+                  {
+                    "type": "separator"
+                  },
+                  {
+                    "type": "button",
+                    "action": {
+                      "type": "message",
+                      "label": "จังหวัดอื่นๆ",
+                      "text": "จังหวัดอื่นๆ"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
         }
       }
-      const payloadMsg = new Payload("LINE", buttonMsg, {
+      const payloadMsg = new Payload("LINE", carouselMsg, {
         sendAsMessage: true
       });
       return agent.add(payloadMsg);
     }
 
     // เลือกจังหวัด
-    const selectCornType = async agent => {
-      let cornType = req.body.queryResult.parameters.CornType;
-      if (cornType == "ข้าวโพดเลี้ยงสัตว์"){
-        const buttonMsg = {
-          "type": "flex",
-          "altText": "Flex Message",
-          "contents": {
-            "type": "bubble",
-            "direction": "ltr",
-            "header": {
-              "type": "box",
-              "layout": "vertical",
-              "contents": [
-                {
-                  "type": "text",
-                  "text": "เลือกจังหวัด",
-                  "align": "center"
-                }
-              ]
-            },
-            "body": {
-              "type": "box",
-              "layout": "vertical",
-              "contents": [
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "เพชรบูรณ์",
-                    "text": "เพชรบูรณ์"
+    const selectProvincePrice = async agent => {
+      let provincePrice = req.body.queryResult.parameters.province;
+      if (thaiRegion(provincePrice) === "ภาคเหนือ") {
+        const provinceEng = changeProvinceNorth(provincePrice)
+        return db.collection('Price').doc(provinceEng).get().then(doc => {
+          const flexMsg = {
+            "type": "flex",
+            "altText": "Flex Message",
+            "contents": {
+              "type": "bubble",
+              "direction": "ltr",
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "ราคาข้าวโพด",
+                    "align": "start",
+                    "color": "#B7966E"
                   },
-                  "height": "sm"
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "น่าน",
-                    "text": "ตาก"
+                  {
+                    "type": "text",
+                    "text": provincePrice,
+                    "size": "xl",
+                    "weight": "bold"
                   },
-                  "height": "sm"
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "ตาก",
-                    "text": "ตาก"
+                  {
+                    "type": "separator",
+                    "margin": "lg",
+                    "color": "#d2ae83"
                   },
-                  "height": "sm"
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "นครราชสีมา",
-                    "text": "นครราชสีมา"
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xl",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ตลาด"
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().arr_selling[0]}`,
+                        "align": "end"
+                      }
+                    ]
                   },
-                  "height": "sm"
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "ชัยภูมิ",
-                    "text": "ชัยภูมิ"
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ราคา"
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().price_data['avg_price']}` + " บาท/กก.",
+                        "align": "end"
+                      }
+                    ]
                   },
-                  "height": "sm"
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "ลพบุรี",
-                    "text": "ลพบุรี"
-                  },
-                  "height": "sm"
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "จังหวัดอื่นๆ",
-                    "text": "จังหวัดอื่นๆ"
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "วันที่"
+                      },
+                      {
+                        "type": "text",
+                        "text": /*`${doc.data().date_update}`*/ "17/5/2020",
+                        "align": "end"
+                      }
+                    ]
                   }
-                }
-              ]
+                ]
+              }
             }
           }
-        }
-        const payloadMsg = new Payload("LINE", buttonMsg, {
-          sendAsMessage: true
-        })
-        return agent.add(payloadMsg);
-      }
-      else if (cornType == "ข้าวโพดหวาน"){
-        const buttonMsg = {
-          "type": "flex",
-          "altText": "Flex Message",
-          "contents": {
-            "type": "bubble",
-            "direction": "ltr",
-            "header": {
-              "type": "box",
-              "layout": "vertical",
-              "contents": [
-                {
-                  "type": "text",
-                  "text": "เลือกจังหวัด",
-                  "align": "center"
-                }
-              ]
-            },
-            "body": {
-              "type": "box",
-              "layout": "vertical",
-              "contents": [
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "เชียงใหม่",
-                    "text": "เชียงใหม่"
+          const payloadMsg = new Payload("LINE", flexMsg, {
+            sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
+        }).catch(err => {
+          return agent.add("ขอโทษด้วยค่ะ ยังไม่มีข้อมูลราคาของจังหวัด"+provincePrice);
+        });
+      } else if (thaiRegion(provincePrice) === "ภาคกลาง") {
+        const provinceEng = changeProvinceCenter(provincePrice)
+        return db.collection('Price').doc(provinceEng).get().then(doc => {
+          const flexMsg = {
+            "type": "flex",
+            "altText": "Flex Message",
+            "contents": {
+              "type": "bubble",
+              "direction": "ltr",
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "ราคาข้าวโพด",
+                    "align": "start",
+                    "color": "#B7966E"
                   },
-                  "height": "sm"
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "เชียงราย",
-                    "text": "เชียงราย"
+                  {
+                    "type": "text",
+                    "text": provincePrice,
+                    "size": "xl",
+                    "weight": "bold"
                   },
-                  "height": "sm"
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "หนองคาย",
-                    "text": "หนองคาย"
+                  {
+                    "type": "separator",
+                    "margin": "lg",
+                    "color": "#d2ae83"
                   },
-                  "height": "sm"
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "นครราชสีมา",
-                    "text": "นครราชสีมา"
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xl",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ตลาด"
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().arr_selling[0]}`,
+                        "align": "end"
+                      }
+                    ]
                   },
-                  "height": "sm"
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "กาญจนบุรี",
-                    "text": "กาญจนบุรี"
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ราคา"
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().price_data['avg_price']}` + " บาท/กก.",
+                        "align": "end"
+                      }
+                    ]
                   },
-                  "height": "sm"
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "ปทุมธานี",
-                    "text": "ปทุมธานี"
-                  },
-                  "height": "sm"
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "สุราษฎฺ์ธานี",
-                    "text": "สุราษฎฺ์ธานี"
-                    
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "วันที่"
+                      },
+                      {
+                        "type": "text",
+                        "text": /*`${doc.data().date_update}`*/ "17/5/2020",
+                        "align": "end"
+                      }
+                    ]
                   }
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "จังหวัดอื่นๆ",
-                    "text": "จังหวัดอื่นๆ"
-                  },
-                  "height": "sm"
-                }
-              ]
+                ]
+              }
             }
           }
-        }
-        const payloadMsg = new Payload("LINE", buttonMsg, {
-          sendAsMessage: true
-        })
-        return agent.add(payloadMsg);
-      }
-      else if (cornType == "ข้าวโพดฝักอ่อน"){
-        const buttonMsg = {
-          "type": "flex",
-          "altText": "Flex Message",
-          "contents": {
-            "type": "bubble",
-            "direction": "ltr",
-            "header": {
-              "type": "box",
-              "layout": "vertical",
-              "contents": [
-                {
-                  "type": "text",
-                  "text": "เลือกจังหวัด",
-                  "align": "center"
-                }
-              ]
-            },
-            "body": {
-              "type": "box",
-              "layout": "vertical",
-              "contents": [
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "เชียงราย",
-                    "text": "เชียงราย"
+          const payloadMsg = new Payload("LINE", flexMsg, {
+            sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
+        }).catch(err => {
+          return agent.add("ขอโทษด้วยค่ะ ยังไม่มีข้อมูลราคาของจังหวัด"+provincePrice);
+        });
+      } else if (thaiRegion(provincePrice) === "ภาคอีสาน") {
+        const provinceEng = changeProvinceNE(provincePrice)
+        return db.collection('Price').doc(provinceEng).get().then(doc => {
+          const flexMsg = {
+            "type": "flex",
+            "altText": "Flex Message",
+            "contents": {
+              "type": "bubble",
+              "direction": "ltr",
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "ราคาข้าวโพด",
+                    "align": "start",
+                    "color": "#B7966E"
                   },
-                  "height": "sm"
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "นครราชสีมา",
-                    "text": "นครราชสีมา"
+                  {
+                    "type": "text",
+                    "text": provincePrice,
+                    "size": "xl",
+                    "weight": "bold"
                   },
-                  "height": "sm"
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "กาญจนบุรี",
-                    "text": "กาญจนบุรี"
+                  {
+                    "type": "separator",
+                    "margin": "lg",
+                    "color": "#d2ae83"
                   },
-                  "height": "sm"
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "type": "button",
-                  "action": {
-                    "type": "message",
-                    "label": "จังหวัดอื่นๆ",
-                    "text": "จังหวัดอื่นๆ"
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xl",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ตลาด"
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().arr_selling[0]}`,
+                        "align": "end"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ราคา"
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().price_data['avg_price']}` + " บาท/กก.",
+                        "align": "end"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "วันที่"
+                      },
+                      {
+                        "type": "text",
+                        "text": /*`${doc.data().date_update}`*/ "17/5/2020",
+                        "align": "end"
+                      }
+                    ]
                   }
-                }
-              ]
+                ]
+              }
             }
           }
-        }
-        const payloadMsg = new Payload("LINE", buttonMsg, {
-        sendAsMessage: true
-      })
-      return agent.add(payloadMsg);
+          const payloadMsg = new Payload("LINE", flexMsg, {
+            sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
+        }).catch(err => {
+          return agent.add("ขอโทษด้วยค่ะ ยังไม่มีข้อมูลราคาของจังหวัด"+provincePrice);
+        });
+      } else if (thaiRegion(provincePrice) === "ภาคใต้") {
+        const provinceEng = changeProvinceSouth(provincePrice)
+        return db.collection('Price').doc(provinceEng).get().then(doc => {
+          const flexMsg = {
+            "type": "flex",
+            "altText": "Flex Message",
+            "contents": {
+              "type": "bubble",
+              "direction": "ltr",
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "ราคาข้าวโพด",
+                    "align": "start",
+                    "color": "#B7966E"
+                  },
+                  {
+                    "type": "text",
+                    "text": provincePrice,
+                    "size": "xl",
+                    "weight": "bold"
+                  },
+                  {
+                    "type": "separator",
+                    "margin": "lg",
+                    "color": "#d2ae83"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "xl",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ตลาด"
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().arr_selling[0]}`,
+                        "align": "end"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "ราคา"
+                      },
+                      {
+                        "type": "text",
+                        "text": `${doc.data().price_data['avg_price']}` + " บาท/กก.",
+                        "align": "end"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "วันที่"
+                      },
+                      {
+                        "type": "text",
+                        "text": /*`${doc.data().date_update}`*/ "17/5/2020",
+                        "align": "end"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+          const payloadMsg = new Payload("LINE", flexMsg, {
+            sendAsMessage: true
+          });
+          return agent.add(payloadMsg);
+        }).catch(err => {
+          return agent.add("ขอโทษด้วยค่ะ ยังไม่มีข้อมูลราคาของจังหวัด"+provincePrice);
+        });
       }
+    }
+
+    const otherProvincePrice = async agent => {
+      return agent.add("พิมพ์จังหวัดที่ต้องการทราบราคา" + "\n" + "โดยพิมพ์ ราคาจังหวัด ตามด้วยชื่อจังหวัด"), agent.add("เช่น ราคาจังหวัดลำพูน")
     }
 
 
@@ -1771,6 +2060,8 @@ exports.webhook = functions
       })
       return agent.add(payloadMsg);
     }
+
+
 
     //-----------------------------------ส่วนของเมนู โรคพืช-----------------------------------------//
 
@@ -6534,6 +6825,54 @@ exports.webhook = functions
 
     //---------------------- ส่วนฟังก์ชันที่โยนมาจากฟังก์ชันอื่น ---------------------
 
+    function thaiRegion(Province) {
+      if (Province == 'เชียงใหม่' || Province == 'เชียงราย' ||
+        Province == 'ลำปาง' || Province == 'ลำพูน' ||
+        Province == 'แม่ฮ่องสอน' || Province == 'น่าน' ||
+        Province == 'พะเยา' || Province == 'แพร่' ||
+        Province == 'อุตรดิตถ์' || Province == 'ตาก' ||
+        Province == 'สุโขทัย' || Province == 'พิษณุโลก' ||
+        Province == 'พิจิตร' || Province == 'กำแพงเพชร' ||
+        Province == 'นครสวรรค์' || Province == 'อุทัยธานี' ||
+        Province == 'เพชรบูรณ์') {
+        return "ภาคเหนือ"
+      } else if (Province == 'อำนาจเจริญ' || Province == 'บึงกาฬ' ||
+        Province == 'บุรีรัมย์' || Province == 'ชัยภูมิ' ||
+        Province == 'กาฬสินธุ์' || Province == 'ขอนแก่น' ||
+        Province == 'เลย' || Province == 'มหาสารคาม' ||
+        Province == 'มุกดาหาร' || Province == 'นครพนม' ||
+        Province == 'นครราชสีมา' || Province == 'หนองบัวลำภู' ||
+        Province == 'หนองคาย' || Province == 'ร้อยเอ็ด' ||
+        Province == 'สกลนคร' || Province == 'ศรีสะเกษ' ||
+        Province == 'สุรินทร์' || Province == 'อุบลราชธานี' ||
+        Province == 'อุดรธานี' || Province == 'ยโสธร') {
+        return "ภาคอีสาน"
+      } else if (Province == 'อ่างทอง' || Province == 'ชัยนาท' ||
+        Province == 'พระนครศรีอยุธยา' || Province == 'กรุงเทพมหานคร' ||
+        Province == 'ลพบุรี' || Province == 'นครปฐม' ||
+        Province == 'นนทบุรี' || Province == 'ปทุมธานี' ||
+        Province == 'สมุทรปราการ' || Province == 'สมุทรสาคร' ||
+        Province == 'สมุทรสงคราม' || Province == 'สระบุรี' ||
+        Province == 'สิงห์บุรี' || Province == 'สุพรรณบุรี' ||
+        Province == 'นครนายก' || Province == 'ฉะเชิงเทรา' ||
+        Province == 'จันทบุรี' || Province == 'ชลบุรี' ||
+        Province == 'ปราจีนบุรี' || Province == 'ระยอง' ||
+        Province == 'สระแก้ว' || Province == 'ตราด' ||
+        Province == 'กาญจนบุรี' || Province == 'ราชบุรี' ||
+        Province == 'เพชรบุรี' || Province == 'ประจวบคีรีขันธ์'
+      ) {
+        return "ภาคกลาง"
+      } else if (Province == 'นครศรีธรรมราช' || Province == 'นราธิวาส' ||
+        Province == 'ชุมพร' || Province == 'ปัตตานี' ||
+        Province == 'พัทลุง' || Province == 'สงขลา' ||
+        Province == 'สุราษฎร์ธานี' || Province == 'ยะลา' ||
+        Province == 'กระบี่' || Province == 'พังงา' ||
+        Province == 'ภูเก็ต' || Province == 'ระนอง' ||
+        Province == 'สตูล' || Province == 'ตรัง') {
+        return "ภาคใต้"
+      }
+    }
+
     //เปลี่ยนชื่อโรค TH -> ENG
     function changeDiseaseName(d_name) {
       if (d_name === "โรคกาบและใบไหม้") {
@@ -6646,6 +6985,178 @@ exports.webhook = functions
       }
     }
 
+    function changeProvinceNorth(province) {
+      if (province === "เชียงราย") {
+        return "ChiangRai"
+      } else if (province === "กำแพงเพชร") {
+        return "KamphaengPhet"
+      } else if (province === "ตาก") {
+        return "Tak"
+      } else if (province === "เชียงใหม่") {
+        return "ChiangMai"
+      } else if (province === "น่าน") {
+        return "Narn"
+      } else if (province === "พะเยา") {
+        return "Phayao"
+      } else if (province === "แพร่") {
+        return "Phrae"
+      } else if (province === "แม่ฮ่องสอน") {
+        return "MaeHongSon"
+      } else if (province === "ลำปาง") {
+        return "Lampang"
+      } else if (province === "ลำพูน") {
+        return "Lumpoon"
+      } else if (province === "อุตรดิตถ์") {
+        return "Uttaradit"
+      } else if (province === "เพชรบูรณ์") {
+        return "Petchaboon"
+      } else if (province === "สุโขทัย") {
+        return "Sukhothai"
+      } else if (province === "อุทัยธานี") {
+        return "UthaiThani"
+      } else if (province === "นครสวรรค์") {
+        return "NakhonSawan"
+      } else if (province === "กำแพงเพชร") {
+        return "KamphaengPhet"
+      } else if (province === "พิจิตร") {
+        return "Phichit"
+      } else if (province === "พิษณุโลก") {
+        return "Phitsanulok"
+      }
+    }
+
+    function changeProvinceCenter(province) {
+      if (province === "กรุงเทพฯ") {
+        return "Bangkok"
+      } else if (province === "ชัยนาท") {
+        return "ChaiNat"
+      } else if (province === "นครนายก") {
+        return "NakhonNayok"
+      } else if (province === "นครปฐม") {
+        return "NakhonPathom"
+      } else if (province === "นครสวรรค์") {
+        return "NakhonSawan"
+      } else if (province === "นนทบุรี") {
+        return "Nonthaburi"
+      } else if (province === "ปทุมธานี") {
+        return "PathumThani"
+      } else if (province === "พระนครศรีอยุธยา") {
+        return "Ayutthaya"
+      } else if (province === "สมุทรปราการ") {
+        return "SamutPrakan"
+      } else if (province === "สมุทรสงคราม") {
+        return "SamutSongkhram"
+      } else if (province === "สมุทรสาคร") {
+        return "SamutSakhon"
+      } else if (province === "สระบุรี") {
+        return "Saraburi"
+      } else if (province === "สิงห์บุรี") {
+        return "SingBuri"
+      } else if (province === "สุพรรณบุรี") {
+        return "SuphanBuri"
+      } else if (province === "อ่างทอง") {
+        return "AngThong"
+      } else if (province === "จันทบุรี") {
+        return "Chanthaburi"
+      } else if (province === "ฉะเชิงเทรา") {
+        return "Chachoengsao"
+      } else if (province === "ชลบุรี") {
+        return "ChonBuri"
+      } else if (province === "ตราด") {
+        return "Trat"
+      } else if (province === "ปราจีนบุรี") {
+        return "PrachinBuri"
+      } else if (province === "ระยอง") {
+        return "Rayong"
+      } else if (province === "สระแก้ว") {
+        return "SaKaeo"
+      } else if (province === "กาญจนบุรี") {
+        return "Kanchanaburi"
+      } else if (province === "ประจวบคีรีขันธ์") {
+        return "PrachuapKhiriKhan"
+      } else if (province === "เพชรบุรี") {
+        return "Phetchaburi"
+      } else if (province === "ราชบุรี") {
+        return "Ratchaburi"
+      }
+    }
+
+    function changeProvinceNE(province) {
+      if (province === "กาฬสินธุ์") {
+        return "Kalasin"
+      } else if (province === "ขอนแก่น") {
+        return "KhonKaen"
+      } else if (province === "ชัยภูมิ") {
+        return "Chaiyaphum"
+      } else if (province === "นครพนม") {
+        return "NakhonPhanom"
+      } else if (province === "นครราชสีมา") {
+        return "Koraj"
+      } else if (province === "บึงกาฬ") {
+        return "BuengKan"
+      } else if (province === "บุรีรัมย์") {
+        return "BuriRam"
+      } else if (province === "มหาสารคาม") {
+        return "MahaSarakham"
+      } else if (province === "มุกดาหาร") {
+        return "Mukdahan"
+      } else if (province === "ยโสธร") {
+        return "Yasothon"
+      } else if (province === "ร้อยเอ็ด") {
+        return "RoiEt"
+      } else if (province === "เลย") {
+        return "Loei"
+      } else if (province === "ศรีสะเกษ") {
+        return "SiSaKet"
+      } else if (province === "สกลนคร") {
+        return "SakonNakhon"
+      } else if (province === "สุรินทร์") {
+        return "Surin"
+      } else if (province === "หนองคาย") {
+        return "NongKhai"
+      } else if (province === "หนองบัวลำภู") {
+        return "NongBuaLamPhu"
+      } else if (province === "อุดรธานี") {
+        return "UdonThani"
+      } else if (province === "อุบลราชธานี") {
+        return "UbonRatchathani"
+      } else if (province === "อำนาจเจริญ") {
+        return "AmnatCharoen"
+      }
+    }
+
+    function changeProvinceSouth(province) {
+      if (province === "กระบี่") {
+        return "Krabi"
+      } else if (province === "ชุมพร") {
+        return "Chumphon"
+      } else if (province === "ตรัง") {
+        return "Chumphon"
+      } else if (province === "นครศรีธรรมราช") {
+        return "NNakhonSiThammarat"
+      } else if (province === "นราธิวาส") {
+        return "Narathiwat"
+      } else if (province === "ปัตตานี") {
+        return "Pattani"
+      } else if (province === "พังงา") {
+        return "Phangnga"
+      } else if (province === "พัทลุง") {
+        return "Phatthalung"
+      } else if (province === "ภูเก็ต") {
+        return "Phuket"
+      } else if (province === "ยะลา") {
+        return "Yala"
+      } else if (province === "ระนอง") {
+        return "Ranong"
+      } else if (province === "สตูล") {
+        return "Satun"
+      } else if (province === "สงขลา") {
+        return "Songkhla"
+      } else if (province === "สุราษฎร์ธานี") {
+        return "SuratThani"
+      }
+    }
+
     let intentMap = new Map();
     // next page
     //intentMap.set("Next page", nextPage);
@@ -6715,7 +7226,8 @@ exports.webhook = functions
 
     //Price
     intentMap.set('LIFF Price', price);
-    intentMap.set('Price - Select corn type', selectCornType);
+    intentMap.set('Select provence', selectProvincePrice);
+    intentMap.set('Other provence', otherProvincePrice);
 
     agent.handleRequest(intentMap);
   });
